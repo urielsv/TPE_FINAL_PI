@@ -10,7 +10,7 @@ typedef struct {
 
 // Renting tipo "Montreal"
 typedef struct {
-
+//a
 } tRentType2;
 
 struct station {
