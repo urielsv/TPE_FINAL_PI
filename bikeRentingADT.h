@@ -1,4 +1,4 @@
+#include "bikeRentingADT.c"
 
 
-
-typedef bikeRentingADT *bikeRentingCDT;
+typedef bikeRentingADT * bikeRentingCDT;
