@@ -1,6 +1,5 @@
+#include "bikeRentingADT.h"
 
-
-typedef struct bikeRentingCDT{
+typedef struct bikeRentingCDT {
     
-
-}bikeRentingCDT;
+} bikeRentingCDT;
