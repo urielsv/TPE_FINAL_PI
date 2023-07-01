@@ -1,0 +1,4 @@
+
+
+
+typedef bikeRentingADT *bikeRentingCDT;
