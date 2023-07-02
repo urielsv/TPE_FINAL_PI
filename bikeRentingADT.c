@@ -1,5 +1,6 @@
 #include "bikeRentingADT.h"
-#include "stdlib.h"
+#include <stdlib.h>
+
 
 // Renting tipo "New York"
 typedef struct {
@@ -15,7 +16,7 @@ typedef struct {
 } tRentType2;
 
 struct station {
-    string station_name;
+    char * station_name;
     latitude;
     longitude
     id;
@@ -35,6 +36,6 @@ typedef struct {
 } tStationType2;
 
 typedef struct bikeRentingCDT{
-     tStationType1* station1;
-     tStationType2* station2;
+     tStationType1 * station1;
+     tStationType2 * station2;
 } bikeRentingCDT;
