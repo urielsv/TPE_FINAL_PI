@@ -1,4 +1,5 @@
 #include "bikeRentingADT.h"
+#include "stdlib.h"
 
 // Renting tipo "New York"
 typedef struct {
