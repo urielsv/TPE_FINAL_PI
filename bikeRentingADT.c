@@ -16,26 +16,26 @@ typedef struct {
 } tRentType2;
 
 struct station {
-    char * station_name;
-    latitude;
-    longitude
-    id;
+    char* station_name;
+    double latitude;
+    double longitude;
+    unsigned int id;
 };
 
-// Station tipo "New York"
+// Station tipo "New York" (lista)
 typedef struct {
     struct station stationInfo;
     //lista
 } tStationType1;
 
-// Station tipo "Montreal"
+// Station tipo "Montreal" (vector)
 typedef struct {
     struct station stationInfo;
-    //vector
     tRentType2 * rentInfo;
-} tStationType2;
+} tStationTypeArray;
 
-typedef struct bikeRentingCDT{
-     tStationType1 * station1;
-     tStationType2 * station2;
+typedef struct bikeRentingCDT {
+     tStationTypeList * station1;
+     tStationTypeArray * station2;
+    int (*compare)(char* source, char* target);
 } bikeRentingCDT;
