@@ -1,12 +1,12 @@
 COMPILER = gcc
 OUTPUT_FILES = bikeSharingMON bikeSharingNYC
-FLAGS = -pedantic -std=c99
+FLAGS = -pedantic -std=c99 -Wall -fsinitize=address
 OBJECT_FILES = main.o bikeSharingADT.o dataProcessing.o
-DEBUG = -Wall -fsinitize=address
+DEBUG = -g
 
 all: clean mon nyc
 
-debug: COMPILER += $(DEBUG_COMPILER)
+debug: COMPILER += $(DEBUG)
 debug: all
 
 mon: $(OBJECT_FILES)
