@@ -1,7 +1,6 @@
 #include"bikeRentingADT.h"
 #include <stdlib.h>
 
-
 // Renting tipo "New York"
 typedef struct rent1 {
     // Todos los atributos (hay innecesarios)
