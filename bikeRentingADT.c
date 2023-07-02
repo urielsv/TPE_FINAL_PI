@@ -1,18 +1,24 @@
-#include "bikeRentingADT.h"
+#include"bikeRentingADT.h"
 #include <stdlib.h>
 
 
 // Renting tipo "New York"
-typedef struct {
-    // Todos los atributos (hay inecesarios)
-    size_t started_at;
-    size_t start_station_id;
-    size_t ended_at;
+typedef struct rent1 {
+    // Todos los atributos (hay innecesarios)
+    size_t startedAt;
+    size_t startStationId;
+    size_t endedAt;
+    struct rent1 * next;
 } tRentType1;
 
 // Renting tipo "Montreal"
-typedef struct {
-//a
+typedef struct rent2 {
+    //Todos los atributos (hay innecesarios)
+    unsigned char startDate; // monthStart
+    unsigned int emplacementPkStart;
+    unsigned char endDate;
+    unsigned int emplacementPkeEnd;
+    char isMember;
 } tRentType2;
 
 struct station {
@@ -25,8 +31,8 @@ struct station {
 // Station tipo "New York" (lista)
 typedef struct {
     struct station stationInfo;
-    //lista
-} tStationType1;
+    tRentType1 * list;
+} tStationTypeList;
 
 // Station tipo "Montreal" (vector)
 typedef struct {
@@ -39,3 +45,4 @@ typedef struct bikeRentingCDT {
      tStationTypeArray * station2;
     int (*compare)(char* source, char* target);
 } bikeRentingCDT;
+
