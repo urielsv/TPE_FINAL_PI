@@ -1,22 +1,31 @@
 COMPILER = gcc
-OUTPUT_FILE = bikeSharing
+OUTPUT_FILES = bikeSharingMON bikeSharingNYC
 FLAGS = -pedantic -std=c99
-OBJECT_FILES = main.o bikeRenting.o
+OBJECT_FILES = main.o bikeSharingADT.o dataProcessing.o
 DEBUG = -Wall -fsinitize=address
 
-all: $(OBJECT_FILES)
-	$(COMPILER) -o $(OUTPUT_FILE) $(OBJECT_FILES) $(FLAGS)
+all: clean mon nyc
 
 debug: COMPILER += $(DEBUG_COMPILER)
 debug: all
 
-main.o:
+mon: $(OBJECT_FILES)
+	$(COMPILER) -o bikeSharingMON $(OBJECT_FILES) $(FLAGS)
+
+nyc: $(OBJECT_FILES)
+	$(COMPILER) -o bikeSharingNYC $(OBJECT_FILES) $(FLAGS)
+
+main.o: main.c
 	$(COMPILER) -c main.c $(FLAGS)
 
-bikeRenting.o:
-	$(COMPILER) -c bikeRentingADT.c $(FLAGS)
+bikeSharingADT.o: bikeSharingADT.o
+	$(COMPILER) -c bikeSharingADT.c $(FLAGS)
 
+dataProcessing.o: dataProcessing.c
+	$(COMPILER) -c dataProcessing.c $(FLAGS)
 
-clean: rm $(OUTPUT_FILE)
+clean:
+	rm -f $(OUTPUT_FILES) $(OBJECT_FILES)
+	@echo "Makefile: Object files and output files deleted."
 #cleanQueries:
 #cleanAll:
