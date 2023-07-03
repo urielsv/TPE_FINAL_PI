@@ -1,5 +1,5 @@
-#ifndef BIKE_SHARING_ADT
-#define BIKE_SHARING_ADT
+#ifndef __bikesharingadt_h_
+#define __bikesharingadt_h_
 
 typedef struct bikeSharingCDT * bikeSharingADT;
 
@@ -7,7 +7,6 @@ typedef struct bikeSharingCDT * bikeSharingADT;
 /*
  * Todas los prototipos estan incompletos, faltan args.
  */
-
 bikeSharingADT newBikeSharingADT(int (*compare)(char* source, char* target));
 void freeBikeSharing(void);
 

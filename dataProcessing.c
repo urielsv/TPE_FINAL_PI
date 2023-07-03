@@ -3,75 +3,76 @@
 #include <string.h>
 #include <errno.h>
 
-#define MON_EXEC    "bikeRentingMON" // newyork
-#define NYC_EXEC    "bikeRentingNYC" // newcanada
-#define COMMAND_PREFIX  2
+#define COMMAND_PREFIX  2 // "./$COMMAND"
 #define TRUE    1
 #define FALSE   !TRUE
-#define QUERIES_COUNT 2
+#define FILES_COUNT 2
+#define SUCCESS 0
 
-#define QUERY_BIKES_FORMAT_NYC   "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual"
-#define QUERY_STATION_FORMAT_NYC   "station_name;latitude;longitude;id"
-#define QUERY_BIKES_FORMAT_MON    "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
-#define QUERY_STATION_FORMAT_MON  "pk;name;latitude;longitude"
+enum {ERR_INVALID_FILE_COUNT=1,
+        ERR_NULL_FILE_FORMAT,
+        ERR_FILE_FORMAT,
+        ERR_COPY_FAILED
+};
 
 enum {BIKES=0, STATION};
+
+static const char* fileBikesFormatNYC = "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual";
+static const char* fileBikesFormatMON = "station_name;latitude;longitude;id";
+static const char* fileStationFormatNYC = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
+static const char* fileStationFormatMON = "pk;name;latitude;longitude";
 static const char* execMON = "bikeSharingMON";
-static const char* execNYC = "bikeSharingMON";
-
-void getArgumentFormat(char* argv, char* format[QUERIES_COUNT])
-{
-    // idea aux: comprar unicamente la 'M' con la 'N'
-    if (strncmp(execMON, argv+COMMAND_PREFIX, strlen(execMON)) == 0) {
-        format[BIKES] = QUERY_BIKES_FORMAT_MON;
-        format[STATION] = QUERY_STATION_FORMAT_MON;
-        return;
-    }
-
-    // Otra forma sin strncmp
-    if (strcmp(NYC_EXEC, argv+COMMAND_PREFIX) == 0) {
-        format[BIKES] = QUERY_BIKES_FORMAT_NYC;
-        format[STATION] = QUERY_STATION_FORMAT_NYC;
-        return;
-    }
-
-    fprintf(stderr, "main: invalid queries format.");
-    exit(1);
-}
+static const char* execNYC = "bikeSharingNYC";
 
 // Valida cantidad de argumentos (2 queries, renting y station)
-void validateArgumentCount(int argc)
+int validArgumentCount(int argc)
 {
-    if (argc < 1) {
-        fprintf(stderr, "main: no queries specified.");
-        exit(1);
+    if (argc != FILES_COUNT) {
+        return ERR_INVALID_FILE_COUNT;
     }
 
-    if (argc > 2) {
-        fprintf(stderr, "main: invalid amount of queries.");
-        exit(1);
-    }
-
+    return SUCCESS;
 }
 
-static void validateQuery(char buff[], int buffSize, FILE** query, char* queryFormat)
+static int validFile(char buff[], int buffSize, FILE** file, char* fileFormat)
 {
-    if (fgets(buff, buffSize, *query) == NULL) {
-        fprintf(stderr, "main: query format not specified.");
-        exit(1);
+    if (fgets(buff, buffSize, *file) == NULL) {
+        return ERR_NULL_FILE_FORMAT;
     }
 
-    if (strncmp(queryFormat, buff, strlen(queryFormat)) != 0) {
-        fprintf(stderr, "main: invalid query format.");
-        exit(1);
+    if (strncmp(fileFormat, buff, strlen(fileFormat)) != 0) {
+        return ERR_FILE_FORMAT;
     }
+
+    return SUCCESS;
 }
 
-// en el buffer se guarda la primera linea de bikeStation.
-void validateQueriesFormat(char buff[], int buffSize, FILE** bikeQuery, FILE** stationQuery,
+// AUX: en el buffer se guarda la primera linea de bikeStation.
+int validFilesFormat(char buff[], int buffSize, FILE** bikeFile, FILE** stationFile,
                           char* bikeFormat, char* stationFormat)
 {
-    // Valido formato de queries.
-    validateQuery(buff, buffSize, bikeQuery, bikeFormat);
-    validateQuery(buff, buffSize, stationQuery, stationFormat);
+    int validBikeFormat, validStationFormat;
+    validBikeFormat = validFile(buff, buffSize, bikeFile, bikeFormat);
+    validStationFormat = validFile(buff, buffSize, stationFile, stationFormat);
+
+    return validBikeFormat && validStationFormat;
+}
+
+static int copyFormat(char* argv, char* format[FILES_COUNT], const char* execName)
+{
+    if (strncmp(execName, argv+COMMAND_PREFIX, strlen(execName)) == 0) {
+        format[BIKES] = strcpy(format[BIKES], fileBikesFormatMON);
+        format[STATION] = strcpy(format[STATION], fileStationFormatMON);
+        return SUCCESS;
+    }
+    return ERR_COPY_FAILED;
+}
+
+int getArgumentFormat(char* argv, char* format[FILES_COUNT])
+{
+    int validNameMON, validNameNYC;
+    validNameMON = copyFormat(argv, format, execMON);
+    validNameNYC = copyFormat(argv, format, execNYC);
+
+    return validNameMON && validNameNYC;
 }
