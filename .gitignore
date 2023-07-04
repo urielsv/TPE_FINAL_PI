@@ -6,6 +6,8 @@
 *.ko
 *.obj
 *.elf
+*.csv
+*.html
 
 # Linker output
 *.ilk

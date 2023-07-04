@@ -7,16 +7,17 @@ typedef struct bikeSharingCDT * bikeSharingADT;
 /*
  * Todas los prototipos estan incompletos, faltan args.
  */
-bikeSharingADT newBikeSharingADT(int (*compare)(char* source, char* target));
+bikeSharingADT newBikeSharingADT();
 void freeBikeSharing(void);
 
 // Type1: estilo "New York"
-int addStationTypeList(void);
+int addStationId(bikeSharingADT bs, int id, int type);
+int addStationName(bikeSharingADT bs, char* name, int type);
 
-// Type2: estilo "Montreal"
-int addStationTypeArray(void);
-
-int addSharingTypeList(bikeSharingADT br);
-int addSharingTypeVector(bikeSharingADT br);
-
+//se fijan si existe el id xD y lo agrega si no esta
+int idExist(bikeSharingADT bs, int id, int type);
+unsigned int getId(bikeSharingADT bs, unsigned int id);
 #endif
+
+
+void freeCosa(bikeSharingADT bs);
