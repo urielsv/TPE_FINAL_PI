@@ -18,8 +18,8 @@ enum {BIKES=0, STATION, TYPE};
 enum {MON, NYC};
 
 static const char* fileBikesFormatNYC = "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual";
-static  char* fileBikesFormatMON = "station_name;latitude;longitude;id";
-static const char* fileStationFormatNYC = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
+static  char* fileBikesFormatMON = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
+static const char* fileStationFormatNYC = "station_name;latitude;longitude;id";
 static  char* fileStationFormatMON = "pk;name;latitude;longitude";
 static const char* execMON = "bikeSharingMON";
 static const char* execNYC = "bikeSharingNYC";
@@ -41,10 +41,10 @@ int validFilesFormat(char buff[], int buffSize, FILE* file[FILES_COUNT], char* f
     for (int i = 0; i < FILES_COUNT; i++) {
         if (fgets(buff, buffSize, file[i]) == NULL
             || strncmp(fileFormat[i], buff, strlen(fileFormat[i])) != 0) {
-            return DATA_ERROR;
+            return SUCCESS;
         }
     }
-    return SUCCESS;
+    return DATA_ERROR;
 }
 
 // fileName es argv[0]
@@ -55,12 +55,14 @@ static int compareExec(const char * execName, const char* fileName){
 
 int getArgumentFormat(char* argv, char* format[FILES_COUNT])
 {
-    if (compareExec(execMON, argv)) {
+    //falla el comapreExec Xd
+   // if (compareExec(execMON, argv)) {
         // Esta mal, solo paara MON
-        format[BIKES] = fileBikesFormatMON;//strcpy(format[BIKES], fileBikesFormatMON);
-        format[STATION] = fileStationFormatMON;//strcpy(format[STATION], fileStationFormatMON);
+        format[BIKES] = fileBikesFormatMON;
+        format[STATION] = fileStationFormatMON;
+
         return SUCCESS;
-    }
+   // }
 /*
     } else if (compareExec(execNYC, argv)){
         format[BIKES] = strcpy(format[BIKES], fileBikesFormatNYC);
@@ -86,14 +88,14 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
     char buff[BUFF_SIZE], *token;
 
 
-    if (!validFilesFormat(buff, BUFF_SIZE, file, format)) {
+   if (!validFilesFormat(buff, BUFF_SIZE, file, format)) {
         return DATA_ERROR;
     }
 
     // if es tipo "MON"
     int type = getType(argv);
 
-    if (type == MON) {
+   // if (type == MON) {
         //leo las lineas del archivo hasta el final, guardo la linea en buff hasta BUFF_SIZE caracteres.
         while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
             token = strtok(buff, DELIM_PREFIX);
@@ -101,14 +103,14 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
 
             // addStationId add if not exists
            // if (!addStationId(adt, id, type)) {
-                printf("%d", id);
+                printf("id:%d \n", id);
                 token = UPDATE;
                 // stationName = token;
                 //addStationName(adt, stationName);
             //}
 
         }
-    }
+    //}
 /*
     if (type == NYC) {
 

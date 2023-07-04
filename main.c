@@ -23,9 +23,9 @@ int main(int argc, char * argv[])
     char* format[FILES_COUNT];
 
     // Hay que mandarlo al error handler del front (para printear)
-    //getArgumentFormat(argv[FILE_NAME], format);
-    format[BIKES] = ;
-    format[STATION] = "station_name;latitude;longitude;id";
+    getArgumentFormat(argv[FILE_NAME], format);
+    //format[BIKES] = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
+    //format[STATION] = "pk;name;latitude;longitude";
     FILE* bikeFile = fopen(argv[FILE1], "r");
     FILE* stationFile = fopen(argv[FILE2], "r");
 
