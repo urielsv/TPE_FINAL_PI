@@ -47,7 +47,7 @@ typedef struct bikeSharingCDT {
     tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
     size_t sizeList; // Cantidad de stations
-    size_t sizeArray;
+    size_t sizeArray; // Cantidad de stations
     int type; // list = 0, array = 1
 } bikeSharingCDT;
 
