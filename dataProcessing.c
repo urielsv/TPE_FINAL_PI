@@ -12,6 +12,9 @@
 #define SUCCESS 1
 #define DATA_ERROR !SUCCESS
 #define DELIM_PREFIX ";"
+#define DATE_DELIM "-"
+
+#define UPDATE() strtok(NULL, DELIM_PREFIX)
 
 enum {
     RENTS = 0, STATION
@@ -19,10 +22,14 @@ enum {
 enum {
     MON = 1, NYC
 };
-
 enum {
     LIST, ARRAY
 };
+
+enum {
+    CLASSIC_BIKE=0, DOCKED_BIKE, ELECTRIC_BIKE
+};
+
 
 #define FILE_RENTS_FORMAT_NYC       "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual"
 #define FILE_RENTS_FORMAT_MON       "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
@@ -133,8 +140,11 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
     size_t idStart, idEnd;
     int month;
 
-    // Valida y "coloca" el formato correcto a format y devuelve el tipo
-    int type = getArgumentFormat(argv, format);
+    /*
+     * Valida el tipo de ejecutable y carga el formato adecuado a la variable.
+     */
+    type = getArgumentFormat(argv, format);
+
 
     if (!validFilesFormat(buff, file, format)) {
         return DATA_ERROR;
@@ -157,9 +167,10 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
          * Carga de datos al ADT desde file[STATION]
          */
         while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
-            id = strtok(buff, DELIM_PREFIX);
-            stationName = strtok(NULL, DELIM_PREFIX);
-            valid = addStation(bs, stationName, atoi(id));
+            token = strtok(buff, DELIM_PREFIX);
+            id = atoi(token);
+            stationName = UPDATE();
+            valid = addStation(bs, stationName, id);
             if (!valid) {
                 return DATA_ERROR;
             }

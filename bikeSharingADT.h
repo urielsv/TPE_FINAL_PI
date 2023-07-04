@@ -1,28 +1,25 @@
 #ifndef __bikesharingadt_h_
 #define __bikesharingadt_h_
 
+#include <stdio.h>
 typedef struct bikeSharingCDT *bikeSharingADT;
 
-
 /*
- * Todas los prototipos estan incompletos, faltan args.
+ * CONSTRUCTOR
  */
 bikeSharingADT newBikeSharingADT(void);
 
-// Type1: estilo "New York"
-int addStationId(bikeSharingADT bs, int id);
+/*
+ * FUNCIONES EXTRAS
+ */
+int addStation(bikeSharingADT bs, char *name, unsigned int id);
+int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember);
 
-int addStationName(bikeSharingADT bs, char *name);
 
-//se fijan si existe el id xD y lo agrega si no esta
-int idExist(bikeSharingADT bs, int id);
-
-unsigned int getId(bikeSharingADT bs, unsigned int id);
-
-void freeBikeSharing(bikeSharingADT bs);
-
-void setType(bikeSharingADT bs, int type);
-
+/*
+ * GETTERS
+ */
+int getId(bikeSharingADT bs, unsigned int id);
 int getType(bikeSharingADT bs);
 
 /*

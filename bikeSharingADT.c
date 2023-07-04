@@ -14,6 +14,9 @@ enum {
     LIST=0, ARRAY
 };
 
+/*
+ * RENT
+ */
 typedef struct rentList {
     int startMonth; // date
     size_t endId;
@@ -22,6 +25,9 @@ typedef struct rentList {
     struct rentList *next;
 } tRentList;
 
+/*
+ * STATIONS
+ */
 typedef struct station {
     char *stationName;
     unsigned int id;
@@ -54,23 +60,18 @@ typedef struct bikeSharingCDT {
 } bikeSharingCDT;
 
 
+/*
+ * CONSTRUCTOR
+ */
 bikeSharingADT newBikeSharingADT(void) {
     bikeSharingADT bs = calloc(1, sizeof(struct bikeSharingCDT));
     bs->type = UNDEFINED;
     return bs;
 }
-//
-//static int belongsIdArray(bikeSharingADT bs, int id) {
-//    int dim = bs->sizeArray;
-//    for (int i = 0; i < dim; i++) {
-//        if (bs->stationArray->stationInfo.id == id) {
-//            return i;
-//        }
-//    }
-//    return -1;
-//}
 
-
+/*
+ * FUNCIONES
+ */
 int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
 
     if (getType(bs) == ARRAY) {
@@ -90,7 +91,7 @@ int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
         bs->stationArray[id].stationInfo.id = id;
         return SUCCESS;
     }
-/*
+
     if (getType(bs) == LIST){
         tStationList *newNode = malloc(sizeof(tStationList));
 
@@ -157,18 +158,20 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     return ERROR;
 }
 
-void setType(bikeSharingADT bs, int type) {
-    bs->type = type;
-}
 
+/*
+ * GETTERS
+ */
 int getType(bikeSharingADT bs) {
     return bs->type;
 }
 
-unsigned int getId(bikeSharingADT bs, unsigned int id) {
-    return bs->stationArray[id].stationInfo.id;
+/*
+ * SETTERS
+ */
+void setType(bikeSharingADT bs, int type) {
+    bs->type = type;
 }
-
 
 // Free
 void freeBikeSharing(bikeSharingADT bs) {
@@ -191,4 +194,5 @@ void freeBikeSharing(bikeSharingADT bs) {
     }
 */
     free(bs);
+    printf("freed :)");
 }

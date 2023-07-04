@@ -45,7 +45,11 @@ int main(int argc, char *argv[]) {
 
 
     // Libero los recursos utilizados por mi ADT.
+    printf("main: funco (sin free)");
     freeBikeSharing(bikeSharing);
+    printf("main: OK");
 
+    fclose(stationFile);
+    fclose(bikeFile);
     return 0;
 }
