@@ -1,14 +1,8 @@
 #ifndef __dataprocessing_h_
 #define __dataprocessing_h_
+
 #include <stdio.h>
 #include "bikeSharingADT.h"
-
-
-enum {ERR_INVALID_FILE_COUNT=1,
-        ERR_NULL_FILE_FORMAT,
-        ERR_FILE_FORMAT,
-        ERR_COPY_FAILED
-};
 
 /*
  * @brief Valida la cantidad de argumentos en el ejecutable.
@@ -28,7 +22,7 @@ int validArgumentCount(int argc);
  * @param file Distintos archivos con lista de datos.
  * @param argv Nombre del archivo ejecutable.
  */
-int putDataToADT(bikeSharingADT bikeSharing, FILE* file[], char* argv);
+int putDataToADT(bikeSharingADT bikeSharing, FILE *file[], char *argv);
 
 
 #endif
