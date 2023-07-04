@@ -88,9 +88,9 @@ static int addIdArray(bikeSharingADT bs, size_t dim, int id)
 }
 
 
-int addStationId(bikeSharingADT bs, int id, int type)
+int addStationId(bikeSharingADT bs, int id)
 {
-    if (type == ARRAY) {
+    if (getType(bs) == ARRAY) {
         // Si no existia lo agrega y retorna que no estaba
         if (!belongsArray(bs->stationArray, bs->dimArray, id)){
             //addIdArray(bs, bs->dimArray, id);
@@ -109,7 +109,16 @@ int addStationId(bikeSharingADT bs, int id, int type)
     return SUCCESS;
 }
 
-unsigned int getId(bikeSharingADT bs, unsigned int id)
+void setType(bikeSharingADT bs, int type) {
+    bs->type = type;
+}
+
+int getType(bikeSharingADT bs) {
+    return bs->type;
+}
+
+
+        unsigned int getId(bikeSharingADT bs, unsigned int id)
 {
     return bs->stationArray[id].stationInfo.id;
 }

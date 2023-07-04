@@ -19,10 +19,6 @@ int main(int argc, char * argv[])
     // Valido que el ejecutable tenga el formato correcto.
     validateArguments(argc, argv);
 
-    // Obtengo el formato segun el tipo (NYC/MON).
-    char* format[FILES_COUNT];
-    getArgumentFormat(argv[FILE_NAME], format);
-
     FILE* bikeFile = fopen(argv[FILE1], "r");
     FILE* stationFile = fopen(argv[FILE2], "r");
 

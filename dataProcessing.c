@@ -106,9 +106,10 @@ int putDataToADT(bikeSharingADT bs, FILE* file[FILES_COUNT], char* argv)
         return DATA_ERROR;
     }
 
-   int type = getType(argv);
 
    if (type == MON) {
+        // Seteo el typo de
+       setType(bs, MON);
         // Leo las lineas del archivo hasta el final, guardo la linea en buff hasta BUFF_SIZE
         // caracteres.
         while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
