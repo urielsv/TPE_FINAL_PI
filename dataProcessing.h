@@ -28,8 +28,7 @@ int validArgumentCount(int argc);
  * @param stationFormat Se utiliza para validar el formato de la lista de stations.
  *
  */
-int validFilesFormat(char buff[], int buffSize, FILE** bikeFile, FILE** stationFile,
-                           char* bikeFormat, char* stationFormat);
+int validFilesFormat(char buff[], int buffSize, FILE** file[], char* format[]);
 
 /*
  * @brief Obtiene los formatos segun el nombre del ejecutable.
@@ -40,7 +39,7 @@ int validFilesFormat(char buff[], int buffSize, FILE** bikeFile, FILE** stationF
  */
 int getArgumentFormat(char* argv, char* format[]);
 
-void putDataToADT(bikeSharingADT adt, FILE* bikeFile, FILE* stationFile);
+int putDataToADT(bikeSharingADT adt, FILE* file[], const char* format[], char* argv);
 
 
 #endif

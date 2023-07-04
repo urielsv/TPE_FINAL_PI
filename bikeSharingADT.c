@@ -1,5 +1,14 @@
 #include "bikeSharingADT.h"
 #include <stdlib.h>
+#include <errno.h>
+
+#define SUCCESS 1
+#define FOUND 1
+#define NOT_FOUND !FOUND
+#define BLOCK 150
+// ARRAY es como "MON"
+// LIST es como "NYC"
+enum {ARRAY, LIST};
 
 // Sharing tipo "New York"
 typedef struct rent1 {
@@ -37,7 +46,6 @@ typedef struct {
     struct station stationInfo;
     struct rent* rentInfo;
 } tStationArray;
-
 
 // Guardar de forma ordenada (alfab) o despues sortear?
 typedef struct bikeSharingCDT {

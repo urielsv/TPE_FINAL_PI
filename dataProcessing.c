@@ -47,28 +47,27 @@ int validFilesFormat(char buff[], int buffSize, FILE** file[FILES_COUNT], char* 
     return SUCCESS;
 }
 
-static int copyFormat(char* argv, char* format[FILES_COUNT], const char* execName)
-{
-    if (strncmp(execName, argv+COMMAND_PREFIX, strlen(execName)) == 0) {
-        format[BIKES] = strcpy(format[BIKES], fileBikesFormatMON);
-        format[STATION] = strcpy(format[STATION], fileStationFormatMON);
-        return SUCCESS;
-    }
-    return DATA_ERROR;
+// fileName es argv[0]
+// Compara y devuelve 0 si es el mismo nombre
+static int compareExec(const char * execName, const char* fileName){
+    return strncmp(execName, fileName+COMMAND_PREFIX, strlen(execName));
 }
 
 int getArgumentFormat(char* argv, char* format[FILES_COUNT])
 {
-    int validNameMON, validNameNYC;
-    validNameMON = copyFormat(argv, format, execMON);
-    validNameNYC = copyFormat(argv, format, execNYC);
+    if (compareExec(execMON, argv)) {
+        // Esta mal, solo paara MON
+        format[BIKES] = strcpy(format[BIKES], fileBikesFormatMON);
+        format[STATION] = strcpy(format[STATION], fileStationFormatMON);
+        return SUCCESS;
 
-    if (!validNameMON || !validNameNYC) {
-        return DATA_ERROR;
+    } else if (compareExec(execNYC, argv)){
+        format[BIKES] = strcpy(format[BIKES], fileBikesFormatNYC);
+        format[STATION] = strcpy(format[STATION], fileStationFormatNYC);
+        return SUCCESS;
     }
 
-    return SUCCESS;
-
+    return DATA_ERROR;
 }
 
 static int getType(char* argv) {

@@ -1,5 +1,6 @@
 #ifndef __datafront_h_
 #define __datafront_h_
+#include <stdio.h>
 
 void pError(const char* errorStream, const char* errorText);
 void validateArguments(int argc, char* argv[]);

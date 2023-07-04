@@ -20,7 +20,7 @@ int main(int argc, char * argv[])
     validateArguments(argc, argv);
 
     // Obtengo el formato segun el tipo (NYC/MON)
-    char* format[INPUT_FILES];
+    char* format[FILES_COUNT];
 
     // Hay que mandarlo al error handler del front (para printear)
     getArgumentFormat(argv[FILE_NAME], format);
@@ -33,9 +33,7 @@ int main(int argc, char * argv[])
     char buff[BUFF_SIZE];
 
     // Hay que mandarlo al error handler del front (para printear)
-    validFilesFormat(buff, BUFF_SIZE, &bikeFile, &stationFile,
-                          format[BIKES], format[STATION]);
-
+    validFilesFormat(buff, BUFF_SIZE, &files, format);
     // Sera funcion de dataProcessing.
     // processDataToADT();
 

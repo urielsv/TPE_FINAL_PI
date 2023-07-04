@@ -1,7 +1,7 @@
 COMPILER = gcc
 OUTPUT_FILES = bikeSharingMON bikeSharingNYC
-FLAGS = -pedantic -std=c99 -Wall -fsinitize=address
-OBJECT_FILES = main.o bikeSharingADT.o dataProcessing.o
+FLAGS = -pedantic -std=c99 -Wall -fsanitize=address
+OBJECT_FILES = main.o bikeSharingADT.o dataProcessing.o dataFront.o
 DEBUG = -g
 
 all: clean mon nyc
@@ -23,6 +23,9 @@ bikeSharingADT.o: bikeSharingADT.o
 
 dataProcessing.o: dataProcessing.c
 	$(COMPILER) -c dataProcessing.c $(FLAGS)
+
+dataFront.o: dataFront.c
+	$(COMPILER) -c dataFront.c $(FLAGS)
 
 clean:
 	rm -f $(OUTPUT_FILES) $(OBJECT_FILES)
