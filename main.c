@@ -25,6 +25,13 @@ int main(int argc, char *argv[]) {
     FILE *bikeFile = fopen(argv[FILE1], "r");
     FILE *stationFile = fopen(argv[FILE2], "r");
 
+    if (stationFile == NULL || bikeFile == NULL) {
+        // Handle file opening error here
+        fprintf(stderr, "Error opening files.\n");
+        return 1;
+    }
+
+
     FILE *files[FILES_COUNT] = {bikeFile, stationFile};
 
     // Inicializo mi ADT.

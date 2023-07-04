@@ -15,9 +15,7 @@ enum {
 };
 
 typedef struct rentList {
-    char *start; // date or place
-    char *end; // same
-    size_t startId;
+    int startMonth; // date
     size_t endId;
     char rideableType;
     char isMember;
@@ -94,6 +92,65 @@ int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
     }
 /*
     if (getType(bs) == LIST){
+        tStationList *newNode = malloc(sizeof(tStationList));
+
+        newNode->stationInfo.stationName = stationName;
+        newNode->stationInfo.id = id;
+        newNode->next = NULL;
+
+        if (newNode == NULL) {
+            return ERROR;
+        }
+
+        if (bs->stationList == NULL) {
+            bs->stationList = newNode;
+        } else {
+            tStationList *current = bs->stationList;
+            newNode->next = current;
+            bs->stationList = newNode;
+        }
+
+        bs->sizeList++;
+        return SUCCESS;
+    }
+
+    return ERROR;
+}
+
+int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
+
+    if (getType(bs) == ARRAY) {
+        if (startId >= bs->sizeArray || bs->stationArray == NULL) {
+            return ERROR; // el id no existe
+        }
+
+        tRentList *newRent = malloc(sizeof(tRentList));
+        if (errno == ENOMEM) {
+            return ENOMEM;
+        }
+
+        newRent->startMonth = startMonth;
+        newRent->endId = endId;
+        newRent->rideableType = rideableType;
+        newRent->isMember = isMember;
+        newRent->next = NULL;
+
+        tStationArray *station = &(bs->stationArray[startId]);
+
+        if (station->rentList == NULL) {
+            station->rentList = newRent;
+        } else {
+            tRentList *current = station->rentList;
+            newRent->next = current;
+            station->rentList = newRent;
+        }
+//        printf("month:%d startId: %zu endId:%zu isMember:%d \n", station->rentList->startMonth, startId, station->rentList->endId, station->rentList->isMember);
+        station->sizeRentList++;
+        return SUCCESS;
+    }
+
+    /*
+    if (getType(bs) == LIST){
         return SUCCESS;
     }
     */
@@ -113,7 +170,7 @@ unsigned int getId(bikeSharingADT bs, unsigned int id) {
 }
 
 
-// Free memoria heap
+// Free
 void freeBikeSharing(bikeSharingADT bs) {
     if (getType(bs) == ARRAY) {
 
