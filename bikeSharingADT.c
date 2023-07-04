@@ -49,11 +49,12 @@ typedef struct {
 
 // Guardar de forma ordenada (alfab) o despues sortear?
 typedef struct bikeSharingCDT {
-     tStationList* stationList;
-     tStationArray* stationArray;
+     tStationList* stationList; // NYC
+     tStationArray* stationArray; // MON
      size_t dimList;
-     size_t dimArray;
-     size_t sizeArray;
+     size_t dimArray; // cantidad de ids
+     size_t sizeArray; // cantidad alojada
+     int type
 } bikeSharingCDT;
 
 bikeSharingADT newBikeSharingADT(void)
@@ -75,7 +76,7 @@ static int belongsArray(tStationArray* station, size_t dim, int id)
 static int addIdArray(bikeSharingADT bs, size_t dim, int id)
 {
     if (id > dim) {
-        bs->stationArray=realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
+        bs->stationArray = realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
         if (errno == ENOMEM) {
             return ENOMEM;
         }

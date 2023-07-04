@@ -14,8 +14,5 @@ void validateArguments(int argc, char* argv[]) {
     if (!validArgumentCount(argc)) {
         pError("main", "invalid argument count.");
     }
-
-//    if (!getArgumentFormat(argv[FILE_NAME], NULL)) {
-//        pError("main", "argument format not valid.");
-//    }
 }
+// validar el putDataToADT si tira error.

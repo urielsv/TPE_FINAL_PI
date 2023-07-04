@@ -18,28 +18,17 @@ enum {ERR_INVALID_FILE_COUNT=1,
 int validArgumentCount(int argc);
 
 /*
- * @brief Valida que las listas de entrada esten con el formato correcto.
+ * @brief Guarda en ADT los datos obtenidos a partir de las listas.
  *
- * @param buff Buffer con tamano para leer linea por linea.
- * @param buffSize Tamanio de buffer.
- * @param bikeFile Archivo .csv que contiene la lista de los alquileres.
- * @param stationFile Archivo .csv que contiene la lista de estaciones.
- * @param bikeFormat Se utiliza para validar el formato de la listas de bikes.
- * @param stationFormat Se utiliza para validar el formato de la lista de stations.
+ * Valida que los formatos de los archivos sean correctos, a partir de una correcta
+ * definicion del nombre del ejecutable. Recorre el archivo hasta el final, linea por linea
+ * guardando en un buffer, de tamanio arbitrario cada linea de lectura.
  *
+ * @param bikeSharing el ADT que maneja operaciones de los datos.
+ * @param file Distintos archivos con lista de datos.
+ * @param argv Nombre del archivo ejecutable.
  */
-int validFilesFormat(char buff[], int buffSize, FILE* file[], char* format[]);
-
-/*
- * @brief Obtiene los formatos segun el nombre del ejecutable.
- *
- * @param argv Nombre del ejecutable.
- * @param format Variable de almacemamiento de formatos.
- *
- */
-int getArgumentFormat(char* argv, char* format[]);
-
-int putDataToADT(bikeSharingADT adt, FILE* file[], char* format[], char* argv);
+int putDataToADT(bikeSharingADT bikeSharing, FILE* file[], char* argv);
 
 
 #endif

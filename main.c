@@ -28,17 +28,11 @@ int main(int argc, char * argv[])
 
     FILE* files[FILES_COUNT] = {bikeFile, stationFile};
 
-    char buff[BUFF_SIZE];
-
-    // Hay que mandarlo al error handler del front (para printear)
-    validFilesFormat(buff, BUFF_SIZE, files, format);
-
-
     // Inicializo mi ADT.
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
     // Cargo data de .csv's a mi ADT.
-    int status = putDataToADT(bikeSharing, files, format, argv[FILE_NAME]);
+    int status = putDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
     printf("ESTADO: %s\n", status ? "SUCCESS" : "FAILED"); // temp
 
