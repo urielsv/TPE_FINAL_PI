@@ -5,108 +5,81 @@
 #define SUCCESS 1
 #define FOUND 1
 #define NOT_FOUND !FOUND
+#define UNDEFINED (-1)
 #define BLOCK 150
-// ARRAY es como "MON"
-// LIST es como "NYC"
-enum {ARRAY, LIST};
 
-// Sharing tipo "New York"
-typedef struct rent1 {
-    struct rent* a;
-    char rideable_type;
-    struct rent1* next;
-} tRent1;
+enum {
+    LIST=0, ARRAY
+};
 
-// Sharing tipo "Montreal"
-// idem a struct rent
-
-struct rent {
-    char* start; // date or place
-    char* end; // same
+typedef struct rentList {
+    char *start; // date or place
+    char *end; // same
     size_t startId;
     size_t endId;
+    char rideableType;
     char isMember;
-};
+    struct rentList *next;
+} tRentList;
 
-struct station {
-    char* station_name;
-    double latitude;
-    double longitude;
+typedef struct station {
+    char *station_name;
     unsigned int id;
-};
+} tStation;
 
 // Station tipo "New York" (lista)
-typedef struct {
-    struct station stationInfo;
-    tRent1 * list;
+typedef struct stationList{
+    tStation stationInfo;
+    tRentList *rentList;
+    size_t sizeRentList; // cantidad de nodos
+    struct stationList* next;
 } tStationList;
 
 // Station tipo "Montreal" (vector)
 typedef struct {
-    struct station stationInfo;
-    struct rent* rentInfo;
+    tStation stationInfo;
+    tRentList *rentList;
+    size_t sizeRentList; // cantidad de nodos
 } tStationArray;
 
 // Guardar de forma ordenada (alfab) o despues sortear?
 typedef struct bikeSharingCDT {
-     tStationList* stationList; // NYC
-     tStationArray* stationArray; // MON
-     size_t dimList;
-     size_t dimArray; // cantidad de ids
-     size_t sizeArray; // cantidad alojada
-     int type
+    tStationList *stationList; // NYC, lista de stations con lista de rents
+    tStationArray *stationArray; // MON, vector de stations con lista de rents
+    size_t sizeList; // Cantidad de stations
+    size_t sizeArray;
+    int type; // list = 0, array = 1
 } bikeSharingCDT;
 
-bikeSharingADT newBikeSharingADT(void)
-{
+
+bikeSharingADT newBikeSharingADT(void) {
     bikeSharingADT bs = calloc(1, sizeof(struct bikeSharingCDT));
+    bs->type = UNDEFINED;
     return bs;
 }
 
-static int belongsArray(tStationArray* station, size_t dim, int id)
-{
+static int belongsIdArray(bikeSharingADT bs, int id) {
+    int dim = bs->stationArray->idCount;
     for (int i = 0; i < dim; i++) {
-        if (station->stationInfo.id == id) {
+        if (bs->stationArray->stationInfo.id == id) {
             return i;
         }
     }
     return -1;
 }
 
-static int addIdArray(bikeSharingADT bs, size_t dim, int id)
-{
-    if (id > dim) {
-        bs->stationArray = realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
+int getStationId(bikeSharingADT bs, int id) {
+    return belongsIdArray(bs, id);
+}
+
+int addStation(bikeSharingADT bs, char *name, unsigned int id) {
+    if (getType(bs) == ARRAY) {
+        bs->stationArray = realloc(bs->stationArray, BLOCK * sizeof(bs->stationArray));
+        bs->stationArray->stationInfo.station_name
         if (errno == ENOMEM) {
             return ENOMEM;
         }
-        bs->sizeArray = dim+BLOCK;
     }
-
-    bs->stationArray[id].stationInfo.id = id;
-    return SUCCESS;
-}
-
-
-int addStationId(bikeSharingADT bs, int id)
-{
-    if (getType(bs) == ARRAY) {
-        // Si no existia lo agrega y retorna que no estaba
-        if (!belongsArray(bs->stationArray, bs->dimArray, id)){
-            //addIdArray(bs, bs->dimArray, id);
-            return NOT_FOUND;
-        }
-        return FOUND;
-    }
-/*
-    if (type == LIST){
-
-    }
-
-
-    */
-
-    return SUCCESS;
 }
 
 void setType(bikeSharingADT bs, int type) {
@@ -118,36 +91,21 @@ int getType(bikeSharingADT bs) {
 }
 
 
-        unsigned int getId(bikeSharingADT bs, unsigned int id)
-{
+unsigned int getId(bikeSharingADT bs, unsigned int id) {
     return bs->stationArray[id].stationInfo.id;
 }
 
-static void freeRentList(tRent1* rentList) {
-    if (rentList == NULL) {
-        return;
-    }
 
-    freeRentList(rentList->next);
-    free(rentList);
-}
-
+// Free memoria heap
 void freeBikeSharing(bikeSharingADT bs) {
-    /*if (bs == NULL) {
-        return;
+    if (getType(bs) == ARRAY) {
+        free(bs->stationArray->rentArray);
+        free(bs->stationArray);
     }
 
-    for (size_t i = 0; i < bs->sizeArray; i++) {
-        free(bs->stationArray[i].rentInfo);
+    if (getType(bs) == LIST) {
+
     }
 
-    free(bs->stationArray);
-
-    for (size_t i = 0; i < bs->dimList; i++) {
-        freeRentList(bs->stationList[i].list);
-    }
-
-    free(bs->stationList);
-    free(bs);*/
     free(bs);
 }
