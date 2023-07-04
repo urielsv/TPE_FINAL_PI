@@ -7,13 +7,8 @@
 #define TRUE    1
 #define FALSE   !TRUE
 #define FILES_COUNT 2
-#define SUCCESS 0
-
-enum {ERR_INVALID_FILE_COUNT=1,
-        ERR_NULL_FILE_FORMAT,
-        ERR_FILE_FORMAT,
-        ERR_COPY_FAILED
-};
+#define SUCCESS 1
+#define DATA_ERROR !SUCESS
 
 enum {BIKES=0, STATION};
 
@@ -36,12 +31,9 @@ int validArgumentCount(int argc)
 
 static int validFile(char buff[], int buffSize, FILE** file, char* fileFormat)
 {
-    if (fgets(buff, buffSize, *file) == NULL) {
-        return ERR_NULL_FILE_FORMAT;
-    }
-
-    if (strncmp(fileFormat, buff, strlen(fileFormat)) != 0) {
-        return ERR_FILE_FORMAT;
+    if (fgets(buff, buffSize, *file) == NULL
+        || strncmp(fileFormat, buff, strlen(fileFormat)) != 0) {
+        return DATA_ERROR;
     }
 
     return SUCCESS;
@@ -55,7 +47,10 @@ int validFilesFormat(char buff[], int buffSize, FILE** bikeFile, FILE** stationF
     validBikeFormat = validFile(buff, buffSize, bikeFile, bikeFormat);
     validStationFormat = validFile(buff, buffSize, stationFile, stationFormat);
 
-    return validBikeFormat && validStationFormat;
+    if (!validBikeFormat && !validStationFormat) {
+        return DATA_ERROR;
+    }
+    return SUCESS;
 }
 
 static int copyFormat(char* argv, char* format[FILES_COUNT], const char* execName)
@@ -65,7 +60,7 @@ static int copyFormat(char* argv, char* format[FILES_COUNT], const char* execNam
         format[STATION] = strcpy(format[STATION], fileStationFormatMON);
         return SUCCESS;
     }
-    return ERR_COPY_FAILED;
+    return DATA_ERROR;
 }
 
 int getArgumentFormat(char* argv, char* format[FILES_COUNT])
@@ -74,5 +69,10 @@ int getArgumentFormat(char* argv, char* format[FILES_COUNT])
     validNameMON = copyFormat(argv, format, execMON);
     validNameNYC = copyFormat(argv, format, execNYC);
 
-    return validNameMON && validNameNYC;
+    if (!validNameMON || !validNameNYC) {
+        return DATA_ERROR;
+    }
+
+    return SUCCESS;
+
 }

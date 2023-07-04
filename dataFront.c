@@ -1,10 +1,12 @@
 #include "dataFront.h"
 #include "dataProcessing.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void pError(const char* errorStream, const char* errorText)
 {
     fprintf(stderr, "%s: %s.", errorStream, errorText);
+    exit(1);
 }
 
 void validateArguments(int argc, char* argv[])
