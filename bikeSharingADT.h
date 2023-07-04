@@ -25,8 +25,14 @@ void setType(bikeSharingADT bs, int type);
 
 int getType(bikeSharingADT bs);
 
-int getStationId(bikeSharingADT bs, int id);
+/*
+ * SETTERS
+ */
+void setType(bikeSharingADT bs, int type);
 
-int addStation(bikeSharingADT bs, char *name, unsigned int id);
+/*
+ * @brief Libera todos los recursos utilizados por el ADT.
+ */
+void freeBikeSharing(bikeSharingADT bs);
 
 #endif

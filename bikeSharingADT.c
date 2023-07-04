@@ -44,7 +44,9 @@ typedef struct {
     size_t sizeRentList; // cantidad de nodos
 } tStationArray;
 
-// Guardar de forma ordenada (alfab) o despues sortear?
+/*
+ * ESTRUCTURA ADT
+ */
 typedef struct bikeSharingCDT {
     tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
@@ -88,7 +90,6 @@ int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
 
         bs->stationArray[id].stationInfo.stationName = stationName;
         bs->stationArray[id].stationInfo.id = id;
-        printf("%s, %d\n", bs->stationArray[id].stationInfo.stationName, bs->stationArray[id].stationInfo.id);
         return SUCCESS;
     }
 /*
@@ -115,7 +116,16 @@ unsigned int getId(bikeSharingADT bs, unsigned int id) {
 // Free memoria heap
 void freeBikeSharing(bikeSharingADT bs) {
     if (getType(bs) == ARRAY) {
-       // free(bs->stationArray->rentArray);
+
+        tRentList* current = bs->stationArray->rentList;
+        int i = 0;
+        while (current != NULL) {
+            tRentList* temp = current;
+            current = current->next;
+            free(temp);
+            printf("%d", i++);
+        }
+
         free(bs->stationArray);
     }
 /*

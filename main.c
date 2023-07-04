@@ -31,7 +31,11 @@ int main(int argc, char *argv[]) {
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
     // Cargo data de .csv's a mi ADT.
-    loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
+    //loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
+
+    putDataToADT(bikeSharing, files, *argv);
+
+
 
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);

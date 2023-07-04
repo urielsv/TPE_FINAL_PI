@@ -14,7 +14,7 @@
 #define DELIM_PREFIX ";"
 
 enum {
-    BIKES = 0, STATION
+    RENTS = 0, STATION
 };
 enum {
     MON = 1, NYC
@@ -24,8 +24,8 @@ enum {
     LIST, ARRAY
 };
 
-#define FILE_BIKES_FORMAT_NYC       "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual"
-#define FILE_BIKES_FORMAT_MON       "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
+#define FILE_RENTS_FORMAT_NYC       "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual"
+#define FILE_RENTS_FORMAT_MON       "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
 #define FILE_STATION_FORMAT_NYC     "station_name;latitude;longitude;id"
 #define FILE_STATION_FORMAT_MON     "pk;name;latitude;longitude"
 
@@ -84,11 +84,11 @@ static int compareExec(const char *execName, const char *fileName) {
  */
 static int getArgumentFormat(char *argv, char *format[FILES_COUNT]) {
     if (compareExec(execMON, argv)) {
-        format[BIKES] = FILE_BIKES_FORMAT_MON;
+        format[RENTS] = FILE_RENTS_FORMAT_MON;
         format[STATION] = FILE_STATION_FORMAT_MON;
         return MON;
     } else if (compareExec(execNYC, argv)) {
-        format[BIKES] = FILE_BIKES_FORMAT_NYC;
+        format[RENTS] = FILE_RENTS_FORMAT_NYC;
         format[STATION] = FILE_STATION_FORMAT_NYC;
         return NYC;
     }
@@ -106,10 +106,32 @@ static int getArgumentFormat(char *argv, char *format[FILES_COUNT]) {
 //    return strrchr(buff, (char) DELIM_PREFIX) + 1;
 //}
 
+// yyyy-MM-dd
+static int getMonth(char* token) {
+
+    token = strchr(token, '-') + 1;
+    strtok(token, DATE_DELIM);
+    return atoi(token);
+}
+
 int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
-    char buff[BUFF_SIZE], *format[FILES_COUNT], *stationName, *id;
-    int valid;
+    printf("test1");
+    char buff[BUFF_SIZE], *format[FILES_COUNT], *token;
+    int valid, type;
+
+    /*
+     <* Inicializamos variables del archivo stations<CITY>.csv
+     */
+    char *stationName;
+    int id;
+
+    /*
+     * Inicializamos variables del archivo bikes<CITY>.csv
+     */
+    char isMember;
+    size_t idStart, idEnd;
+    int month;
 
     // Valida y "coloca" el formato correcto a format y devuelve el tipo
     int type = getArgumentFormat(argv, format);
@@ -130,6 +152,10 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      */
     if (type == MON) {
         setType(bs, ARRAY);
+
+        /*
+         * Carga de datos al ADT desde file[STATION]
+         */
         while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
             id = strtok(buff, DELIM_PREFIX);
             stationName = strtok(NULL, DELIM_PREFIX);
@@ -139,29 +165,44 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             }
         }
 
-        //file[BIKES]
-        //while ()
-    }
-    return SUCCESS;
+        /*
+         * Carga de datos al ADT desde file[RENTS]
+         */
+        // "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
+        int i = 0;
+        printf("\t[[[%d]]]\t", i++);
+        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL && i<5) {
+            token = strtok(buff, DELIM_PREFIX);
+            char *auxMonth = token;
+
+            /* Esta linea significa saltear al siguiente campo. */
+            token = UPDATE();
+
+            idStart = atol(token);
+            /*
+             * Se saltean campos inecesarios
+             */
+            token = UPDATE(); //aca vale end_Date, como no nos sirve, la salteamos
+            token = UPDATE();
+
+            idEnd = atol(token); // en este momento token vale el id de donde termina
+            token = UPDATE();
+
+            isMember = atoi(token);
+            month = getMonth(auxMonth);
+            printf("\t[[[%d]]]\t", i++);
+            valid = addRent(bs, month, idStart, idEnd, CLASSIC_BIKE, isMember);
+        }
+    fclose(file[0]);
+    fclose(file[1]);
+    printf("test");
+}
+return SUCCESS;
 
 /*
         if (type == NYC) {
             setType(bs, LIST);
             addStation(bs, firstField, atoi(lastField));
         }
-
-
-    while (fgets(buff, BUFF_SIZE, file[BIKES]) != NULL) {
-        firstField = strtok(buff, DELIM_PREFIX);
-        lastField = getLastField(buff);
-
-        if (type == MON) {
-            // addRent
-        }
-        if (type == NYC) {
-            // addRent
-        }
-    }
 */
-    return SUCCESS;
 }
