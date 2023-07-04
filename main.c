@@ -31,9 +31,7 @@ int main(int argc, char *argv[]) {
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
     // Cargo data de .csv's a mi ADT.
-    int status = putDataToADT(bikeSharing, files, argv[FILE_NAME]);
-
-    printf("ESTADO: %s\n", status ? "SUCCESS" : "FAILED"); // temp
+    loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);

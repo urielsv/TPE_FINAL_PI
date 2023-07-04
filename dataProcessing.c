@@ -107,7 +107,8 @@ static char *getLastField(char buff[]) {
 
 int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
-    char buff[BUFF_SIZE], *format[FILES_COUNT], *firstField, *lastField;
+    char buff[BUFF_SIZE], *format[FILES_COUNT], *stationName, *id;
+    int valid;
 
     // Valida y "coloca" el formato correcto a format y devuelve el tipo
     int type = getArgumentFormat(argv, format);
@@ -126,19 +127,28 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      *
      * Guardo en el TAD el tipo de estructura que voy a utilizar.
      */
-    while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
-        firstField = strtok(buff, DELIM_PREFIX);
-        lastField = getLastField(buff);
-
-        if (type == MON) {
-            setType(bs, ARRAY);
-            addStation(bs, lastField, atoi(firstField));
+    if (type == MON) {
+        setType(bs, ARRAY);
+        while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
+            id = strtok(buff, DELIM_PREFIX);
+            stationName = strtok(NULL, DELIM_PREFIX);
+            valid = addStation(bs, stationName, atoi(id));
+            if (!valid) {
+                return DATA_ERROR;
+            }
         }
+
+        //file[BIKES]
+        //while ()
+    }
+    return SUCCESS;
+
+/*
         if (type == NYC) {
             setType(bs, LIST);
             addStation(bs, firstField, atoi(lastField));
         }
-    }
+
 
     while (fgets(buff, BUFF_SIZE, file[BIKES]) != NULL) {
         firstField = strtok(buff, DELIM_PREFIX);
@@ -151,6 +161,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             // addRent
         }
     }
-
+*/
     return SUCCESS;
 }

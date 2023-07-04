@@ -57,20 +57,17 @@ bikeSharingADT newBikeSharingADT(void) {
     bs->type = UNDEFINED;
     return bs;
 }
+//
+//static int belongsIdArray(bikeSharingADT bs, int id) {
+//    int dim = bs->sizeArray;
+//    for (int i = 0; i < dim; i++) {
+//        if (bs->stationArray->stationInfo.id == id) {
+//            return i;
+//        }
+//    }
+//    return -1;
+//}
 
-static int belongsIdArray(bikeSharingADT bs, int id) {
-    int dim = bs->stationArray->idCount;
-    for (int i = 0; i < dim; i++) {
-        if (bs->stationArray->stationInfo.id == id) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int getStationId(bikeSharingADT bs, int id) {
-    return belongsIdArray(bs, id);
-}
 
 int addStation(bikeSharingADT bs, char *name, unsigned int id) {
     if (getType(bs) == ARRAY) {
@@ -80,6 +77,8 @@ int addStation(bikeSharingADT bs, char *name, unsigned int id) {
             return ENOMEM;
         }
     }
+    */
+    return ERROR;
 }
 
 void setType(bikeSharingADT bs, int type) {
@@ -99,13 +98,13 @@ unsigned int getId(bikeSharingADT bs, unsigned int id) {
 // Free memoria heap
 void freeBikeSharing(bikeSharingADT bs) {
     if (getType(bs) == ARRAY) {
-        free(bs->stationArray->rentArray);
+       // free(bs->stationArray->rentArray);
         free(bs->stationArray);
     }
-
+/*
     if (getType(bs) == LIST) {
 
     }
-
+*/
     free(bs);
 }
