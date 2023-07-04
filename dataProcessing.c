@@ -18,9 +18,9 @@ enum {BIKES=0, STATION, TYPE};
 enum {MON, NYC};
 
 static const char* fileBikesFormatNYC = "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual";
-static  char* fileBikesFormatMON = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
+static const char* fileBikesFormatMON = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
 static const char* fileStationFormatNYC = "station_name;latitude;longitude;id";
-static  char* fileStationFormatMON = "pk;name;latitude;longitude";
+static const char* fileStationFormatMON = "pk;name;latitude;longitude";
 static const char* execMON = "bikeSharingMON";
 static const char* execNYC = "bikeSharingNYC";
 
@@ -34,8 +34,6 @@ int validArgumentCount(int argc)
     return SUCCESS;
 }
 
-
-// AUX: en el buffer se guarda la primera linea de bikeStation.
 int validFilesFormat(char buff[], int buffSize, FILE* file[FILES_COUNT], char* fileFormat[FILES_COUNT])
 {
     for (int i = 0; i < FILES_COUNT; i++) {
@@ -47,29 +45,28 @@ int validFilesFormat(char buff[], int buffSize, FILE* file[FILES_COUNT], char* f
     return DATA_ERROR;
 }
 
-// fileName es argv[0]
-// Compara y devuelve 0 si es el mismo nombre
+/*
+ * @brief Compara el nombre del ejecutable con la constante correcta del nombre
+ * @returns TRUE si son iguales FALSE si no.
+ */
 static int compareExec(const char * execName, const char* fileName){
-    return strncmp(execName, fileName+COMMAND_PREFIX, strlen(execName));
+    if (strncmp(execName, fileName+COMMAND_PREFIX, strlen(execName)) == 0) {
+        return TRUE;
+    }
+    return FALSE;
 }
 
 int getArgumentFormat(char* argv, char* format[FILES_COUNT])
 {
-    //falla el comapreExec Xd
-   // if (compareExec(execMON, argv)) {
-        // Esta mal, solo paara MON
+    if (compareExec(execMON, argv)) {
         format[BIKES] = fileBikesFormatMON;
         format[STATION] = fileStationFormatMON;
-
         return SUCCESS;
-   // }
-/*
     } else if (compareExec(execNYC, argv)){
-        format[BIKES] = strcpy(format[BIKES], fileBikesFormatNYC);
-        format[STATION] = strcpy(format[STATION], fileStationFormatNYC);
+        format[BIKES] = fileBikesFormatNYC;
+        format[STATION] = fileStationFormatNYC;
         return SUCCESS;
     }
-*/
     return DATA_ERROR;
 }
 
@@ -90,19 +87,19 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
 
    if (!validFilesFormat(buff, BUFF_SIZE, file, format)) {
         return DATA_ERROR;
-    }
+   }
 
-    // if es tipo "MON"
-    int type = getType(argv);
+   int type = getType(argv);
 
-   // if (type == MON) {
-        //leo las lineas del archivo hasta el final, guardo la linea en buff hasta BUFF_SIZE caracteres.
+   if (type == MON) {
+        // Leo las lineas del archivo hasta el final, guardo la linea en buff hasta BUFF_SIZE
+        // caracteres.
         while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
             token = strtok(buff, DELIM_PREFIX);
             id = atoi(token);
 
             // addStationId add if not exists
-           // if (!addStationId(adt, id, type)) {
+            //    if (!addStationId(adt, id, type)) {
                 printf("id:%d \n", id);
                 token = UPDATE;
                 // stationName = token;
@@ -110,13 +107,11 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
             //}
 
         }
-    //}
+   }
 /*
     if (type == NYC) {
 
     }
-
-
 */
    return SUCCESS;
 }

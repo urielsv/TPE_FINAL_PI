@@ -16,16 +16,13 @@ enum {BIKES=0, STATION};
 
 int main(int argc, char * argv[])
 {
-    // argv[0] me da el formato
+    // Valido que el ejecutable tenga el formato correcto.
     validateArguments(argc, argv);
 
-    // Obtengo el formato segun el tipo (NYC/MON)
+    // Obtengo el formato segun el tipo (NYC/MON).
     char* format[FILES_COUNT];
-
-    // Hay que mandarlo al error handler del front (para printear)
     getArgumentFormat(argv[FILE_NAME], format);
-    //format[BIKES] = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
-    //format[STATION] = "pk;name;latitude;longitude";
+
     FILE* bikeFile = fopen(argv[FILE1], "r");
     FILE* stationFile = fopen(argv[FILE2], "r");
 
@@ -35,13 +32,18 @@ int main(int argc, char * argv[])
 
     // Hay que mandarlo al error handler del front (para printear)
     validFilesFormat(buff, BUFF_SIZE, files, format);
-    // Sera funcion de dataProcessing.
-    // processDataToADT();
 
+
+    // Inicializo mi ADT.
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
+    // Cargo data de .csv's a mi ADT.
     int status = putDataToADT(bikeSharing, files, format, argv[FILE_NAME]);
-    printf("%d", status);
+
+    printf("ESTADO: %s\n", status ? "SUCCESS" : "FAILED"); // temp
+
+    // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
+
     return 0;
 }
