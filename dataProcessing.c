@@ -36,10 +36,10 @@ int validArgumentCount(int argc)
 
 
 // AUX: en el buffer se guarda la primera linea de bikeStation.
-int validFilesFormat(char buff[], int buffSize, FILE** file[FILES_COUNT], char* fileFormat[FILES_COUNT])
+int validFilesFormat(char buff[], int buffSize, FILE* file[FILES_COUNT], char* fileFormat[FILES_COUNT])
 {
     for (int i = 0; i < FILES_COUNT; i++) {
-        if (fgets(buff, buffSize, *file[i]) == NULL
+        if (fgets(buff, buffSize, file[i]) == NULL
             || strncmp(fileFormat[i], buff, strlen(fileFormat[i])) != 0) {
             return DATA_ERROR;
         }
@@ -75,16 +75,17 @@ static int getType(char* argv) {
             return MON;
     if (compareExec(execNYC, argv))
             return NYC;
+    return -1; // temp
 }
 
 int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES_COUNT], char* argv)
 {
     int id;
-    char *stationName;
+    //char *stationName;
     char buff[BUFF_SIZE], *token;
 
 
-    if (!validFilesFormat(buff, BUFF_SIZE, &file, format)) {
+    if (!validFilesFormat(buff, BUFF_SIZE, file, format)) {
         return DATA_ERROR;
     }
 

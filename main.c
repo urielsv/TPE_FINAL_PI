@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
     char buff[BUFF_SIZE];
 
     // Hay que mandarlo al error handler del front (para printear)
-    validFilesFormat(buff, BUFF_SIZE, &files, format);
+    validFilesFormat(buff, BUFF_SIZE, files, format);
     // Sera funcion de dataProcessing.
     // processDataToADT();
 

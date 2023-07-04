@@ -113,34 +113,21 @@ unsigned int getId(bikeSharingADT bs, unsigned int id)
     return bs->stationArray[id].stationInfo.id;
 }
 
-void freeRentList(tRent1* rentList) {
+static void freeRentList(tRent1* rentList) {
     if (rentList == NULL) {
         return;
     }
 
     freeRentList(rentList->next);
-
-    // Free any dynamically allocated memory inside tRent1
-    // For example:
-    // free(rentList->a);
-    // free(rentList->a->start);
-    // free(rentList->a->end);
-
     free(rentList);
 }
 
-void freeBikeSharingADT(bikeSharingADT bs) {
+void freeBikeSharing(bikeSharingADT bs) {
     if (bs == NULL) {
         return;
     }
 
-    // Free the elements in the stationArray
     for (size_t i = 0; i < bs->dimArray; i++) {
-        // Free any dynamically allocated memory inside tStationArray
-        // For example:
-        // free(bs->stationArray[i].rentInfo->start);
-        // free(bs->stationArray[i].rentInfo->end);
-
         free(bs->stationArray[i].rentInfo);
     }
 
