@@ -18,7 +18,7 @@ nyc: $(OBJECT_FILES)
 main.o: main.c
 	$(COMPILER) -c main.c $(FLAGS)
 
-bikeSharingADT.o: bikeSharingADT.o
+bikeSharingADT.o: bikeSharingADT.c
 	$(COMPILER) -c bikeSharingADT.c $(FLAGS)
 
 dataProcessing.o: dataProcessing.c

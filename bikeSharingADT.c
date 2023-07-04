@@ -53,13 +53,12 @@ typedef struct bikeSharingCDT {
      tStationArray* stationArray;
      size_t dimList;
      size_t dimArray;
+     size_t sizeArray;
 } bikeSharingCDT;
 
 bikeSharingADT newBikeSharingADT(void)
 {
     bikeSharingADT bs = calloc(1, sizeof(struct bikeSharingCDT));
-  //  bs->stationList = malloc(sizeof(tStationList*));
-    bs->stationArray = malloc(BLOCK * sizeof(tStationArray));
     return bs;
 }
 
@@ -73,16 +72,17 @@ static int belongsArray(tStationArray* station, size_t dim, int id)
     return -1;
 }
 
-static int addIdArray(tStationArray* station, size_t dim, int id)
+static int addIdArray(bikeSharingADT bs, size_t dim, int id)
 {
     if (id > dim) {
-        station = malloc(1300*sizeof(tStationArray*));//realloc(station, (dim + BLOCK) * sizeof(tStationArray));
+        bs->stationArray=realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
         if (errno == ENOMEM) {
             return ENOMEM;
         }
+        bs->sizeArray = dim+BLOCK;
     }
 
-    station[id].stationInfo.id = id;
+    bs->stationArray[id].stationInfo.id = id;
     return SUCCESS;
 }
 
@@ -92,7 +92,7 @@ int addStationId(bikeSharingADT bs, int id, int type)
     if (type == ARRAY) {
         // Si no existia lo agrega y retorna que no estaba
         if (!belongsArray(bs->stationArray, bs->dimArray, id)){
-            addIdArray(bs->stationArray, bs->dimArray, id);
+            //addIdArray(bs, bs->dimArray, id);
             return NOT_FOUND;
         }
         return FOUND;
@@ -123,21 +123,21 @@ static void freeRentList(tRent1* rentList) {
 }
 
 void freeBikeSharing(bikeSharingADT bs) {
-    if (bs == NULL) {
+    /*if (bs == NULL) {
         return;
     }
 
-    for (size_t i = 0; i < bs->dimArray; i++) {
+    for (size_t i = 0; i < bs->sizeArray; i++) {
         free(bs->stationArray[i].rentInfo);
     }
 
     free(bs->stationArray);
 
-    // Free the elements in the stationList
     for (size_t i = 0; i < bs->dimList; i++) {
         freeRentList(bs->stationList[i].list);
     }
 
     free(bs->stationList);
+    free(bs);*/
     free(bs);
 }

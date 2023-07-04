@@ -23,8 +23,9 @@ int main(int argc, char * argv[])
     char* format[FILES_COUNT];
 
     // Hay que mandarlo al error handler del front (para printear)
-    getArgumentFormat(argv[FILE_NAME], format);
-
+    //getArgumentFormat(argv[FILE_NAME], format);
+    format[BIKES] = ;
+    format[STATION] = "station_name;latitude;longitude;id";
     FILE* bikeFile = fopen(argv[FILE1], "r");
     FILE* stationFile = fopen(argv[FILE2], "r");
 
@@ -41,6 +42,6 @@ int main(int argc, char * argv[])
 
     int status = putDataToADT(bikeSharing, files, format, argv[FILE_NAME]);
     printf("%d", status);
-
+    freeBikeSharing(bikeSharing);
     return 0;
 }

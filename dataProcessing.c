@@ -18,9 +18,9 @@ enum {BIKES=0, STATION, TYPE};
 enum {MON, NYC};
 
 static const char* fileBikesFormatNYC = "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual";
-static const char* fileBikesFormatMON = "station_name;latitude;longitude;id";
+static  char* fileBikesFormatMON = "station_name;latitude;longitude;id";
 static const char* fileStationFormatNYC = "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member";
-static const char* fileStationFormatMON = "pk;name;latitude;longitude";
+static  char* fileStationFormatMON = "pk;name;latitude;longitude";
 static const char* execMON = "bikeSharingMON";
 static const char* execNYC = "bikeSharingNYC";
 
@@ -57,16 +57,17 @@ int getArgumentFormat(char* argv, char* format[FILES_COUNT])
 {
     if (compareExec(execMON, argv)) {
         // Esta mal, solo paara MON
-        format[BIKES] = strcpy(format[BIKES], fileBikesFormatMON);
-        format[STATION] = strcpy(format[STATION], fileStationFormatMON);
+        format[BIKES] = fileBikesFormatMON;//strcpy(format[BIKES], fileBikesFormatMON);
+        format[STATION] = fileStationFormatMON;//strcpy(format[STATION], fileStationFormatMON);
         return SUCCESS;
-
+    }
+/*
     } else if (compareExec(execNYC, argv)){
         format[BIKES] = strcpy(format[BIKES], fileBikesFormatNYC);
         format[STATION] = strcpy(format[STATION], fileStationFormatNYC);
         return SUCCESS;
     }
-
+*/
     return DATA_ERROR;
 }
 
@@ -94,19 +95,19 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
 
     if (type == MON) {
         //leo las lineas del archivo hasta el final, guardo la linea en buff hasta BUFF_SIZE caracteres.
-       // while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
+        while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
             token = strtok(buff, DELIM_PREFIX);
             id = atoi(token);
 
             // addStationId add if not exists
-            if (!addStationId(adt, id, type)) {
-                printf("%d", getId(adt, id));
+           // if (!addStationId(adt, id, type)) {
+                printf("%d", id);
                 token = UPDATE;
                 // stationName = token;
                 //addStationName(adt, stationName);
-            }
+            //}
 
-        //}
+        }
     }
 /*
     if (type == NYC) {
@@ -115,5 +116,5 @@ int putDataToADT(bikeSharingADT adt, FILE* file[FILES_COUNT], char* format[FILES
 
 
 */
-    return SUCCESS;
+   return SUCCESS;
 }
