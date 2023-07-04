@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "bikeSharingADT.h"
 
 #define BUFF_SIZE   256
@@ -99,11 +100,11 @@ static int getArgumentFormat(char *argv, char *format[FILES_COUNT]) {
  *
  * @returns Ultimo field del .csv
  */
-static char *getLastField(char buff[]) {
-    // strrchr(buff, ';') me devuelve la ultima aparicion de ";"
-    // El +1 es para saltear el delimitador.
-    return strrchr(buff, (char) DELIM_PREFIX) + 1;
-}
+//static char *getLastField(char buff[]) {
+//    // strrchr(buff, ';') me devuelve la ultima aparicion de ";"
+//    // El +1 es para saltear el delimitador.
+//    return strrchr(buff, (char) DELIM_PREFIX) + 1;
+//}
 
 int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 

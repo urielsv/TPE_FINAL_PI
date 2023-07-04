@@ -1,8 +1,10 @@
 #include "bikeSharingADT.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 
 #define SUCCESS 1
+#define ERROR !SUCCESS
 #define FOUND 1
 #define NOT_FOUND !FOUND
 #define UNDEFINED (-1)
@@ -23,7 +25,7 @@ typedef struct rentList {
 } tRentList;
 
 typedef struct station {
-    char *station_name;
+    char *stationName;
     unsigned int id;
 } tStation;
 
@@ -69,13 +71,29 @@ bikeSharingADT newBikeSharingADT(void) {
 //}
 
 
-int addStation(bikeSharingADT bs, char *name, unsigned int id) {
+int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
+
     if (getType(bs) == ARRAY) {
-        bs->stationArray = realloc(bs->stationArray, BLOCK * sizeof(bs->stationArray));
-        bs->stationArray->stationInfo.station_name
-        if (errno == ENOMEM) {
-            return ENOMEM;
+        if (id >= bs->sizeArray) {
+
+            size_t newCapacity = id + BLOCK;
+            tStationArray *auxArray = realloc(bs->stationArray, newCapacity * sizeof(tStationArray));
+            if (errno == ENOMEM) {
+                return ENOMEM;
+            }
+
+            bs->stationArray = auxArray;
+            bs->sizeArray = newCapacity;
         }
+
+        bs->stationArray[id].stationInfo.stationName = stationName;
+        bs->stationArray[id].stationInfo.id = id;
+        printf("%s, %d\n", bs->stationArray[id].stationInfo.stationName, bs->stationArray[id].stationInfo.id);
+        return SUCCESS;
+    }
+/*
+    if (getType(bs) == LIST){
+        return SUCCESS;
     }
     */
     return ERROR;
@@ -88,7 +106,6 @@ void setType(bikeSharingADT bs, int type) {
 int getType(bikeSharingADT bs) {
     return bs->type;
 }
-
 
 unsigned int getId(bikeSharingADT bs, unsigned int id) {
     return bs->stationArray[id].stationInfo.id;

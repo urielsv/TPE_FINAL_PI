@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 #define FILE_NAME 0
+#define FILES_COUNT 2
+
 void pError(const char* errorStream, const char* errorText)
 {
     fprintf(stderr, "%s: %s.\n", errorStream, errorText);
@@ -15,4 +17,13 @@ void validateArguments(int argc, char* argv[]) {
         pError("main", "invalid argument count.");
     }
 }
-// validar el putDataToADT si tira error.
+
+void loadDataToADT(bikeSharingADT bs, FILE* files[FILES_COUNT], char* argv) {
+    int valid = putDataToADT(bs, files, argv);
+
+    if (!valid) {
+        pError("main", "Failed to load data to ADT.");
+    }
+
+    printf("Success.\n");
+}
