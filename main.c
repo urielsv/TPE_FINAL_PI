@@ -42,24 +42,11 @@ int main(int argc, char *argv[]) {
     // Cargo data de .csv's a mi ADT.
     loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
-
-//    addStation(bikeSharing, "xd", 1);
-//    addStation(bikeSharing, "xd", 2);
-//    addStation(bikeSharing, "xd", 3);
-//
-//
-//    addRent(bikeSharing, 1, 1, 4, 1, 1);
-//    addRent(bikeSharing, 1, 1, 5, 1, 1);
     // Libero los recursos utilizados por mi ADT.
-    //printRents(bikeSharing, 2);
     freeBikeSharing(bikeSharing);
-
-    //printf("%d",getCountId(bikeSharing));
-
-    printf("main: OK y solido");
-
-
+    puts("Mem liberada.");
     fclose(stationFile);
     fclose(bikeFile);
+    puts("Fin de ejecucion.");
     return 0;
 }
