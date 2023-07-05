@@ -139,32 +139,9 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
         return SUCCESS;
     }
 
-    if(getType(bs) == LIST){
-
-        tStationList * newStation = malloc(sizeof(tStationList));
-        newStation->stationInfo.id=id;
-        newStation->stationInfo.stationName=stationName;
-        newStation->sizeRentList=0;
-        newStation->rentList= NULL;
-        newStation->next = NULL;
-
-        tStationList * current = bs->stationList;
-        if(current == NULL){
-            bs->stationList = newStation;
-        } else {
-            while(current != NULL){
-                //los agregamos alfabeticamente
-                if(strcmp(current->stationInfo.stationName,stationName) > 0){
-                  tStationList* aux = current;
-                  current=newStation;
-                  current->next=aux;
-                  return SUCCESS;
-                }
-                current = current->next;
-
-            }
-        }
-
+    if (getType(bs) == LIST) {
+        addStationList(bs, stationName, id);
+        return SUCCESS;
     }
     return ERROR;
 }
@@ -176,36 +153,13 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
 
     if (getType(bs) == ARRAY) {
-        if (startId >= bs->sizeArray || bs->stationArray == NULL) {
-            return ERROR; // el id no existe
-        }
-
-        tRentList *newRent = malloc(sizeof(tRentList));
-        if (errno == ENOMEM) {
-            return ENOMEM;
-        }
-
-        if (bs->stationArray[startId].isUsed) {
-            newRent->startMonth = startMonth;
-            newRent->endId = endId;
-            newRent->isMember = isMember;
-            newRent->next = bs->stationArray[startId].rentList;
-            bs->stationArray[startId].rentList = newRent;
-            bs->stationArray[startId].sizeRentList++;
-        }
-
-//        printf("AGREGADO RENT: id: %d\t\t\tsize: %zd\t\t\t\tendId: %zd\n",
-//             bs->stationArray[startId].stationInfo.id,
-//             bs->stationArray[startId].sizeRentList,
-//             bs->stationArray[startId].rentList->endId);
-        return SUCCESS;
+        valid = addRentArray(bs, startMonth, startId, endId, isMember);
+        return valid;
     }
-
-    /*
-    if (getType(bs) == LIST){
-        return SUCCESS;
+    if (getType(bs) == LIST) {
+        valid = addRentList(bs, startMonth, startId, endId, isMember);
+        return valid;
     }
-    */
     return ERROR;
 }
 
@@ -256,6 +210,12 @@ void freeBikeSharing(bikeSharingADT bs) {
               freeRecRents(bs->stationArray[i].rentList);
         }
         free(bs->stationArray);
+    }
+
+    if(bs->type == LIST) {
+
+
+        freeRecList(bs->stationList);
     }
 
     free(bs);
