@@ -38,15 +38,20 @@ int main(int argc, char *argv[]) {
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
     // Cargo data de .csv's a mi ADT.
-    //loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
-
-    putDataToADT(bikeSharing, files, *argv);
+    loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
 
-
+//    addStation(bikeSharing, "xd", 1);
+//    addStation(bikeSharing, "xd", 2);
+//    addStation(bikeSharing, "xd", 3);
+//
+//
+//    addRent(bikeSharing, 1, 1, 4, 1, 1);
+//    addRent(bikeSharing, 1, 1, 5, 1, 1);
     // Libero los recursos utilizados por mi ADT.
-    printf("main: funco (sin free)");
+
     freeBikeSharing(bikeSharing);
+    // ACA NO LLEGA
     printf("main: OK");
 
     fclose(stationFile);

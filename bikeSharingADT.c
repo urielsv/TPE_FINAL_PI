@@ -54,8 +54,9 @@ typedef struct {
 typedef struct bikeSharingCDT {
     tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
-    size_t sizeList; // Cantidad de stations
-    size_t sizeArray; // Cantidad de stations
+//    size_t sizeList; // Cantidad de stations
+    size_t sizeArray; // Cantidad de stations (alojadas)
+    size_t countIds; // Cantidad de ids
     int type; // list = 0, array = 1
 } bikeSharingCDT;
 
@@ -72,6 +73,23 @@ bikeSharingADT newBikeSharingADT(void) {
 /*
  * FUNCIONES
  */
+static void memCheck(void *allocMem) {
+    if (allocMem == NULL)  {
+        exit(1);
+    }
+}
+int addStation(bikeSharingADT bs, char *stationName, size_t id) {
+    if (getType(bs) == ARRAY) {
+
+        if (id > bs->sizeArray) {
+              tStationArray *auxArray = realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
+              memCheck(auxArray);
+              bs->stationArray = auxArray;
+              bs-?
+              bs->countIds = id; // id es le max
+        }
+    }
+}
 int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
 
     if (getType(bs) == ARRAY) {
@@ -134,19 +152,11 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
         newRent->endId = endId;
         newRent->rideableType = rideableType;
         newRent->isMember = isMember;
-        newRent->next = NULL;
+        newRent->next = bs->stationArray[startId].rentList;
+        bs->stationArray[startId].rentList = newRent;
 
-        tStationArray *station = &(bs->stationArray[startId]);
-
-        if (station->rentList == NULL) {
-            station->rentList = newRent;
-        } else {
-            tRentList *current = station->rentList;
-            newRent->next = current;
-            station->rentList = newRent;
-        }
-//        printf("month:%d startId: %zu endId:%zu isMember:%d \n", station->rentList->startMonth, startId, station->rentList->endId, station->rentList->isMember);
-        station->sizeRentList++;
+        bs->stationArray[startId].sizeRentList++;
+         // printf("AGREGADO RENT: size %zd endId %zd\n", bs->stationArray[startId].sizeRentList, bs->stationArray[startId].rentList->endId);
         return SUCCESS;
     }
 
@@ -166,6 +176,9 @@ int getType(bikeSharingADT bs) {
     return bs->type;
 }
 
+size_t getId(bikeSharingADT bs, size_t id) {
+    return bs->stationArray[id].isUsed;
+}
 /*
  * SETTERS
  */
@@ -173,26 +186,12 @@ void setType(bikeSharingADT bs, int type) {
     bs->type = type;
 }
 
-// Free
-void freeBikeSharing(bikeSharingADT bs) {
-    if (getType(bs) == ARRAY) {
-
-        tRentList* current = bs->stationArray->rentList;
-        int i = 0;
-        while (current != NULL) {
-            tRentList* temp = current;
-            current = current->next;
-            free(temp);
-            printf("%d", i++);
-        }
-
-        free(bs->stationArray);
-    }
 /*
-    if (getType(bs) == LIST) {
-
-    }
-*/
-    free(bs);
-    printf("freed :)");
+ * FREE
+ */
+static void freeRecRents(tRentList* rents) {
+    if (rents == NULL)
+        return;
+    freeRecRents(rents->next);
+    free(rents);
 }

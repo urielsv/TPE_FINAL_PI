@@ -19,7 +19,7 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 /*
  * GETTERS
  */
-int getId(bikeSharingADT bs, unsigned int id);
+size_t getId(bikeSharingADT bs, size_t id);
 int getType(bikeSharingADT bs);
 
 /*
@@ -31,5 +31,7 @@ void setType(bikeSharingADT bs, int type);
  * @brief Libera todos los recursos utilizados por el ADT.
  */
 void freeBikeSharing(bikeSharingADT bs);
+
+void printName(bikeSharingADT bs, size_t id);
 
 #endif
