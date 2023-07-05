@@ -216,6 +216,7 @@ static int addRentList(bikeSharingADT bs, int startMonth, size_t startId, size_t
     tStationList *currStation = findStation(bs->stationList, startId);
     tRentList *newRent = malloc(sizeof(tRentList));
     memCheck(newRent);
+
     newRent->startMonth = startMonth;
     newRent->endId = endId;
     newRent->isMember = isMember;
@@ -270,7 +271,7 @@ void setType(bikeSharingADT bs, int type) {
 
 /******************************************************************************
  *
- * @category    FREE RESOURCES
+ * @category    FREE MEMORY
  *
  ******************************************************************************/
 static void freeRecRents(tRentList* rents) {
@@ -283,7 +284,10 @@ static void freeRecRents(tRentList* rents) {
 static void freeRecList(tStationList * list){
     if (list == NULL)
         return;
+
+    freeRecRents(list->rentList);
     freeRecList(list->next);
+    free(list->stationInfo.stationName);
     free(list);
 }
 
@@ -303,4 +307,18 @@ void freeBikeSharing(bikeSharingADT bs) {
     }
 
     free(bs);
+}
+
+/*
+ *
+ * FUNCIONES EXTRA
+ */
+void printList(bikeSharingADT bs) {
+    tStationList * current = bs->stationList;
+    int i=0;
+    while(current != NULL){
+        printf(" [%d] Current: %zu, %s\n", i, current->stationInfo.id, current->stationInfo.stationName);
+        current = current->next;
+        i++;
+    }
 }

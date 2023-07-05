@@ -45,5 +45,7 @@ void setType(bikeSharingADT bs, int type);
 void freeBikeSharing(bikeSharingADT bs);
 
 void printName(bikeSharingADT bs, size_t id);
+void printList(bikeSharingADT bs);
+
 
 #endif

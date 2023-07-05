@@ -203,6 +203,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
          * Carga de datos al ADT desde file[RENTS]
          */
         while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
+
             token = strtok(buff, DELIM_PREFIX);
             char *auxMonth = token;
 
