@@ -1,8 +1,10 @@
 #include "bikeSharingADT.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
 #include <assert.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #define SUCCESS 1
 #define ERROR !SUCCESS

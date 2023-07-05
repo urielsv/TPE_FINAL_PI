@@ -172,18 +172,14 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      */
     type = getArgumentFormat(argv, format);
 
-
     if (!validFilesFormat(buff, file, format)) {
         return DATA_ERROR;
     }
 
     /*
-     * Analizo el archivo de station linea por linea, guardando en el buffer cada linea (hasta terminar el archivo)
-     * Luego, guardo en firstField el primer campo hasta el delimitador, y en lastField el ultimo campo a partir del
-     * ultimo delimitador.
+     * Analizo el archivo de station linea por linea, guardando en el buffer cada linea (hasta terminar el archivo) Luego, guardo en firstField el primer campo hasta el delimitador, y en lastField el ultimo campo a partir del ultimo delimitador.
      *
-     * Segun el tipo de archivos (MON/NYC) paso los campos intercambiados para agregar la estacion, ya que estan
-     * definidos de forma invertida.
+     * Segun el tipo de archivos (MON/NYC) paso los campos intercambiados para agregar la estacion, ya que estan definidos de forma invertida.
      *
      * Guardo en el TAD el tipo de estructura que voy a utilizar.
      */
@@ -198,7 +194,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             stationName = UPDATE();
             valid = addStation(bs, stationName, id);
             if (!valid) {
-                return DATA_ERROR;
+              return DATA_ERROR;
             }
         }
 
@@ -216,19 +212,60 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             /*
              * Se saltean campos inecesarios
              */
-            token = UPDATE(); //aca vale end_Date, como no nos sirve, la salteamos
+            token = UPDATE(); // aca vale end_Date, como no nos sirve, la salteamos
             token = UPDATE();
 
-            idEnd = atol(token); // en este momento token vale el id de donde termina
+            idEnd = atol(
+                token); // en este momento token vale el id de donde termina
             token = UPDATE();
 
             isMember = atoi(token);
             month = getMonth(auxMonth);
             valid = addRent(bs, month, idStart, idEnd, isMember);
             if (!valid) {
-                return DATA_ERROR;
+              return DATA_ERROR;
             }
         }
+    }
+
+    if (type == NYC) {
+        setType(bs, LIST);
+        /*
+         * Carga de datos al ADT desde file[STATION]
+         */
+        while (fgets(buff, BUFF_SIZE, file[STATION]) != NULL) {
+            token = strtok(buff, DELIM_PREFIX);
+            stationName = token;
+            token = UPDATE();
+            id = atoi(token);
+           // valid = addStation(bs, stationName, id);
+            if (!valid) {
+              return DATA_ERROR;
+            }
+        }
+
+        /*
+         * Carga de datos al ADT desde file[RENTS]
+         */
+        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
+              token = strtok(buff, DELIM_PREFIX);
+              char *auxMonth = token;
+              token= UPDATE();
+              idStart = atol(token);
+              token = UPDATE();
+              token = UPDATE();
+              idEnd = atol(token);
+              token = UPDATE();
+              token = UPDATE();
+              isMember = strncmp("member", token, strlen("member")) == 0 ? MEMBER : CASUAL;
+              month = getMonth(auxMonth);
+              //valid = addRent(bs, month, idStart, idEnd, isMember);
+              if (!valid) {
+                  return DATA_ERROR;
+              }
+        }
+    }
+
+    return SUCCESS;
 }
-return SUCCESS;
 
