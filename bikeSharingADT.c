@@ -222,6 +222,7 @@ static tStationList * findStation(tStationList * list, size_t id){
 static int addRentList(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
 
     tStationList *currStation = findStation(bs->stationList, startId);
+//    tStationList *currStation = bs->stationList;
     tRentList *newRent = malloc(sizeof(tRentList));
     memCheck(newRent);
 
