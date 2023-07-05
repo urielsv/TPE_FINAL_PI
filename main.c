@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 //    addRent(bikeSharing, 1, 1, 4, 1, 1);
 //    addRent(bikeSharing, 1, 1, 5, 1, 1);
     // Libero los recursos utilizados por mi ADT.
-
+    //printRents(bikeSharing, 2);
     freeBikeSharing(bikeSharing);
 
     //printf("%d",getCountId(bikeSharing));

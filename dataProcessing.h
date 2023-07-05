@@ -24,5 +24,5 @@ int validArgumentCount(int argc);
  */
 int putDataToADT(bikeSharingADT bikeSharing, FILE *file[], char *argv);
 
-
+void printRents(bikeSharingADT bs, size_t id);
 #endif

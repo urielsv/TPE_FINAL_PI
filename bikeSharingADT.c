@@ -164,6 +164,10 @@ int getType(bikeSharingADT bs) {
 size_t getId(bikeSharingADT bs, size_t id) {
     return bs->stationArray[id].isUsed ? bs->stationArray[id].stationInfo.id : 0;
 }
+
+size_t getCountId(bikeSharingADT bs) {
+    return bs->countIds;
+}
 /*
  * SETTERS
  */
