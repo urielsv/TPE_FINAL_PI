@@ -79,9 +79,9 @@ typedef struct {
  *
  ******************************************************************************/
 typedef struct bikeSharingCDT {
-//    tStationList *stationList; // NYC, lista de stations con lista de rents
+    tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
-//    size_t sizeList; // Cantidad de stations
+    size_t sizeList; // Cantidad de stations
     size_t sizeArray; // Cantidad de stations (alojadas)
     size_t countIds; // Cantidad de ids
     int type; // list = 0, array = 1
@@ -136,8 +136,35 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
         bs->stationArray[id].isUsed = 1;
         bs->countIds++;
 
-//        printf("AGREGADA STATION: id:%u used:%d\n", bs->stationArray[id].stationInfo.id, bs->stationArray[id].isUsed);
         return SUCCESS;
+    }
+
+    if(getType(bs) == LIST){
+
+        tStationList * newStation = malloc(sizeof(tStationList));
+        newStation->stationInfo.id=id;
+        newStation->stationInfo.stationName=stationName;
+        newStation->sizeRentList=0;
+        newStation->rentList= NULL;
+        newStation->next = NULL;
+
+        tStationList * current = bs->stationList;
+        if(current == NULL){
+            bs->stationList = newStation;
+        } else {
+            while(current != NULL){
+                //los agregamos alfabeticamente
+                if(strcmp(current->stationInfo.stationName,stationName) > 0){
+                  tStationList* aux = current;
+                  current=newStation;
+                  current->next=aux;
+                  return SUCCESS;
+                }
+                current = current->next;
+
+            }
+        }
+
     }
     return ERROR;
 }
