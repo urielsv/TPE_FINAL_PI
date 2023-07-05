@@ -223,7 +223,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             month = getMonth(auxMonth);
             valid = addRent(bs, month, idStart, idEnd, isMember);
             if (!valid) {
-              return DATA_ERROR;
+                return DATA_ERROR;
             }
         }
     }
@@ -242,7 +242,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             id = atoi(token);
             valid = addStation(bs, stationName, id);
             if (!valid) {
-              return DATA_ERROR;
+                return DATA_ERROR;
             }
         }
         printf("finalmente, hay %zu de stations\n", getStationCount(bs));

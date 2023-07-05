@@ -22,7 +22,7 @@
 
 void pError(const char* errorStream, const char* errorText)
 {
-    fprintf(stderr, "%s: %s.\n", errorStream, errorText);
+    fprintf(stderr, "%s: %s\n", errorStream, errorText);
     exit(1);
 }
 

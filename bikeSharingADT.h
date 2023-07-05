@@ -32,7 +32,7 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 
 
 size_t getId(bikeSharingADT bs, size_t id);
-size_t getCountId(bikeSharingADT bs);
+size_t getStationCount(bikeSharingADT bs);
 int getType(bikeSharingADT bs);
 
 

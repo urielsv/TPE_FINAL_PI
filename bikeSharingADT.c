@@ -81,9 +81,8 @@ typedef struct {
 typedef struct bikeSharingCDT {
     tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
-    size_t sizeList; // Cantidad de stations
-    size_t sizeArray; // Cantidad de stations (alojadas)
-    size_t countIds; // Cantidad de ids
+    size_t sizeArray; // Cantidad alojada de station.
+    size_t stationCount; // Cantidad de ids (stations)
     int type; // list = 0, array = 1
 } bikeSharingCDT;
 
@@ -110,32 +109,65 @@ static void memCheck(void *allocMem) {
     }
 }
 
-int addStation(bikeSharingADT bs, char *stationName, size_t id) {
-    if (getType(bs) == ARRAY) {
+static void addStationArray(bikeSharingADT bs, char* stationName, size_t id) {
+    if (id > bs->sizeArray) {
+        size_t newCapacity = id + BLOCK;
 
-        if (id > bs->sizeArray) {
-            size_t newCapacity = id + BLOCK;
-
-            bs->stationArray = realloc(bs->stationArray,
-                                       newCapacity * sizeof(tStationArray));
-            memCheck(bs->stationArray);
-            for (size_t i = bs->sizeArray; i < newCapacity; i++){
-                bs->stationArray[i].stationInfo.stationName = NULL;
-                bs->stationArray[i].rentList = NULL;
-                bs->stationArray[i].isUsed = 0;
-                bs->stationArray[i].sizeRentList = 0;
-            }
-
-            bs->sizeArray = newCapacity;
-        } else {
-            bs->sizeArray++;
+        bs->stationArray = realloc(bs->stationArray,
+                                   newCapacity * sizeof(tStationArray));
+        memCheck(bs->stationArray);
+        for (size_t i = bs->sizeArray; i < newCapacity; i++){
+            bs->stationArray[i].stationInfo.stationName = NULL;
+            bs->stationArray[i].rentList = NULL;
+            bs->stationArray[i].isUsed = 0;
+            bs->stationArray[i].sizeRentList = 0;
         }
 
-        bs->stationArray[id].stationInfo.stationName = stationName;
-        bs->stationArray[id].stationInfo.id = id;
-        bs->stationArray[id].isUsed = 1;
-        bs->countIds++;
+        bs->sizeArray = newCapacity;
+    } else {
+        bs->sizeArray++;
+    }
 
+    bs->stationArray[id].stationInfo.stationName = stationName;
+    bs->stationArray[id].stationInfo.id = id;
+    bs->stationArray[id].isUsed = 1;
+    bs->stationCount++;
+}
+
+static void addStationList(bikeSharingADT bs, char* stationName, size_t id) {
+
+    tStationList* newStation = malloc(sizeof(tStationList));
+    memCheck(newStation);
+    newStation->stationInfo.id = id;
+    newStation->stationInfo.stationName = stationName; // Se debe duplicar el nombre de la estación
+    newStation->sizeRentList = 0;
+    newStation->rentList = NULL;
+    newStation->next = NULL;
+
+    tStationList* current = bs->stationList;
+    tStationList* previous = NULL;
+
+    while (current != NULL && strcmp(current->stationInfo.stationName, stationName) < 0) {
+        previous = current;
+        current = current->next;
+    }
+
+    if (previous == NULL) {
+        // La nueva estacion debe ser el primer nodo de la lista
+        newStation->next = bs->stationList;
+        bs->stationList = newStation;
+    } else {
+        // La nueva estacion debe ser insertada entre previous y current
+        previous->next = newStation;
+        newStation->next = current;
+    }
+    bs->stationCount++;
+}
+
+
+int addStation(bikeSharingADT bs, char *stationName, size_t id) {
+    if (getType(bs) == ARRAY) {
+        addStationArray(bs, stationName, id);
         return SUCCESS;
     }
 
@@ -145,13 +177,57 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
     }
     return ERROR;
 }
-//int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
-//
-//}
 
+static int addRentArray(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
+    if (startId >= bs->sizeArray || bs->stationArray == NULL) {
+        return ERROR; // el id no existe
+    }
+
+    tRentList *newRent = malloc(sizeof(tRentList));
+    memCheck(newRent);
+
+    if (bs->stationArray[startId].isUsed) {
+        newRent->startMonth = startMonth;
+        newRent->endId = endId;
+        newRent->isMember = isMember;
+        newRent->next = bs->stationArray[startId].rentList;
+        bs->stationArray[startId].rentList = newRent;
+        bs->stationArray[startId].sizeRentList++;
+    }
+    return SUCCESS;
+}
+
+static tStationList * findStation(tStationList * list, size_t id){
+    if(list == NULL){
+        return NULL;
+    }
+    tStationList *current = list;
+    while(current != NULL) {
+        if (current->stationInfo.id == id) {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return NULL;
+}
+
+static int addRentList(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
+
+    tStationList *currStation = findStation(bs->stationList, startId);
+    tRentList *newRent = malloc(sizeof(tRentList));
+    memCheck(newRent);
+    newRent->startMonth = startMonth;
+    newRent->endId = endId;
+    newRent->isMember = isMember;
+    currStation->next = currStation;
+    currStation->rentList = newRent;
+    currStation->sizeRentList++;
+    return SUCCESS;
+}
 
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
-
+    int valid;
     if (getType(bs) == ARRAY) {
         valid = addRentArray(bs, startMonth, startId, endId, isMember);
         return valid;
@@ -177,8 +253,8 @@ size_t getId(bikeSharingADT bs, size_t id) {
     return bs->stationArray[id].isUsed ? bs->stationArray[id].stationInfo.id : 0;
 }
 
-size_t getCountId(bikeSharingADT bs) {
-    return bs->countIds;
+size_t getStationCount(bikeSharingADT bs) {
+    return bs->stationCount;
 }
 
 /******************************************************************************
@@ -212,7 +288,7 @@ static void freeRecList(tStationList * list){
 void freeBikeSharing(bikeSharingADT bs) {
 
     if (bs->type == ARRAY) {
-        for (int i = 0; i < bs->countIds; i++) {
+        for (int i = 0; i < bs->stationCount; i++) {
             if (bs->stationArray[i].isUsed)
               freeRecRents(bs->stationArray[i].rentList);
         }
