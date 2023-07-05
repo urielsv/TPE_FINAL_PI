@@ -189,18 +189,24 @@ static int addRentArray(bikeSharingADT bs, int startMonth, size_t startId, size_
         return ERROR; // el id no existe
     }
 
-    tRentList *newRent = malloc(sizeof(tRentList));
-    memCheck(newRent);
-
     if (bs->stationArray[startId].isUsed) {
+
+        tRentList *newRent = malloc(sizeof(tRentList));
+        memCheck(newRent);
+
         newRent->startMonth = startMonth;
         newRent->endId = endId;
         newRent->isMember = isMember;
-        newRent->next = bs->stationArray[startId].rentList;
+
+        tRentList* aux = bs->stationArray[startId].rentList;
         bs->stationArray[startId].rentList = newRent;
+        newRent->next = aux;
+
         bs->stationArray[startId].sizeRentList++;
+        return SUCCESS;
     }
-    return SUCCESS;
+    return ERROR;
+
 }
 
 static tStationList * findStation(tStationList * list, size_t id){
@@ -304,7 +310,7 @@ void freeBikeSharing(bikeSharingADT bs) {
 
     if (bs->type == ARRAY) {
         for (int i = 0; i < bs->stationCount; i++) {
-            if (bs->stationArray[i].isUsed)
+
               freeRecRents(bs->stationArray[i].rentList);
         }
         free(bs->stationArray);
