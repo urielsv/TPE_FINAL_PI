@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    dataFront.c
+ *
+ * @brief   Manejo del Front-end.
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #include "dataFront.h"
 #include "dataProcessing.h"
 #include <stdio.h>
@@ -18,6 +32,14 @@ void validateArguments(int argc, char* argv[]) {
     }
 }
 
+void createFiles(FILE* files[FILES_COUNT], char* argv[]) {
+    int valid = newFiles(files, argv);
+    if (!valid) {
+        pError("file(s):", "Permission denied.");
+    }
+    printf("Files have been loaded successfully.\n");
+}
+
 void loadDataToADT(bikeSharingADT bs, FILE* files[FILES_COUNT], char* argv) {
     int valid = putDataToADT(bs, files, argv);
 
@@ -25,5 +47,5 @@ void loadDataToADT(bikeSharingADT bs, FILE* files[FILES_COUNT], char* argv) {
         pError("main", "Failed to load data to ADT.");
     }
 
-    printf("Success.\n");
+    printf("main: Data has been loaded correctly.\n");
 }

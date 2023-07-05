@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    dataProcessing.h
+ *
+ * @brief   Manejo de datos y proceso de datos (Back-end).
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #ifndef __dataprocessing_h_
 #define __dataprocessing_h_
 
@@ -10,6 +24,16 @@
  * @param argc Cantidad de archivos.
  */
 int validArgumentCount(int argc);
+
+/*
+ * @brief Guarda en files la informacion de los archivos.
+ */
+int newFiles(FILE* files[], char* argv[]);
+
+/*
+ * @brief Cierra los archivos previamente abiertos.
+ */
+int closeFiles(FILE* files[]);
 
 /*
  * @brief Guarda en ADT los datos obtenidos a partir de las listas.

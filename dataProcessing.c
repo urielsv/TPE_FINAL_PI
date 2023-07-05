@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    dataProcessing.c
+ *
+ * @brief   Manejo de datos y proceso de datos (Back-end).
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,9 +42,8 @@ enum {
 };
 
 enum {
-    CLASSIC_BIKE=0, DOCKED_BIKE, ELECTRIC_BIKE
+    CASUAL, MEMBER
 };
-
 
 #define FILE_RENTS_FORMAT_NYC       "started_at;start_station_id;ended_at;end_station_id;rideable_type;member_casual"
 #define FILE_RENTS_FORMAT_MON       "start_date;emplacement_pk_start;end_date;emplacement_pk_end;is_member"
@@ -46,6 +59,26 @@ int validArgumentCount(int argc) {
     }
     return SUCCESS;
 }
+
+int newFiles(FILE* files[FILES_COUNT], char* argv[]) {
+    for (int i = 0; i < FILES_COUNT; i++) {
+        files[i] = fopen(argv[i+1], "r");
+        // Si es NULL no lo pudo leer.
+        if (files[i] == NULL) {
+            return DATA_ERROR;
+        }
+    }
+    return SUCCESS;
+}
+
+int closeFiles(FILE* files[FILES_COUNT]) {
+    for (int i = 0; i < FILES_COUNT; i++) {
+        if (fclose(files[i]) != 0)
+            return DATA_ERROR;
+    }
+    return SUCCESS;
+}
+
 
 /*
  * @brief Valida que las listas de entrada esten con el formato correcto.
@@ -104,17 +137,11 @@ static int getArgumentFormat(char *argv, char *format[FILES_COUNT]) {
 }
 
 /*
- * @brief Obtiene a partir de la ultima aparicion del delimitador el ultimo field.
+ * @brief Obtiene el campo del mes
  *
- * @returns Ultimo field del .csv
+ * @param token String acotado de la fecha.
+ * @returns el mes como entero.
  */
-//static char *getLastField(char buff[]) {
-//    // strrchr(buff, ';') me devuelve la ultima aparicion de ";"
-//    // El +1 es para saltear el delimitador.
-//    return strrchr(buff, (char) DELIM_PREFIX) + 1;
-//}
-
-// yyyy-MM-dd
 static int getMonth(char* token) {
 
     token = strchr(token, '-') + 1;
@@ -175,7 +202,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             }
         }
 
-        /* x
+        /*
          * Carga de datos al ADT desde file[RENTS]
          */
         while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
@@ -197,7 +224,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
             isMember = atoi(token);
             month = getMonth(auxMonth);
-            valid = addRent(bs, month, idStart, idEnd, CLASSIC_BIKE, isMember);
+            valid = addRent(bs, month, idStart, idEnd, isMember);
             if (!valid) {
                 return DATA_ERROR;
             }
@@ -205,10 +232,3 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 }
 return SUCCESS;
 
-/*
-        if (type == NYC) {
-            setType(bs, LIST);
-            addStation(bs, firstField, atoi(lastField));
-        }
-*/
-}

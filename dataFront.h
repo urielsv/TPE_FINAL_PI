@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    bikeSharingADT.c
+ *
+ * @brief   Manejo del Front-end.
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #ifndef __datafront_h_
 #define __datafront_h_
 #include <stdio.h>
@@ -18,6 +32,8 @@ void pError(const char* errorStream, const char* errorText);
  * @param argv Nombre de cada argumento.
  */
 void validateArguments(int argc, char* argv[]);
+
+void createFiles(FILE* files[], char* argv[]);
 
 /*
  * @brief Verifica que la carga de datos al ADT sea correcta.

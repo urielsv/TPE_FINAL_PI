@@ -15,26 +15,39 @@ enum {
     LIST=0, ARRAY
 };
 
-/*
- * RENT
- */
+/******************************************************************************
+ *
+ * @struct  tRentList
+ *
+ * @brief   Estructura de rentas de tipo "List"
+ *
+ ******************************************************************************/
 typedef struct rentList {
     int startMonth; // date
     size_t endId;
-    char rideableType;
     char isMember;
     struct rentList *next;
 } tRentList;
 
-/*
- * STATIONS
- */
+/******************************************************************************
+ *
+ * @struct  tStation
+ *
+ * @brief   Estructura de estacion generica.
+ *
+ ******************************************************************************/
 typedef struct station {
     char *stationName;
     unsigned int id;
 } tStation;
 
-// Station tipo "New York" (lista)
+/******************************************************************************
+ *
+ * @struct  tStationList
+ *
+ * @brief   Estructura de estacion para tipo "List"
+ *
+ ******************************************************************************/
 typedef struct stationList{
     tStation stationInfo;
     tRentList *rentList;
@@ -42,7 +55,13 @@ typedef struct stationList{
     struct stationList* next;
 } tStationList;
 
-// Station tipo "Montreal" (vector)
+/******************************************************************************
+ *
+ * @struct  tStationArray
+ *
+ * @brief   Estructura de estacion para tipo "Array"
+ *
+ ******************************************************************************/
 typedef struct {
     tStation stationInfo;
     tRentList *rentList;
@@ -50,9 +69,13 @@ typedef struct {
     size_t sizeRentList; // cantidad de nodos
 } tStationArray;
 
-/*
- * ESTRUCTURA ADT
- */
+/******************************************************************************
+ *
+ * @struct  bikeSharingCDT
+ *
+ * @brief   Atributos del CDT.
+ *
+ ******************************************************************************/
 typedef struct bikeSharingCDT {
 //    tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
@@ -63,18 +86,22 @@ typedef struct bikeSharingCDT {
 } bikeSharingCDT;
 
 
-/*
- * CONSTRUCTOR
- */
+/******************************************************************************
+ *
+ * @category    CONSTRUCTOR FUNCTION
+ *
+ ******************************************************************************/
 bikeSharingADT newBikeSharingADT(void) {
     bikeSharingADT bs = calloc(1, sizeof(struct bikeSharingCDT));
     bs->type = UNDEFINED;
     return bs;
 }
 
-/*
- * FUNCIONES
- */
+/******************************************************************************
+ *
+ * @category    FUNCTIONS
+ *
+ ******************************************************************************/
 static void memCheck(void *allocMem) {
     if (errno == ENOMEM)  {
         exit(1);
@@ -87,7 +114,8 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
         if (id > bs->sizeArray) {
             size_t newCapacity = id + BLOCK;
 
-            bs->stationArray = realloc(bs->stationArray, newCapacity * sizeof(tStationArray));
+            bs->stationArray = realloc(bs->stationArray,
+                                       newCapacity * sizeof(tStationArray));
             memCheck(bs->stationArray);
             for (size_t i = bs->sizeArray; i < newCapacity; i++){
                 bs->stationArray[i].stationInfo.stationName = NULL;
@@ -116,7 +144,7 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
 //}
 
 
-int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
+int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
 
     if (getType(bs) == ARRAY) {
         if (startId >= bs->sizeArray || bs->stationArray == NULL) {
@@ -131,7 +159,6 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
         if (bs->stationArray[startId].isUsed) {
             newRent->startMonth = startMonth;
             newRent->endId = endId;
-            newRent->rideableType = rideableType;
             newRent->isMember = isMember;
             newRent->next = bs->stationArray[startId].rentList;
             bs->stationArray[startId].rentList = newRent;
@@ -154,9 +181,11 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 }
 
 
-/*
- * GETTERS
- */
+/******************************************************************************
+ *
+ * @category    GETTER FUNCTIONS
+ *
+ ******************************************************************************/
 int getType(bikeSharingADT bs) {
     return bs->type;
 }
@@ -168,16 +197,21 @@ size_t getId(bikeSharingADT bs, size_t id) {
 size_t getCountId(bikeSharingADT bs) {
     return bs->countIds;
 }
-/*
- * SETTERS
- */
+
+/******************************************************************************
+ *
+ * @category    SETTER FUNCTIONS
+ *
+ ******************************************************************************/
 void setType(bikeSharingADT bs, int type) {
     bs->type = type;
 }
 
-/*
- * FREE
- */
+/******************************************************************************
+ *
+ * @category    FREE RESOURCES
+ *
+ ******************************************************************************/
 static void freeRecRents(tRentList* rents) {
     if (rents == NULL)
         return;

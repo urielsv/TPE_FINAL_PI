@@ -23,18 +23,9 @@ int main(int argc, char *argv[]) {
     // Valido que el ejecutable tenga el formato correcto.
     validateArguments(argc, argv);
 
-    FILE *bikeFile = fopen(argv[FILE1], "r");
-    FILE *stationFile = fopen(argv[FILE2], "r");
 
-    // esto ya se valida en el back.
-    if (stationFile == NULL || bikeFile == NULL) {
-        // Handle file opening error here
-        fprintf(stderr, "Error opening files.\n");
-        return 1;
-    }
-
-
-    FILE *files[FILES_COUNT] = {bikeFile, stationFile};
+    FILE* files[FILES_COUNT];
+    createFiles(files, argv);
 
     // Inicializo mi ADT.
     bikeSharingADT bikeSharing = newBikeSharingADT();
@@ -45,8 +36,7 @@ int main(int argc, char *argv[]) {
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
     puts("Mem liberada.");
-    fclose(stationFile);
-    fclose(bikeFile);
+    closeFiles(files);
     puts("Fin de ejecucion.");
     return 0;
 }

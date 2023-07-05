@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    bikeSharingADT.h
+ *
+ * @brief   ADT para manejo de datos y queries.
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #ifndef __bikesharingadt_h_
 #define __bikesharingadt_h_
 
@@ -5,7 +19,7 @@
 typedef struct bikeSharingCDT *bikeSharingADT;
 
 /*
- * CONSTRUCTOR
+ * @brief Constructor del ADT.
  */
 bikeSharingADT newBikeSharingADT(void);
 
@@ -13,19 +27,16 @@ bikeSharingADT newBikeSharingADT(void);
  * FUNCIONES EXTRAS
  */
 int addStation(bikeSharingADT bs, char *stationName, size_t id);
-int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember);
+int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember);
 
 
-/*
- * GETTERS
- */
+
 size_t getId(bikeSharingADT bs, size_t id);
 size_t getCountId(bikeSharingADT bs);
 int getType(bikeSharingADT bs);
 
-/*
- * SETTERS
- */
+
+
 void setType(bikeSharingADT bs, int type);
 
 /*
