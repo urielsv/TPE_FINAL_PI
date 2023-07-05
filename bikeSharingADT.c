@@ -105,6 +105,7 @@ int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
             bs->sizeArray = newCapacity;
         }
 
+
         bs->stationArray[id].stationInfo.stationName = stationName;
         bs->stationArray[id].stationInfo.id = id;
         return SUCCESS;

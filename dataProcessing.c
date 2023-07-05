@@ -161,7 +161,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      */
     if (type == MON) {
         setType(bs, ARRAY);
-
         /*
          * Carga de datos al ADT desde file[STATION]
          */
@@ -174,6 +173,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
                 return DATA_ERROR;
             }
         }
+        printf("id:%u", getId(bs, 3));
 
         /*
          * Carga de datos al ADT desde file[RENTS]
