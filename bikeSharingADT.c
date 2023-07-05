@@ -123,8 +123,6 @@ static void addStationArray(bikeSharingADT bs, char* stationName, size_t id) {
         }
 
         bs->sizeArray = newCapacity;
-    } else {
-        bs->sizeArray++;
     }
 
     bs->stationArray[id].stationInfo.stationName = stationName;
@@ -133,11 +131,20 @@ static void addStationArray(bikeSharingADT bs, char* stationName, size_t id) {
     bs->stationCount++;
 }
 
+static char* stringCopy(const char* str) {
+    char* copy = malloc((strlen(str)+1) * sizeof(char));
+    memCheck(copy);
+
+    strcpy(copy, str);
+    copy[strlen(str)] = 0;
+    return copy;
+}
 static void addStationList(bikeSharingADT bs, char* stationName, size_t id) {
     tStationList* newStation = malloc(sizeof(tStationList));
     memCheck(newStation);
+
+    newStation->stationInfo.stationName = stringCopy(stationName);
     newStation->stationInfo.id = id;
-    newStation->stationInfo.stationName = stationName; // Se debe duplicar el nombre de la estación
     newStation->sizeRentList = 0;
     newStation->rentList = NULL;
 
@@ -203,6 +210,7 @@ static tStationList * findStation(tStationList * list, size_t id){
     tStationList *current = list;
     while(current != NULL) {
         if (current->stationInfo.id == id) {
+            //printf("STATION NAME: %s\t", current->stationInfo.stationName);
             return current;
         }
         current = current->next;

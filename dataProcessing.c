@@ -231,6 +231,8 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
     if (type == NYC) {
         setType(bs, LIST);
+
+        printf("test\n\n\n\n\n\n\n\n\n");
         /*
          * Carga de datos al ADT desde file[STATION]
          */
@@ -268,8 +270,10 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
                   return DATA_ERROR;
               }
         }
+
     }
 
+    printf("Se cargo toda la data al ADT DEMASIADO EQUIS DE!");
     return SUCCESS;
 }
 
