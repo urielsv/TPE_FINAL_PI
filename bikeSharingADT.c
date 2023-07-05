@@ -326,7 +326,7 @@ void printList(bikeSharingADT bs) {
     tStationList * current = bs->stationList;
     int i=0;
     while(current != NULL){
-        printf(" [%d] Current: %zu, %s\n", i, current->stationInfo.id, current->stationInfo.stationName);
+        printf(" [%u] Current: %u, %s\n", i, current->stationInfo.id, current->stationInfo.stationName);
         current = current->next;
         i++;
     }
