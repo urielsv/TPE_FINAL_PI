@@ -45,6 +45,7 @@ typedef struct stationList{
 typedef struct {
     tStation stationInfo;
     tRentList *rentList;
+    int isUsed;
     size_t sizeRentList; // cantidad de nodos
 } tStationArray;
 
@@ -52,7 +53,7 @@ typedef struct {
  * ESTRUCTURA ADT
  */
 typedef struct bikeSharingCDT {
-    tStationList *stationList; // NYC, lista de stations con lista de rents
+//    tStationList *stationList; // NYC, lista de stations con lista de rents
     tStationArray *stationArray; // MON, vector de stations con lista de rents
 //    size_t sizeList; // Cantidad de stations
     size_t sizeArray; // Cantidad de stations (alojadas)
@@ -108,29 +109,9 @@ int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
 
         bs->stationArray[id].stationInfo.stationName = stationName;
         bs->stationArray[id].stationInfo.id = id;
-        return SUCCESS;
-    }
+        bs->stationArray[id].isUsed = 1;
+        printf("AGREGADA STATION: id:%u\n", bs->stationArray[id].stationInfo.id);
 
-    if (getType(bs) == LIST){
-        tStationList *newNode = malloc(sizeof(tStationList));
-
-        newNode->stationInfo.stationName = stationName;
-        newNode->stationInfo.id = id;
-        newNode->next = NULL;
-
-        if (newNode == NULL) {
-            return ERROR;
-        }
-
-        if (bs->stationList == NULL) {
-            bs->stationList = newNode;
-        } else {
-            tStationList *current = bs->stationList;
-            newNode->next = current;
-            bs->stationList = newNode;
-        }
-
-        bs->sizeList++;
         return SUCCESS;
     }
 
