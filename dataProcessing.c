@@ -4,7 +4,7 @@
  *
  * @brief   Manejo de datos y proceso de datos (Back-end).
  *
- * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *
@@ -237,12 +237,16 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             token = strtok(buff, DELIM_PREFIX);
             stationName = token;
             token = UPDATE();
+            token = UPDATE();
+            token = UPDATE();
             id = atoi(token);
-           // valid = addStation(bs, stationName, id);
+            valid = addStation(bs, stationName, id);
             if (!valid) {
               return DATA_ERROR;
             }
         }
+        printf("finalmente, hay %zu de stations\n", getStationCount(bs));
+
 
         /*
          * Carga de datos al ADT desde file[RENTS]

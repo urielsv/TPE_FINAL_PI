@@ -202,6 +202,13 @@ static void freeRecRents(tRentList* rents) {
     free(rents);
 }
 
+static void freeRecList(tStationList * list){
+    if (list == NULL)
+        return;
+    freeRecList(list->next);
+    free(list);
+}
+
 void freeBikeSharing(bikeSharingADT bs) {
 
     if (bs->type == ARRAY) {
