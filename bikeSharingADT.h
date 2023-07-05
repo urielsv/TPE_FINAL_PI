@@ -12,7 +12,7 @@ bikeSharingADT newBikeSharingADT(void);
 /*
  * FUNCIONES EXTRAS
  */
-int addStation(bikeSharingADT bs, char *name, unsigned int id);
+int addStation(bikeSharingADT bs, char *stationName, size_t id);
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember);
 
 
@@ -20,6 +20,7 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
  * GETTERS
  */
 size_t getId(bikeSharingADT bs, size_t id);
+size_t getCountId(bikeSharingADT bs);
 int getType(bikeSharingADT bs);
 
 /*

@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     FILE *bikeFile = fopen(argv[FILE1], "r");
     FILE *stationFile = fopen(argv[FILE2], "r");
 
+    // esto ya se valida en el back.
     if (stationFile == NULL || bikeFile == NULL) {
         // Handle file opening error here
         fprintf(stderr, "Error opening files.\n");

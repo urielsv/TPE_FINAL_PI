@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <assert.h>
 
 #define SUCCESS 1
 #define ERROR !SUCCESS
@@ -75,48 +76,46 @@ bikeSharingADT newBikeSharingADT(void) {
  * FUNCIONES
  */
 static void memCheck(void *allocMem) {
-    if (allocMem == NULL)  {
+    if (errno == ENOMEM)  {
         exit(1);
     }
 }
+
 int addStation(bikeSharingADT bs, char *stationName, size_t id) {
     if (getType(bs) == ARRAY) {
 
         if (id > bs->sizeArray) {
-              tStationArray *auxArray = realloc(bs->stationArray, (id + BLOCK) * sizeof(tStationArray));
-              memCheck(auxArray);
-              bs->stationArray = auxArray;
-              bs-?
-              bs->countIds = id; // id es le max
-        }
-    }
-}
-int addStation(bikeSharingADT bs, char *stationName, unsigned int id) {
-
-    if (getType(bs) == ARRAY) {
-        if (id >= bs->sizeArray) {
-
             size_t newCapacity = id + BLOCK;
-            tStationArray *auxArray = realloc(bs->stationArray, newCapacity * sizeof(tStationArray));
-            if (errno == ENOMEM) {
-                return ENOMEM;
+
+            bs->stationArray = realloc(bs->stationArray, newCapacity * sizeof(tStationArray));
+            memCheck(bs->stationArray);
+            for (size_t i = bs->sizeArray; i < newCapacity; i++){
+                bs->stationArray[i].stationInfo.stationName = NULL;
+                bs->stationArray[i].rentList = NULL;
+                bs->stationArray[i].isUsed = 0;
+                bs->stationArray[i].sizeRentList = 0;
             }
 
-            bs->stationArray = auxArray;
             bs->sizeArray = newCapacity;
+        } else {
+            bs->sizeArray++;
         }
-
 
         bs->stationArray[id].stationInfo.stationName = stationName;
         bs->stationArray[id].stationInfo.id = id;
         bs->stationArray[id].isUsed = 1;
-        printf("AGREGADA STATION: id:%u\n", bs->stationArray[id].stationInfo.id);
+        bs->countIds++;
 
+//        printf("AGREGADA STATION: id:%u used:%d\n", bs->stationArray[id].stationInfo.id, bs->stationArray[id].isUsed);
         return SUCCESS;
     }
 
     return ERROR;
 }
+//int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
+//
+//}
+
 
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
 
@@ -130,15 +129,20 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
             return ENOMEM;
         }
 
-        newRent->startMonth = startMonth;
-        newRent->endId = endId;
-        newRent->rideableType = rideableType;
-        newRent->isMember = isMember;
-        newRent->next = bs->stationArray[startId].rentList;
-        bs->stationArray[startId].rentList = newRent;
+        if (bs->stationArray[startId].isUsed) {
+            newRent->startMonth = startMonth;
+            newRent->endId = endId;
+            newRent->rideableType = rideableType;
+            newRent->isMember = isMember;
+            newRent->next = bs->stationArray[startId].rentList;
+            bs->stationArray[startId].rentList = newRent;
+            bs->stationArray[startId].sizeRentList++;
+        }
 
-        bs->stationArray[startId].sizeRentList++;
-         // printf("AGREGADO RENT: size %zd endId %zd\n", bs->stationArray[startId].sizeRentList, bs->stationArray[startId].rentList->endId);
+//        printf("AGREGADO RENT: id: %d\t\t\tsize: %zd\t\t\t\tendId: %zd\n",
+//             bs->stationArray[startId].stationInfo.id,
+//             bs->stationArray[startId].sizeRentList,
+//             bs->stationArray[startId].rentList->endId);
         return SUCCESS;
     }
 
@@ -176,4 +180,17 @@ static void freeRecRents(tRentList* rents) {
         return;
     freeRecRents(rents->next);
     free(rents);
+}
+
+void freeBikeSharing(bikeSharingADT bs) {
+
+    if (bs->type == ARRAY) {
+        for (int i = 0; i < bs->countIds; i++) {
+            if (bs->stationArray[i].isUsed)
+              freeRecRents(bs->stationArray[i].rentList);
+        }
+        free(bs->stationArray);
+    }
+
+    free(bs);
 }

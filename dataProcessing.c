@@ -178,7 +178,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
         /*
          * Carga de datos al ADT desde file[RENTS]
          */
-        int i = 0;
         while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
             token = strtok(buff, DELIM_PREFIX);
             char *auxMonth = token;
@@ -198,10 +197,8 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
             isMember = atoi(token);
             month = getMonth(auxMonth);
-//            printf("\t[[[%d]]]\t", i++);
             valid = addRent(bs, month, idStart, idEnd, CLASSIC_BIKE, isMember);
         }
-    printf("\nputADT: funco ponele\n");
 }
 return SUCCESS;
 
