@@ -1,6 +1,7 @@
 #include "dataProcessing.h"
 #include "dataFront.h"
 #include <stdio.h>
+#include <assert.h>
 
 #define BUFF_SIZE   256
 #define FILES_COUNT 2
@@ -52,8 +53,11 @@ int main(int argc, char *argv[]) {
     // Libero los recursos utilizados por mi ADT.
 
     freeBikeSharing(bikeSharing);
-    // ACA NO LLEGA
-    printf("main: OK");
+
+    //printf("%d",getCountId(bikeSharing));
+
+    printf("main: OK y solido");
+
 
     fclose(stationFile);
     fclose(bikeFile);

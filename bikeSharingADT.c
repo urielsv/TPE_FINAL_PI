@@ -109,7 +109,6 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
 //        printf("AGREGADA STATION: id:%u used:%d\n", bs->stationArray[id].stationInfo.id, bs->stationArray[id].isUsed);
         return SUCCESS;
     }
-
     return ERROR;
 }
 //int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char rideableType, char isMember) {
@@ -163,7 +162,7 @@ int getType(bikeSharingADT bs) {
 }
 
 size_t getId(bikeSharingADT bs, size_t id) {
-    return bs->stationArray[id].isUsed;
+    return bs->stationArray[id].isUsed ? bs->stationArray[id].stationInfo.id : 0;
 }
 /*
  * SETTERS

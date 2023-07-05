@@ -4,6 +4,7 @@
 #include <errno.h>
 #include "bikeSharingADT.h"
 
+
 #define BUFF_SIZE   256
 #define COMMAND_PREFIX  2 // "./$COMMAND"
 #define TRUE    1
@@ -173,9 +174,8 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
                 return DATA_ERROR;
             }
         }
-        printf("id:%u", getId(bs, 3));
 
-        /*
+        /* x
          * Carga de datos al ADT desde file[RENTS]
          */
         while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
@@ -198,6 +198,9 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             isMember = atoi(token);
             month = getMonth(auxMonth);
             valid = addRent(bs, month, idStart, idEnd, CLASSIC_BIKE, isMember);
+            if (!valid) {
+                return DATA_ERROR;
+            }
         }
 }
 return SUCCESS;
