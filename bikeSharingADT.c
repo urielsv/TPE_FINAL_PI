@@ -1,5 +1,4 @@
 #include "bikeSharingADT.h"
-#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,21 +134,20 @@ static void addStationArray(bikeSharingADT bs, char* stationName, size_t id) {
 }
 
 static void addStationList(bikeSharingADT bs, char* stationName, size_t id) {
-
     tStationList* newStation = malloc(sizeof(tStationList));
     memCheck(newStation);
     newStation->stationInfo.id = id;
     newStation->stationInfo.stationName = stationName; // Se debe duplicar el nombre de la estación
     newStation->sizeRentList = 0;
     newStation->rentList = NULL;
-    newStation->next = NULL;
+
 
     tStationList* current = bs->stationList;
     tStationList* previous = NULL;
 
     while (current != NULL && strcmp(current->stationInfo.stationName, stationName) < 0) {
-        previous = current;
-        current = current->next;
+            previous = current;
+            current = current->next;
     }
 
     if (previous == NULL) {
@@ -161,6 +159,7 @@ static void addStationList(bikeSharingADT bs, char* stationName, size_t id) {
         previous->next = newStation;
         newStation->next = current;
     }
+    //printf("encontrado\n");
     bs->stationCount++;
 }
 
@@ -220,8 +219,11 @@ static int addRentList(bikeSharingADT bs, int startMonth, size_t startId, size_t
     newRent->startMonth = startMonth;
     newRent->endId = endId;
     newRent->isMember = isMember;
-    currStation->next = currStation;
+    newRent->next =NULL;
+
+    tRentList * aux = currStation->rentList;
     currStation->rentList = newRent;
+    currStation->rentList->next=aux;
     currStation->sizeRentList++;
     return SUCCESS;
 }
@@ -296,7 +298,6 @@ void freeBikeSharing(bikeSharingADT bs) {
     }
 
     if(bs->type == LIST) {
-
 
         freeRecList(bs->stationList);
     }

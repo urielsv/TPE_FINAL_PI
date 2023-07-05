@@ -185,6 +185,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      */
     if (type == MON) {
         setType(bs, ARRAY);
+
         /*
          * Carga de datos al ADT desde file[STATION]
          */
@@ -215,8 +216,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             token = UPDATE(); // aca vale end_Date, como no nos sirve, la salteamos
             token = UPDATE();
 
-            idEnd = atol(
-                token); // en este momento token vale el id de donde termina
+            idEnd = atol(token); // en este momento token vale el id de donde termina
             token = UPDATE();
 
             isMember = atoi(token);
@@ -245,7 +245,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
                 return DATA_ERROR;
             }
         }
-        printf("finalmente, hay %zu de stations\n", getStationCount(bs));
 
 
         /*
@@ -263,7 +262,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
               token = UPDATE();
               isMember = strncmp("member", token, strlen("member")) == 0 ? MEMBER : CASUAL;
               month = getMonth(auxMonth);
-              //valid = addRent(bs, month, idStart, idEnd, isMember);
+              valid = addRent(bs, month, idStart, idEnd, isMember);
               if (!valid) {
                   return DATA_ERROR;
               }
