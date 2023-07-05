@@ -1,3 +1,16 @@
+/******************************************************************************
+ *
+ * @file    main.c
+ *
+ * @brief   Ejecucion del programa.
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
 #include "dataProcessing.h"
 #include "dataFront.h"
 #include <stdio.h>
