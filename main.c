@@ -71,10 +71,10 @@ int main(int argc, char *argv[]) {
     loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
     loadQuery1(bikeSharing, queries[QUERY1]);
-//    loadQuery2(bikeSharing, queries[QUERY2]);
+    loadQuery2(bikeSharing, queries[QUERY2]);
 //    loadQuery3(bikeSharing, queries[QUERY3]);
 
-
+    printArray(bikeSharing);
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
     puts("Memoria liberada.");
@@ -110,6 +110,28 @@ int loadQuery1(bikeSharingADT bs, FILE *query1) {
 }
 
 int loadQuery2(bikeSharingADT bs, FILE *query2) {
-    //sortByAlpha(bs,)
+    sortStationsByAlpha(bs);
     fprintf(query2, "StationA;StationB;Trips A->B;Trips B->A\n");
+
+    for(int i=0; i<getSize(bs); i++) {
+        for (int j = 0; j < getSize(bs); j++) {
+            if (i != j) {
+                size_t total = getTotalRentsBetweenStations(bs, i, j);
+                if (total != -1) {
+                    char *stationA = getStationName(bs, i);
+                    char *stationB = getStationName(bs, j);
+                    int res = fprintf(query2, "%s;%s;%li\n", stationA, stationB, total);
+                    free(stationA);
+                    free(stationB);
+                    if (res < 0) {
+                        return ERROR;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    return OK;
 }

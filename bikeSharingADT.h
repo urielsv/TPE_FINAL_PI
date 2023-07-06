@@ -52,5 +52,8 @@ void printList(bikeSharingADT bs);
 void printTotalRents(bikeSharingADT bs, size_t id);
 void sortStationsByRent(bikeSharingADT bs);
 void sortStationsById(bikeSharingADT bs);
+void sortStationsByAlpha(bikeSharingADT bs);
+
+size_t getTotalRentsBetweenStations(bikeSharingADT bs,size_t i,size_t j);
 
 #endif

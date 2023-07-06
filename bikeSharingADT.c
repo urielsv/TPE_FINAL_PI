@@ -97,6 +97,14 @@ static char *stringCopy(const char *str) {
     return copy;
 }
 
+void reallocateStationsArray(bikeSharingADT bs) {
+    bs->stationArray = realloc(bs->stationArray,
+                               bs->stationCount * sizeof(tStationArray));
+    memCheck(bs->stationArray);
+
+    bs->sizeArray = bs->stationCount;
+}
+
 int addStation(bikeSharingADT bs, char *stationName, size_t id) {
 
     if (bs->stationCount == bs->sizeArray) {
@@ -178,7 +186,7 @@ size_t getTotalMemberRents(bikeSharingADT bs, size_t id) {
 }
 
 size_t getSize(bikeSharingADT bs) {
-    return bs->stationCount;
+    return bs->sizeArray;
 }
 
 /******************************************************************************
@@ -234,11 +242,8 @@ int compareStationsById(const void *station1, const void *station2) {
 
 // Sortea pr id de forma ascendente
 void sortStationsById(bikeSharingADT bs) {
-    bs->stationArray = realloc(bs->stationArray,
-                               bs->stationCount * sizeof(tStationArray));
-    memCheck(bs->stationArray);
-
-    qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStationsById);
+    reallocateStationsArray(bs);
+    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), compareStationsById);
 }
 
 int compareStationsByRentDescending(const void *station1, const void *station2) {
@@ -260,18 +265,19 @@ int compareStationsByRentDescending(const void *station1, const void *station2) 
 
 // Sortea por cantidad de rents (por miembros) de forma descendente
 void sortStationsByRent(bikeSharingADT bs) {
-    size_t n = bs->stationCount;
-    qsort(bs->stationArray, n, sizeof(tStationArray), compareStationsByRentDescending);
+    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), compareStationsByRentDescending);
 }
 
-static int stringCompare(const void *a, const void *b) {
-    return strcmp(a, b);
+int compareStations(const void *a, const void *b) {
+    const tStationArray *stationA = (const tStationArray *)a;
+    const tStationArray *stationB = (const tStationArray *)b;
+
+    return strcmp(stationA->stationInfo.stationName, stationB->stationInfo.stationName);
 }
 
-// Sortea por nombre de forma ascendente
-void sortByAlpha(bikeSharingADT bs) {
-    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), stringCompare);
-
+// Sortea por nombre de forma alfabetica
+void sortStationsByAlpha(bikeSharingADT bs) {
+    qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStations);
 }
 
 /******************************************************************************
@@ -280,7 +286,7 @@ void sortByAlpha(bikeSharingADT bs) {
  *
  ******************************************************************************/
 void printArray(bikeSharingADT bs) {
-    for (int i = 0; i < bs->stationCount; i++) {
+    for (int i = 0; i < bs->sizeArray; i++) {
         printf("%s\thas %zu rents\n", bs->stationArray[i].stationInfo.stationName,
                bs->stationArray[i].stationInfo.totalRents);
     }
@@ -296,4 +302,16 @@ void printRents(bikeSharingADT bs, size_t i) {
         printf("%zu\n", aux->endId);
         aux = aux->next;
     }
+}
+
+size_t getTotalRentsBetweenStations(bikeSharingADT bs,size_t i,size_t j) {
+    tRentList *aux = bs->stationArray[j].rentList;
+    size_t totalRents = 0;
+    while (aux != NULL) {
+        if (aux->endId == bs->stationArray[i].stationInfo.id) {
+            totalRents++;
+        }
+        aux = aux->next;
+    }
+    return totalRents;
 }
