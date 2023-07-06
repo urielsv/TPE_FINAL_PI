@@ -249,7 +249,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
         }
         printf("finalmente, hay %zu de stations\n", getStationCount(bs));
 
-
+        sortStationsById(bs);
         /*
          * Carga de datos al ADT desde file[RENTS]
          */
