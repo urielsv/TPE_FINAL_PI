@@ -112,3 +112,7 @@ int loadQuery1(bikeSharingADT bs, FILE * query1){
 
     return OK;
 }
+
+int loadQuery2(bikeSharingADT bs, FILE * query2){
+    //sortByAlpha(bs,)
+}
