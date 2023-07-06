@@ -139,6 +139,7 @@ static char* stringCopy(const char* str) {
     copy[strlen(str)] = 0;
     return copy;
 }
+
 static void addStationList(bikeSharingADT bs, char* stationName, size_t id) {
     tStationList* newStation = malloc(sizeof(tStationList));
     memCheck(newStation);
@@ -328,10 +329,11 @@ void freeBikeSharing(bikeSharingADT bs) {
     free(bs);
 }
 
-/*
+/******************************************************************************
  *
- * FUNCIONES EXTRA
- */
+ * @category    FUNCIONES EXTRA
+ *
+ ******************************************************************************/
 void printList(bikeSharingADT bs) {
     tStationList * current = bs->stationList;
     int i=0;
