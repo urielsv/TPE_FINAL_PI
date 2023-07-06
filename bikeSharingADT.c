@@ -197,14 +197,18 @@ static int addRentArray(bikeSharingADT bs, int startMonth, size_t startId, size_
         newRent->startMonth = startMonth;
         newRent->endId = endId;
         newRent->isMember = isMember;
+        newRent->next = NULL;
 
         tRentList* aux = bs->stationArray[startId].rentList;
         bs->stationArray[startId].rentList = newRent;
-        newRent->next = aux;
+        bs->stationArray[startId].rentList->next = aux;
 
         bs->stationArray[startId].sizeRentList++;
+
         return SUCCESS;
     }
+
+
     return ERROR;
 
 }
@@ -309,7 +313,7 @@ static void freeRecList(tStationList * list){
 void freeBikeSharing(bikeSharingADT bs) {
 
     if (bs->type == ARRAY) {
-        for (int i = 0; i < bs->stationCount; i++) {
+        for (int i = 0; i < bs->sizeArray; i++) {
 
               freeRecRents(bs->stationArray[i].rentList);
         }
@@ -332,7 +336,7 @@ void printList(bikeSharingADT bs) {
     tStationList * current = bs->stationList;
     int i=0;
     while(current != NULL){
-        printf(" [%u] Current: %u, %s\n", i, current->stationInfo.id, current->stationInfo.stationName);
+        printf(" [%u] Current: %u, %s\n has %zu rents", i, current->stationInfo.id, current->stationInfo.stationName, current->sizeRentList);
         current = current->next;
         i++;
     }

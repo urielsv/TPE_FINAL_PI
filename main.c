@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
     // Cargo data de .csv's a mi ADT.
     loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
+    //printList(bikeSharing);
+
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
     puts("Mem liberada.");
