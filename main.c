@@ -38,10 +38,6 @@ enum {
 };
 
 
-enum {
-  LIST=0, ARRAY
-};
-
 int loadQuery1(bikeSharingADT bs, FILE * query1);
 int loadQuery2(bikeSharingADT bs, FILE * query2);
 int loadQuery3(bikeSharingADT bs, FILE * query3);
@@ -76,9 +72,10 @@ int main(int argc, char *argv[]) {
 //    loadQuery2(bikeSharing, queries[QUERY2]);
 //    loadQuery3(bikeSharing, queries[QUERY3]);
 
+
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
-    puts("Mem liberada.");
+    puts("Memoria liberada.");
     closeFiles(files);
     puts("Fin de ejecucion.");
     return 0;
@@ -97,9 +94,10 @@ int loadQuery1(bikeSharingADT bs, FILE * query1){
        char* stationName;
        for(int i = 0; i < getSize(bs); i++) {
          total = getTotalMemberRents(bs, i);
-         stationName = getStationName(bs, i);;
+         stationName = getStationName(bs, i);
          if (total !=-1) {
            int res = fprintf(query1, "%s;%li\n", stationName, total);
+             free(stationName);
            if (res < 0){
              return ERROR;
            }

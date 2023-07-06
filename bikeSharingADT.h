@@ -49,8 +49,8 @@ void freeBikeSharing(bikeSharingADT bs);
 
 void printName(bikeSharingADT bs, size_t id);
 void printList(bikeSharingADT bs);
-
+void printTotalRents(bikeSharingADT bs, size_t id);
 void sortStationsByRent(bikeSharingADT bs);
-
+void sortStationsById(bikeSharingADT bs);
 
 #endif

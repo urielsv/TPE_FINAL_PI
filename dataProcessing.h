@@ -47,6 +47,7 @@ int closeFiles(FILE* files[]);
  * @param argv Nombre del archivo ejecutable.
  */
 int putDataToADT(bikeSharingADT bikeSharing, FILE *file[], char *argv);
-
+void printArray(bikeSharingADT bs);
 void printRents(bikeSharingADT bs, size_t id);
+
 #endif

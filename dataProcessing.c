@@ -37,9 +37,7 @@ enum {
 enum {
     MON = 1, NYC
 };
-enum {
-    LIST, ARRAY
-};
+
 
 enum {
     CASUAL, MEMBER
@@ -184,7 +182,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
      * Guardo en el TAD el tipo de estructura que voy a utilizar.
      */
     if (type == MON) {
-        setType(bs, ARRAY);
+
         /*
          * Carga de datos al ADT desde file[STATION]
          */
@@ -198,10 +196,14 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             }
         }
 
+        sortStationsById(bs);   // Ordena las estaciones y realloquea el vector
+
+
         /*
          * Carga de datos al ADT desde file[RENTS]
          */
-        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
+        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL ) {
+
             token = strtok(buff, DELIM_PREFIX);
             char *auxMonth = token;
 
@@ -229,7 +231,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
     }
 
     if (type == NYC) {
-        setType(bs, LIST);
+
         /*
          * Carga de datos al ADT desde file[STATION]
          */
