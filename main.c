@@ -117,10 +117,12 @@ int loadQuery2(bikeSharingADT bs, FILE *query2) {
         for (int j = 0; j < getSize(bs); j++) {
             if (i != j) {
                 size_t total = getTotalRentsBetweenStations(bs, i, j);
+                size_t totalReverse = getTotalRentsBetweenStations(bs, j, i);
+                printf("sigo en el for[%d]\n",i);
                 if (total != -1) {
                     char *stationA = getStationName(bs, i);
                     char *stationB = getStationName(bs, j);
-                    int res = fprintf(query2, "%s;%s;%li\n", stationA, stationB, total);
+                    int res = fprintf(query2, "%s;%s;%li;%li\n", stationA, stationB, total, totalReverse);
                     free(stationA);
                     free(stationB);
                     if (res < 0) {
