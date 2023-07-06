@@ -21,19 +21,18 @@
 #define FILE_NAME 0
 #define FILES_COUNT 2
 
-void pError(const char* errorStream, const char* errorText)
-{
+void pError(const char *errorStream, const char *errorText) {
     fprintf(stderr, "%s: %s\n", errorStream, errorText);
     exit(1);
 }
 
-void validateArguments(int argc, char* argv[]) {
+void validateArguments(int argc, char *argv[]) {
     if (!validArgumentCount(argc)) {
         pError("main", "invalid argument count.");
     }
 }
 
-void createFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
+void createFiles(FILE *files[FILES_COUNT], char *argv[], char *flag) {
     if (strcmp(flag, "r") != 0 && strcmp(flag, "w") != 0) {
         pError("file(s):", "Not a valid read/write flag.");
     }
@@ -44,14 +43,14 @@ void createFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
     printf("Files have been loaded successfully.\n");
 }
 
-void loadDataToADT(bikeSharingADT bs, FILE* files[FILES_COUNT], char* argv) {
+void loadDataToADT(bikeSharingADT bs, FILE *files[FILES_COUNT], char *argv) {
     int valid = putDataToADT(bs, files, argv);
 
     if (!valid) {
         pError("main", "Failed to load data to ADT.");
     }
 
-    printf("main: Data has been loaded correctly.\n");
+    printf("Data has been loaded correctly.\n");
 }
 
 //void loadQueries(FILE* queries[], int count) {

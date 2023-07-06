@@ -58,7 +58,7 @@ int validArgumentCount(int argc) {
     return SUCCESS;
 }
 
-int newFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
+int newFiles(FILE *files[FILES_COUNT], char *argv[], char *flag) {
     for (int i = 0; i < FILES_COUNT; i++) {
         files[i] = fopen(argv[i], flag);
         // Si es NULL no lo pudo leer.
@@ -69,7 +69,7 @@ int newFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
     return SUCCESS;
 }
 
-int closeFiles(FILE* files[FILES_COUNT]) {
+int closeFiles(FILE *files[FILES_COUNT]) {
     for (int i = 0; i < FILES_COUNT; i++) {
         if (fclose(files[i]) != 0)
             return DATA_ERROR;
@@ -140,7 +140,7 @@ static int getArgumentFormat(char *argv, char *format[FILES_COUNT]) {
  * @param token String acotado de la fecha.
  * @returns el mes como entero.
  */
-static int getMonth(char* token) {
+static int getMonth(char *token) {
 
     token = strchr(token, '-') + 1;
     strtok(token, DATE_DELIM);
@@ -192,7 +192,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             stationName = UPDATE();
             valid = addStation(bs, stationName, id);
             if (!valid) {
-              return DATA_ERROR;
+                return DATA_ERROR;
             }
         }
 
@@ -202,7 +202,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
         /*
          * Carga de datos al ADT desde file[RENTS]
          */
-        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL ) {
+        while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
 
             token = strtok(buff, DELIM_PREFIX);
             char *auxMonth = token;
@@ -218,14 +218,14 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             token = UPDATE();
 
             idEnd = atol(
-                token); // en este momento token vale el id de donde termina
+                    token); // en este momento token vale el id de donde termina
             token = UPDATE();
 
             isMember = atoi(token);
-                month = getMonth(auxMonth);
-                valid = addRent(bs, month, idStart, idEnd, isMember);
-                if (!valid) {
-                    return DATA_ERROR;
+            month = getMonth(auxMonth);
+            valid = addRent(bs, month, idStart, idEnd, isMember);
+            if (!valid) {
+                return DATA_ERROR;
             }
         }
     }
@@ -254,22 +254,22 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
          * Carga de datos al ADT desde file[RENTS]
          */
         while (fgets(buff, BUFF_SIZE, file[RENTS]) != NULL) {
-              token = strtok(buff, DELIM_PREFIX);
-              char *auxMonth = token;
-              token= UPDATE();
-              idStart = atol(token);
-              token = UPDATE();
-              token = UPDATE();
-              idEnd = atol(token);
-              token = UPDATE();
-              token = UPDATE();
-              isMember = strncmp("member", token, strlen("member")) == 0
-                             ? MEMBER : CASUAL;
-              month = getMonth(auxMonth);
-              valid = addRent(bs, month, idStart, idEnd, isMember);
-              if (!valid) {
-                  return DATA_ERROR;
-              }
+            token = strtok(buff, DELIM_PREFIX);
+            char *auxMonth = token;
+            token = UPDATE();
+            idStart = atol(token);
+            token = UPDATE();
+            token = UPDATE();
+            idEnd = atol(token);
+            token = UPDATE();
+            token = UPDATE();
+            isMember = strncmp("member", token, strlen("member")) == 0
+                       ? MEMBER : CASUAL;
+            month = getMonth(auxMonth);
+            valid = addRent(bs, month, idStart, idEnd, isMember);
+            if (!valid) {
+                return DATA_ERROR;
+            }
         }
     }
 

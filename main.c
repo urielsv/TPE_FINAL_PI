@@ -38,27 +38,29 @@ enum {
 };
 
 
-int loadQuery1(bikeSharingADT bs, FILE * query1);
-int loadQuery2(bikeSharingADT bs, FILE * query2);
-int loadQuery3(bikeSharingADT bs, FILE * query3);
+int loadQuery1(bikeSharingADT bs, FILE *query1);
+
+int loadQuery2(bikeSharingADT bs, FILE *query2);
+
+int loadQuery3(bikeSharingADT bs, FILE *query3);
 
 int main(int argc, char *argv[]) {
     // Valido que el ejecutable tenga el formato correcto.
     validateArguments(argc, argv);
 
 
-    FILE* files[FILES_COUNT];
-    createFiles(files, argv+1, "r");
+    FILE *files[FILES_COUNT];
+    createFiles(files, argv + 1, "r");
 
     // Creo mis queries.
-    FILE* queries[QUERIES];
-    char* queryNames[QUERIES*2] = {
-        "query1.csv",
-        "query2.csv",
-        "query3.csv",
-        "query1.html",
-        "query2.html",
-        "query3.html"
+    FILE *queries[QUERIES];
+    char *queryNames[QUERIES * 2] = {
+            "query1.csv",
+            "query2.csv",
+            "query3.csv",
+            "query1.html",
+            "query2.html",
+            "query3.html"
     };
     createFiles(queries, queryNames, "w");
 
@@ -87,28 +89,27 @@ int main(int argc, char *argv[]) {
  * La información debe listarse ordenada en forma descendente por cantidad total de viajes y a igualdad de viajes desempatar alfabéticamente por nombre
  * de la estación.
  */
-int loadQuery1(bikeSharingADT bs, FILE * query1){
-    sortStationsByRent(bs); // Sortea por cantidad de viajes y elimina los espacion notUsed
+int loadQuery1(bikeSharingADT bs, FILE *query1) {
+    sortStationsByRent(bs); // Sortea por cantidad de viajes
     fprintf(query1, "Station;StartedTrips\n");
-       size_t total = 0;
-       char* stationName;
-       for(int i = 0; i < getSize(bs); i++) {
-         total = getTotalMemberRents(bs, i);
-         stationName = getStationName(bs, i);
-         if (total !=-1) {
-           int res = fprintf(query1, "%s;%li\n", stationName, total);
-             free(stationName);
-           if (res < 0){
-             return ERROR;
-           }
-         }
-       }
-
+    size_t total = 0;
+    char *stationName;
+    for (int i = 0; i < getSize(bs); i++) {
+        total = getTotalMemberRents(bs, i);
+        stationName = getStationName(bs, i);
+        if (total != -1) {
+            int res = fprintf(query1, "%s;%li\n", stationName, total);
+            free(stationName);
+            if (res < 0) {
+                return ERROR;
+            }
+        }
+    }
 
     return OK;
 }
 
-int loadQuery2(bikeSharingADT bs, FILE * query2){
+int loadQuery2(bikeSharingADT bs, FILE *query2) {
     //sortByAlpha(bs,)
     fprintf(query2, "StationA;StationB;Trips A->B;Trips B->A\n");
 }

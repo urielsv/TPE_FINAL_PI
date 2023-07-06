@@ -28,12 +28,12 @@ int validArgumentCount(int argc);
 /*
  * @brief Guarda en files la informacion de los archivos.
  */
-int newFiles(FILE* files[], char* argv[], char* flag);
+int newFiles(FILE *files[], char *argv[], char *flag);
 
 /*
  * @brief Cierra los archivos previamente abiertos.
  */
-int closeFiles(FILE* files[]);
+int closeFiles(FILE *files[]);
 
 /*
  * @brief Guarda en ADT los datos obtenidos a partir de las listas.
@@ -47,7 +47,9 @@ int closeFiles(FILE* files[]);
  * @param argv Nombre del archivo ejecutable.
  */
 int putDataToADT(bikeSharingADT bikeSharing, FILE *file[], char *argv);
+
 void printArray(bikeSharingADT bs);
+
 void printRents(bikeSharingADT bs, size_t id);
 
 #endif
