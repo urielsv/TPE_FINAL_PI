@@ -16,6 +16,7 @@
 #include "dataProcessing.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define FILE_NAME 0
 #define FILES_COUNT 2
@@ -32,8 +33,11 @@ void validateArguments(int argc, char* argv[]) {
     }
 }
 
-void createFiles(FILE* files[FILES_COUNT], char* argv[]) {
-    int valid = newFiles(files, argv);
+void createFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
+    if (strcmp(flag, "r") != 0 && strcmp(flag, "w") != 0) {
+        pError("file(s):", "Not a valid read/write flag.");
+    }
+    int valid = newFiles(files, argv, flag);
     if (!valid) {
         pError("file(s):", "Permission denied.");
     }
@@ -49,3 +53,9 @@ void loadDataToADT(bikeSharingADT bs, FILE* files[FILES_COUNT], char* argv) {
 
     printf("main: Data has been loaded correctly.\n");
 }
+
+//void loadQueries(FILE* queries[], int count) {
+//    for (int i = 0; i < count; i++) {
+//
+//    }
+//}

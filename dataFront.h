@@ -33,7 +33,7 @@ void pError(const char* errorStream, const char* errorText);
  */
 void validateArguments(int argc, char* argv[]);
 
-void createFiles(FILE* files[], char* argv[]);
+void createFiles(FILE* files[], char* argv[], char* flag);
 
 /*
  * @brief Verifica que la carga de datos al ADT sea correcta.
@@ -41,4 +41,5 @@ void createFiles(FILE* files[], char* argv[]);
  */
 void loadDataToADT(bikeSharingADT bikeSharing, FILE* files[], char* argv);
 
+//void loadQueries(FILE* queries[]);
 #endif

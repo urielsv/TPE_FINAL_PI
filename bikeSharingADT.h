@@ -34,8 +34,11 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 size_t getId(bikeSharingADT bs, size_t id);
 size_t getStationCount(bikeSharingADT bs);
 int getType(bikeSharingADT bs);
-
-
+size_t getTotalRents(bikeSharingADT bs, size_t id);
+size_t getTotalMemberRents(bikeSharingADT bs, size_t id);
+char * getStationName(bikeSharingADT bs, size_t id);
+size_t getSize(bikeSharingADT bs);
+char isUsed(bikeSharingADT bs, size_t id);
 
 void setType(bikeSharingADT bs, int type);
 
@@ -46,6 +49,8 @@ void freeBikeSharing(bikeSharingADT bs);
 
 void printName(bikeSharingADT bs, size_t id);
 void printList(bikeSharingADT bs);
+
+void sortStationsByRent(bikeSharingADT bs);
 
 
 #endif

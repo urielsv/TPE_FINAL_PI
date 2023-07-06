@@ -60,9 +60,9 @@ int validArgumentCount(int argc) {
     return SUCCESS;
 }
 
-int newFiles(FILE* files[FILES_COUNT], char* argv[]) {
+int newFiles(FILE* files[FILES_COUNT], char* argv[], char* flag) {
     for (int i = 0; i < FILES_COUNT; i++) {
-        files[i] = fopen(argv[i+1], "r");
+        files[i] = fopen(argv[i], flag);
         // Si es NULL no lo pudo leer.
         if (files[i] == NULL) {
             return DATA_ERROR;
@@ -220,10 +220,10 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             token = UPDATE();
 
             isMember = atoi(token);
-            month = getMonth(auxMonth);
-            valid = addRent(bs, month, idStart, idEnd, isMember);
-            if (!valid) {
-                return DATA_ERROR;
+                month = getMonth(auxMonth);
+                valid = addRent(bs, month, idStart, idEnd, isMember);
+                if (!valid) {
+                    return DATA_ERROR;
             }
         }
     }
@@ -261,7 +261,8 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
               idEnd = atol(token);
               token = UPDATE();
               token = UPDATE();
-              isMember = strncmp("member", token, strlen("member")) == 0 ? MEMBER : CASUAL;
+              isMember = strncmp("member", token, strlen("member")) == 0
+                             ? MEMBER : CASUAL;
               month = getMonth(auxMonth);
               valid = addRent(bs, month, idStart, idEnd, isMember);
               if (!valid) {
