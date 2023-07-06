@@ -110,4 +110,5 @@ int loadQuery1(bikeSharingADT bs, FILE * query1){
 
 int loadQuery2(bikeSharingADT bs, FILE * query2){
     //sortByAlpha(bs,)
+    fprintf(query2, "StationA;StationB;Trips A->B;Trips B->A\n");
 }
