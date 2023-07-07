@@ -125,6 +125,7 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
     bs->stationArray[bs->stationCount].rentList = NULL;
     bs->stationArray[bs->stationCount].stationInfo.stationName = stringCopy(stationName);
     bs->stationArray[bs->stationCount].stationInfo.id = id;
+//    bs->stationArray[bs->stationCount].endIdArray.endId = id;
     bs->stationArray[bs->stationCount].stationInfo.totalMemberRents = 0;
     bs->stationCount++;
 
@@ -132,14 +133,13 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
 
 }
 
-size_t findStation(bikeSharingADT bs, size_t id) {
-    size_t low = 0;
-    size_t high = bs->stationCount - 1;
+static long int findStation(bikeSharingADT bs, size_t id) {
+    long int low = 0;
+    long int high = (long int) (bs->stationCount);
 
     while (low <= high) {
-        size_t mid = low + (high - low) / 2;
-        size_t currentId = bs->stationArray[mid].stationInfo.id;
-
+        long int mid = low + (high - low) / 2;
+        long int currentId = bs->stationArray[mid].stationInfo.id;
         if (currentId == id) {
             return mid;
         } else if (currentId < id) {
@@ -153,7 +153,12 @@ size_t findStation(bikeSharingADT bs, size_t id) {
 
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
     size_t indexStation = findStation(bs, startId);
-    if (indexStation < 0) return ERROR;
+   // printf(" findstation en index= %zu\n", indexStation);
+
+    if (indexStation == UNDEFINED) {
+      printf("indexStation error\n");
+      return ERROR;
+    }
 
     tRentList *newRent = malloc(sizeof(tRentList));
     memCheck(newRent);
@@ -169,9 +174,12 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     bs->stationArray[indexStation].stationInfo.totalRents++;
     bs->stationArray[indexStation].stationInfo.totalMemberRents += (int) isMember;
 
-
-    size_t endIndexStation = findStation(bs, endId);
-    if (endIndexStation < 0) return ERROR;
+    long int endIndexStation = findStation(bs,endId);
+//    if (endIndexStation == UNDEFINED) {
+//        printf("%zu endid station error, UNDEFINED %d\n", endIndexStation, (int) UNDEFINED);
+//        return ERROR;
+//    }
+    if (endIndexStation != UNDEFINED)
     bs->stationArray[indexStation].endIdArray[endIndexStation].count++;
 
 //    if(strcmp(bs->stationArray[indexStation].stationInfo.stationName,bs->stationArray[0].stationInfo.stationName) == 0)
@@ -262,12 +270,13 @@ int compareStationsById(const void *station1, const void *station2) {
 // Sortea pr id de forma ascendente
 void sortStationsById(bikeSharingADT bs) {
     reallocateStationsArray(bs);
-    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), compareStationsById);
-    for(int i = 0; i < bs->sizeArray; i++) {
+    qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStationsById);
+    for (int i = 0; i < bs->stationCount; i++) {
         // buenas vibras y felicidad #positivevibes
-        bs->stationArray[i].endIdArray = calloc(bs->sizeArray, sizeof(tEndIdArray));
+        bs->stationArray[i].endIdArray = calloc(bs->stationCount, sizeof(tEndIdArray));
         // copiar los nombres de
         for(int j = 0; j < bs->stationCount; j++) {
+            bs->stationArray[i].endIdArray[j].endId = bs->stationArray[i].stationInfo.id;
             bs->stationArray[i].endIdArray[j].stationName =
                 stringCopy(bs->stationArray[j].stationInfo.stationName);
         }
@@ -294,7 +303,8 @@ int compareStationsByRentDescending(const void *station1, const void *station2) 
 
 // Sortea por cantidad de rents (por miembros) de forma descendente
 void sortStationsByRent(bikeSharingADT bs) {
-    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), compareStationsByRentDescending);
+    qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray),
+          compareStationsByRentDescending);
 }
 
 int compareStations(const void *a, const void *b) {
@@ -304,7 +314,7 @@ int compareStations(const void *a, const void *b) {
     return strcmp(stationA->stationInfo.stationName, stationB->stationInfo.stationName);
 }
 
-int compareEndIdArray(const void* a, const void* b) {
+static int compareEndIdArray(const void* a, const void* b) {
     const tEndIdArray* arrA = (const tEndIdArray*)a;
     const tEndIdArray* arrB = (const tEndIdArray*)b;
     return strcmp(arrA->stationName, arrB->stationName);
@@ -315,13 +325,17 @@ void sortStationsByAlpha(bikeSharingADT bs) {
     qsort(bs->stationArray, bs->stationCount,
           sizeof(tStationArray), compareStations);
 
-    for(int i = 0; i < bs->sizeArray; i++) {
-        printf("%s[count: %zu]\t%s\n",bs->stationArray[0].stationInfo.stationName,
-               bs->stationArray[0].endIdArray[i].count, bs->stationArray[0].endIdArray[i].stationName);
-        //qsort(bs->stationArray[i].endIdArray, bs->stationCount,
-       //       sizeof(tEndIdArray), compareEndIdArray);
-    }
+    // el problema es que sortea las stationsArray pero no sortea el vecetor adentro (endIdArray)
+    for (int i = 0; i < bs->stationCount; i++) {
+        qsort(bs->stationArray[i].endIdArray, bs->stationCount, sizeof(tEndIdArray), compareEndIdArray);
+      }
+//        printf("%s[count: %zu]\t%s\n",bs->stationArray[0].stationInfo.stationName,
+//               bs->stationArray[0].endIdArray[i].count, bs->stationArray[0].endIdArray[i].stationName);
 
+//    for( int j = 0; j < bs->stationCount; j++) {
+//    printf("station: %s, endStation:%s count: %zu\n", bs->stationArray[0].stationInfo.stationName ,
+//    bs->stationArray[0].endIdArray[j].stationName,bs->stationArray[i].endIdArray[j].count);
+//    }
 }
 
 /******************************************************************************

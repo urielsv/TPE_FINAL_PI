@@ -116,7 +116,7 @@ int loadQuery2(bikeSharingADT bs, FILE *query2) {
     sortStationsByAlpha(bs);
     fprintf(query2, "StationA;StationB;Trips A->B;Trips B->A\n");
 
-    for(size_t i = 0; i < getSize(bs); i++) {
+    for (size_t i = 0; i < getSize(bs); i++) {
         char *stationA = getStationName(bs, i);
         for (size_t j = 0; j < getSize(bs); j++) {
             if (i != j) {
