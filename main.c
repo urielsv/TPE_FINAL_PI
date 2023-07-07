@@ -189,6 +189,7 @@ int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3){
         if (res < 0) {
             return ERROR;
         }
+        free(stationName);
         free(months);
     }
     return OK;
