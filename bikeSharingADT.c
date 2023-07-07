@@ -215,7 +215,10 @@ void freeBikeSharing(bikeSharingADT bs) {
         if (bs->stationArray[i].rentList != NULL) {
             freeRecRents(bs->stationArray[i].rentList);
         }
-
+        for(int j =0 ; j < bs->stationCount; j++){
+            free(bs->stationArray[i].endIdArray[j].stationName);
+        }
+        free(bs->stationArray[i].endIdArray);
         free(bs->stationArray[i].stationInfo.stationName);
     }
     free(bs->stationArray);

@@ -47,6 +47,7 @@ void setType(bikeSharingADT bs, int type);
  */
 void freeBikeSharing(bikeSharingADT bs);
 
+void printEndRentsArray(bikeSharingADT bs, size_t index);
 void printName(bikeSharingADT bs, size_t id);
 void printList(bikeSharingADT bs);
 void printTotalRents(bikeSharingADT bs, size_t id);
