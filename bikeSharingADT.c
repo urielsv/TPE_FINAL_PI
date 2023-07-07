@@ -48,10 +48,16 @@ typedef struct station {
  *
  * @brief   Estructura de estacion para tipo "Array"
  *
- ******************************************************************************/
+ ******************************************************************************/\
+typedef struct { // whathe fuck?
+    size_t count;
+    char* stationName;
+} tEndIdArray;
+
 typedef struct {
     tStation stationInfo;
     tRentList *rentList;
+    tEndIdArray * endIdArray;
 } tStationArray;
 
 /******************************************************************************
@@ -103,6 +109,7 @@ void reallocateStationsArray(bikeSharingADT bs) {
     memCheck(bs->stationArray);
 
     bs->sizeArray = bs->stationCount;
+
 }
 
 int addStation(bikeSharingADT bs, char *stationName, size_t id) {
@@ -161,6 +168,14 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     bs->stationArray[indexStation].rentList->next = aux;
     bs->stationArray[indexStation].stationInfo.totalRents++;
     bs->stationArray[indexStation].stationInfo.totalMemberRents += (int) isMember;
+
+
+    size_t endIndexStation = findStation(bs, endId);
+    if (endIndexStation < 0) return ERROR;
+    bs->stationArray[indexStation].endIdArray[endIndexStation].count++;
+
+//    if(strcmp(bs->stationArray[indexStation].stationInfo.stationName,bs->stationArray[0].stationInfo.stationName) == 0)
+//      printf("la station %s tiene %d del end id %d\n", bs->stationArray[indexStation].stationInfo.stationName,bs->stationArray[indexStation].endIdArray[endIndexStation].count, endId);
 
     return SUCCESS;
 }
@@ -248,6 +263,16 @@ int compareStationsById(const void *station1, const void *station2) {
 void sortStationsById(bikeSharingADT bs) {
     reallocateStationsArray(bs);
     qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray), compareStationsById);
+    for(int i = 0; i < bs->sizeArray; i++) {
+        // buenas vibras y felicidad #positivevibes
+        bs->stationArray[i].endIdArray = calloc(bs->sizeArray, sizeof(tEndIdArray));
+        // copiar los nombres de
+        for(int j = 0; j < bs->stationCount; j++) {
+            bs->stationArray[i].endIdArray[j].stationName =
+                stringCopy(bs->stationArray[j].stationInfo.stationName);
+        }
+    }
+
 }
 
 int compareStationsByRentDescending(const void *station1, const void *station2) {
@@ -279,9 +304,24 @@ int compareStations(const void *a, const void *b) {
     return strcmp(stationA->stationInfo.stationName, stationB->stationInfo.stationName);
 }
 
+int compareEndIdArray(const void* a, const void* b) {
+    const tEndIdArray* arrA = (const tEndIdArray*)a;
+    const tEndIdArray* arrB = (const tEndIdArray*)b;
+    return strcmp(arrA->stationName, arrB->stationName);
+}
+
 // Sortea por nombre de forma alfabetica
 void sortStationsByAlpha(bikeSharingADT bs) {
-    qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStations);
+    qsort(bs->stationArray, bs->stationCount,
+          sizeof(tStationArray), compareStations);
+
+    for(int i = 0; i < bs->sizeArray; i++) {
+        printf("%s[count: %zu]\t%s\n",bs->stationArray[0].stationInfo.stationName,
+               bs->stationArray[0].endIdArray[i].count, bs->stationArray[0].endIdArray[i].stationName);
+        //qsort(bs->stationArray[i].endIdArray, bs->stationCount,
+       //       sizeof(tEndIdArray), compareEndIdArray);
+    }
+
 }
 
 /******************************************************************************
@@ -290,9 +330,15 @@ void sortStationsByAlpha(bikeSharingADT bs) {
  *
  ******************************************************************************/
 void printArray(bikeSharingADT bs) {
-    for (int i = 0; i < bs->sizeArray; i++) {
+    for (int i = 0; i < bs->stationCount; i++) {
         printf("%s\thas %zu rents\n", bs->stationArray[i].stationInfo.stationName,
                bs->stationArray[i].stationInfo.totalRents);
+    }
+}
+
+void printEndRentsArray(bikeSharingADT bs, size_t index) {
+    for(int i =0; i< bs->sizeArray; i++) {
+        printf("%zu\n", bs->stationArray[index].endIdArray[i].count);
     }
 }
 
@@ -308,14 +354,7 @@ void printRents(bikeSharingADT bs, size_t i) {
     }
 }
 
-size_t getTotalRentsBetweenStations(bikeSharingADT bs,size_t i,size_t j) {
-    tRentList *aux = bs->stationArray[j].rentList;
-    size_t totalRents = 0;
-    while (aux != NULL) {
-        if (aux->endId == bs->stationArray[i].stationInfo.id) {
-            totalRents++;
-        }
-        aux = aux->next;
-    }
+size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t endIndex) {
+    size_t totalRents = bs->stationArray[startIndex].endIdArray[endIndex].count;
     return totalRents;
 }

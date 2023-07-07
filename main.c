@@ -75,7 +75,9 @@ int main(int argc, char *argv[]) {
     loadQuery2(bikeSharing, queries[QUERY2]);
 //    loadQuery3(bikeSharing, queries[QUERY3]);
 
-    printArray(bikeSharing);
+    //printEndRentsArray(bikeSharing, 0);
+
+
     // Libero los recursos utilizados por mi ADT.
     freeBikeSharing(bikeSharing);
     puts("Memoria liberada.");
