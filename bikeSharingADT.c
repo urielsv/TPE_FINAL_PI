@@ -373,3 +373,12 @@ size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t
     size_t totalRents = bs->stationArray[startIndex].endIdArray[endIndex].count;
     return totalRents;
 }
+
+void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray) {
+    tRentList *aux = bs->stationArray[stationIndex].rentList;
+    while (aux != NULL) {
+        monthArray[aux->startMonth]++;
+        //printf("%d\t startmonth: %d",monthArray[aux->startMonth],aux->startMonth );
+        aux = aux->next;
+    }
+}

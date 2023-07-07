@@ -55,6 +55,8 @@ void sortStationsByRent(bikeSharingADT bs);
 void sortStationsById(bikeSharingADT bs);
 void sortStationsByAlpha(bikeSharingADT bs);
 
+void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray);
+
 size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t endIndex);
 
 #endif
