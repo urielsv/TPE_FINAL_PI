@@ -4,7 +4,7 @@
  *
  * @brief   ADT para manejo de datos y queries.
  *
- * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *
@@ -54,6 +54,6 @@ void sortStationsByRent(bikeSharingADT bs);
 void sortStationsById(bikeSharingADT bs);
 void sortStationsByAlpha(bikeSharingADT bs);
 
-size_t getTotalRentsBetweenStations(bikeSharingADT bs,size_t i,size_t j);
+size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t endIndex);
 
 #endif

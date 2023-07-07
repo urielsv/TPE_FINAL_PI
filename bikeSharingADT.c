@@ -146,6 +146,7 @@ size_t findStation(bikeSharingADT bs, size_t id) {
 
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
     size_t indexStation = findStation(bs, startId);
+    if (indexStation < 0) return ERROR;
 
     tRentList *newRent = malloc(sizeof(tRentList));
     memCheck(newRent);

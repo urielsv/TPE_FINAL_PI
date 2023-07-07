@@ -4,7 +4,7 @@
  *
  * @brief   Ejecucion del programa.
  *
- * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *
@@ -113,26 +113,22 @@ int loadQuery2(bikeSharingADT bs, FILE *query2) {
     sortStationsByAlpha(bs);
     fprintf(query2, "StationA;StationB;Trips A->B;Trips B->A\n");
 
-    for(int i=0; i<getSize(bs); i++) {
-        for (int j = 0; j < getSize(bs); j++) {
+    for(size_t i = 0; i < getSize(bs); i++) {
+        char *stationA = getStationName(bs, i);
+        for (size_t j = 0; j < getSize(bs); j++) {
             if (i != j) {
                 size_t total = getTotalRentsBetweenStations(bs, i, j);
                 size_t totalReverse = getTotalRentsBetweenStations(bs, j, i);
-                printf("sigo en el for[%d]\n",i);
-                if (total != -1) {
-                    char *stationA = getStationName(bs, i);
-                    char *stationB = getStationName(bs, j);
-                    int res = fprintf(query2, "%s;%s;%li;%li\n", stationA, stationB, total, totalReverse);
-                    free(stationA);
-                    free(stationB);
-                    if (res < 0) {
-                        return ERROR;
-                    }
+                char *stationB = getStationName(bs, j);
+                int res = fprintf(query2, "%s;%s;%zu;%zu\n", stationA, stationB, total, totalReverse);
+
+                free(stationB);
+                if (res < 0) {
+                    return ERROR;
                 }
             }
         }
-
-
+        free(stationA);
     }
 
     return OK;
