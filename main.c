@@ -39,6 +39,10 @@ enum {
     BIKES = 0, STATION
 };
 
+enum months {
+    JAN=1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
+};
+
 
 int loadQuery1(bikeSharingADT bs, FILE *query1, htmlTable table1);
 
@@ -167,18 +171,18 @@ int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3){
         char* stationName = getStationName(bs, i);
         int res = fprintf(query3,"%s\n", stationName);
         addHTMLRow(table3,
-                      monthsAux[1],
-                      monthsAux[2],
-                      monthsAux[3],
-                      monthsAux[4],
-                      monthsAux[5],
-                      monthsAux[6],
-                      monthsAux[7],
-                      monthsAux[8],
-                      monthsAux[9],
-                      monthsAux[10],
-                      monthsAux[11],
-                      monthsAux[12],
+                      monthsAux[JAN],
+                      monthsAux[FEB],
+                      monthsAux[APR],
+                      monthsAux[MAR],
+                      monthsAux[MAY],
+                      monthsAux[JUN],
+                      monthsAux[JUL],
+                      monthsAux[AUG],
+                      monthsAux[SEP],
+                      monthsAux[OCT],
+                      monthsAux[NOV],
+                      monthsAux[DEC],
                       stationName
                    );
 
