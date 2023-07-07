@@ -7,8 +7,6 @@
 
 #define SUCCESS 1
 #define ERROR !SUCCESS
-#define FOUND 1
-#define NOT_FOUND !FOUND
 #define UNDEFINED (-1)
 #define BLOCK 150
 
@@ -52,7 +50,6 @@ typedef struct station {
 typedef struct { // whathe fuck?
     size_t count;
     char* stationName;
-    size_t endId;
 } tEndIdArray;
 
 typedef struct {
@@ -164,7 +161,6 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     memCheck(newRent);
 
     newRent->startMonth = startMonth;
-   // printf("%d\n", newRent->startMonth);
     newRent->endId = endId;
     newRent->isMember = isMember;
     newRent->next = NULL;
@@ -176,15 +172,8 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     bs->stationArray[indexStation].stationInfo.totalMemberRents += (int) isMember;
 
     long int endIndexStation = findStation(bs,endId);
-//    if (endIndexStation == UNDEFINED) {
-//        printf("%zu endid station error, UNDEFINED %d\n", endIndexStation, (int) UNDEFINED);
-//        return ERROR;
-//    }
     if (endIndexStation != UNDEFINED)
-    bs->stationArray[indexStation].endIdArray[endIndexStation].count++;
-
-//    if(strcmp(bs->stationArray[indexStation].stationInfo.stationName,bs->stationArray[0].stationInfo.stationName) == 0)
-//      printf("la station %s tiene %d del end id %d\n", bs->stationArray[indexStation].stationInfo.stationName,bs->stationArray[indexStation].endIdArray[endIndexStation].count, endId);
+        bs->stationArray[indexStation].endIdArray[endIndexStation].count++;
 
     return SUCCESS;
 }
@@ -277,7 +266,6 @@ void sortStationsById(bikeSharingADT bs) {
         bs->stationArray[i].endIdArray = calloc(bs->stationCount, sizeof(tEndIdArray));
         // copiar los nombres de
         for(int j = 0; j < bs->stationCount; j++) {
-            bs->stationArray[i].endIdArray[j].endId = bs->stationArray[i].stationInfo.id;
             bs->stationArray[i].endIdArray[j].stationName =
                 stringCopy(bs->stationArray[j].stationInfo.stationName);
         }
@@ -326,17 +314,9 @@ void sortStationsByAlpha(bikeSharingADT bs) {
     qsort(bs->stationArray, bs->stationCount,
           sizeof(tStationArray), compareStations);
 
-    // el problema es que sortea las stationsArray pero no sortea el vecetor adentro (endIdArray)
     for (int i = 0; i < bs->stationCount; i++) {
         qsort(bs->stationArray[i].endIdArray, bs->stationCount, sizeof(tEndIdArray), compareEndIdArray);
       }
-//        printf("%s[count: %zu]\t%s\n",bs->stationArray[0].stationInfo.stationName,
-//               bs->stationArray[0].endIdArray[i].count, bs->stationArray[0].endIdArray[i].stationName);
-
-//    for( int j = 0; j < bs->stationCount; j++) {
-//    printf("station: %s, endStation:%s count: %zu\n", bs->stationArray[0].stationInfo.stationName ,
-//    bs->stationArray[0].endIdArray[j].stationName,bs->stationArray[i].endIdArray[j].count);
-//    }
 }
 
 /******************************************************************************
