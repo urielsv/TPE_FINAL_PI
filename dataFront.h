@@ -41,5 +41,5 @@ void createFiles(FILE* files[], char* argv[], int count, char* flag);
  */
 void loadDataToADT(bikeSharingADT bikeSharing, FILE* files[], char* argv);
 
-//void loadQueries(FILE* queries[]);
+void validateQuery(int status);
 #endif

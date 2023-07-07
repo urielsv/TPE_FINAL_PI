@@ -17,15 +17,12 @@
 #include "htmlTable.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <string.h>
 
-
-#define BUFF_SIZE   256
-#define FILES_COUNT 2
-#define QUERIES_COUNT 3
-#define OK 1
-#define ERROR (-1)
+#define BUFF_SIZE       64
+#define FILES_COUNT     2
+#define QUERIES_COUNT   3
+#define OK              1
+#define ERROR           -1
 
 enum {
     QUERY1 = 0, QUERY2, QUERY3
@@ -43,61 +40,85 @@ enum months {
     JAN=1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
 };
 
-
+/*
+ * @brief
+ *
+ * @param   bs ADT que contiene los datos a consultar.
+ * @param   query1 Archivo donde se colocara la informacion de la consulta (.csv)
+ * @param   table1 Archivo donde se colocara la informacion de la consulta (.html)
+ *
+ * @returns Estado de la query.
+ */
 int loadQuery1(bikeSharingADT bs, FILE *query1, htmlTable table1);
 
 int loadQuery2(bikeSharingADT bs, FILE *query2, htmlTable table2);
 
 int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3);
 
+
 int main(int argc, char *argv[]) {
-    // Valido que el ejecutable tenga el formato correcto.
+    /*
+     * Antes de comenzar la ejecucion del programa se validan que los argumentos
+     * del ejecutable sean correctos.
+     */
     validateArguments(argc, argv);
 
-
+    /*
+    * Manejo de de archivos (apertura y creacion)
+    */
     FILE *files[FILES_COUNT];
     createFiles(files, argv + 1, FILES_COUNT, "r");
 
-    // Creo mis queries.
     FILE *queries[QUERIES_COUNT];
     char *queryNames[QUERIES_COUNT] = {
-            "query1.csv",
-            "query2.csv",
-            "query3.csv",
+      "query1.csv",
+      "query2.csv",
+      "query3.csv",
     };
 
     createFiles(queries, queryNames, QUERIES_COUNT, "w");
-    htmlTable table1 = newTable("query1.html", 2, "Station", "StartedTrips");
-    htmlTable table2 = newTable("query2.html", 4, "StationA", "StationB", "Trips A->B", "Trips B->A");
-    htmlTable table3 = newTable("query3.html", 13, "J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D", "Station");
-    // Inicializo mi ADT.
+    htmlTable table1 = newTable("query1.html", 2,
+                                "Station", "StartedTrips");
+    htmlTable table2 = newTable("query2.html", 4,
+                                "StationA", "StationB", "Trips A->B", "Trips B->A");
+    htmlTable table3 = newTable("query3.html", 13,
+                                "J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D", "Station");
+
+    /*
+     * Inicializo ADT.
+     */
     bikeSharingADT bikeSharing = newBikeSharingADT();
 
-    // Cargo data de .csv's a mi ADT.
+    /*
+     * Los datos de los .csv proporcionados se cargan en el ADT.
+     */
     loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
-    loadQuery1(bikeSharing, queries[QUERY1], table1);
-    loadQuery2(bikeSharing, queries[QUERY2], table2);
-    loadQuery3(bikeSharing, queries[QUERY3], table3);
+    /*
+     * Se cargan las consultas a partir de los datos almacenados en bikeSharing.
+     */
+    validateQuery(loadQuery1(bikeSharing, queries[QUERY1], table1));
+    validateQuery(loadQuery2(bikeSharing, queries[QUERY2], table2));
+    validateQuery(loadQuery3(bikeSharing, queries[QUERY3], table3));
 
 
-    // Libero los recursos utilizados por mi ADT.
+    /*
+     * Libera la memoria utilizada por bikeSharing.
+     */
     freeBikeSharing(bikeSharing);
-    puts("Memoria liberada.");
+
+    /*
+     * Cerrar los archivos que fueron abiertos.
+     */
     closeFiles(files);
     closeHTMLTable(table1);
     closeHTMLTable(table2);
     closeHTMLTable(table3);
-    puts("Fin de ejecucion.");
+
+    puts("The program has finished with no errors.");
     return 0;
 }
 
-/*
- * Donde cada línea del archivo csv de salida contenga, separados por “;” el nombre de la
- * estación y la cantidad total de viajes iniciados en esa estación por usuarios miembros.
- * La información debe listarse ordenada en forma descendente por cantidad total de viajes y a igualdad de viajes desempatar alfabéticamente por nombre
- * de la estación.
- */
 static char* integerToString(size_t num, char str[]) {
     sprintf(str, "%ld", num);
     return str;
