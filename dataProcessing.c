@@ -206,7 +206,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
 
             token = strtok(buff, DELIM_PREFIX);
             char *auxMonth = token;
-
             /* Esta linea significa saltear al siguiente campo. */
             token = UPDATE();
 
@@ -217,8 +216,7 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
             token = UPDATE(); // aca vale end_Date, como no nos sirve, la salteamos
             token = UPDATE();
 
-            idEnd = atol(
-                    token); // en este momento token vale el id de donde termina
+            idEnd = atol(token); // en este momento token vale el id de donde termina
             token = UPDATE();
 
             isMember = atoi(token);

@@ -60,9 +60,6 @@ int main(int argc, char *argv[]) {
             "query1.csv",
             "query2.csv",
             "query3.csv",
-            "query1.html",
-            "query2.html",
-            "query3.html"
     };
 
     createFiles(queries, queryNames, QUERIES_COUNT, "w");
@@ -154,12 +151,41 @@ int loadQuery2(bikeSharingADT bs, FILE *query2, htmlTable table2) {
     return OK;
 }
 
-
 int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3){
 
-    fprintf(query3, "J;F;M;A;M;J;J;A;S;O;N;D;Station");
+    fprintf(query3, "J;F;M;A;M;J;J;A;S;O;N;D;Station\n");
+    for(size_t i = 0; i < getSize(bs); i++ ){
+        // No me gusta este calloc. (dinamico?)
+        int * months = calloc(13, sizeof(int));
+        getRentsByMonth(bs, i, months);
+        char monthsAux[BUFF_SIZE][12];
+        for(int j = 1; j < 13; j++){
+            fprintf(query3, "%d;", months[j]);
+            integerToString(months[j], monthsAux[j]);
+        }
 
-    for(){
+        char* stationName = getStationName(bs, i);
+        int res = fprintf(query3,"%s\n", stationName);
+        addHTMLRow(table3,
+                      monthsAux[1],
+                      monthsAux[2],
+                      monthsAux[3],
+                      monthsAux[4],
+                      monthsAux[5],
+                      monthsAux[6],
+                      monthsAux[7],
+                      monthsAux[8],
+                      monthsAux[9],
+                      monthsAux[10],
+                      monthsAux[11],
+                      monthsAux[12],
+                      stationName
+                   );
 
+        if (res < 0) {
+            return ERROR;
+        }
+        free(months);
     }
+    return OK;
 }

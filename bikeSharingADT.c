@@ -126,7 +126,6 @@ int addStation(bikeSharingADT bs, char *stationName, size_t id) {
     bs->stationArray[bs->stationCount].rentList = NULL;
     bs->stationArray[bs->stationCount].stationInfo.stationName = stringCopy(stationName);
     bs->stationArray[bs->stationCount].stationInfo.id = id;
-//    bs->stationArray[bs->stationCount].endIdArray.endId = id;
     bs->stationArray[bs->stationCount].stationInfo.totalMemberRents = 0;
     bs->stationCount++;
 
@@ -165,6 +164,7 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
     memCheck(newRent);
 
     newRent->startMonth = startMonth;
+   // printf("%d\n", newRent->startMonth);
     newRent->endId = endId;
     newRent->isMember = isMember;
     newRent->next = NULL;
