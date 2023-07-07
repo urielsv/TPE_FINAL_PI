@@ -142,5 +142,10 @@ int loadQuery2(bikeSharingADT bs, FILE *query2) {
 
 
 int loadQuery3(bikeSharingADT bs, FILE *query3){
-    
+
+    fprintf(query3, "J;F;M;A;M;J;J;A;S;O;N;D;Station");
+
+    for(){
+
+    }
 }
