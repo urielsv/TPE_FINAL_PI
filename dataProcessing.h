@@ -28,7 +28,7 @@ int validArgumentCount(int argc);
 /*
  * @brief Guarda en files la informacion de los archivos.
  */
-int newFiles(FILE *files[], char *argv[], char *flag);
+int newFiles(FILE *files[], char *argv[], int count, char *flag);
 
 /*
  * @brief Cierra los archivos previamente abiertos.

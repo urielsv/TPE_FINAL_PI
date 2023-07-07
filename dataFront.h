@@ -33,7 +33,7 @@ void pError(const char* errorStream, const char* errorText);
  */
 void validateArguments(int argc, char* argv[]);
 
-void createFiles(FILE* files[], char* argv[], char* flag);
+void createFiles(FILE* files[], char* argv[], int count, char* flag);
 
 /*
  * @brief Verifica que la carga de datos al ADT sea correcta.

@@ -32,11 +32,11 @@ void validateArguments(int argc, char *argv[]) {
     }
 }
 
-void createFiles(FILE *files[FILES_COUNT], char *argv[], char *flag) {
+void createFiles(FILE *files[FILES_COUNT], char *argv[], int count, char *flag) {
     if (strcmp(flag, "r") != 0 && strcmp(flag, "w") != 0) {
         pError("file(s):", "Not a valid read/write flag.");
     }
-    int valid = newFiles(files, argv, flag);
+    int valid = newFiles(files, argv, count, flag);
     if (!valid) {
         pError("file(s):", "Permission denied.");
     }

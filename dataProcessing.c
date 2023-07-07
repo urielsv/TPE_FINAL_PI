@@ -58,8 +58,8 @@ int validArgumentCount(int argc) {
     return SUCCESS;
 }
 
-int newFiles(FILE *files[FILES_COUNT], char *argv[], char *flag) {
-    for (int i = 0; i < FILES_COUNT; i++) {
+int newFiles(FILE *files[], char *argv[], int count, char *flag) {
+    for (int i = 0; i < count; i++) {
         files[i] = fopen(argv[i], flag);
         // Si es NULL no lo pudo leer.
         if (files[i] == NULL) {
@@ -247,7 +247,6 @@ int putDataToADT(bikeSharingADT bs, FILE *file[FILES_COUNT], char *argv) {
                 return DATA_ERROR;
             }
         }
-        printf("finalmente, hay %zu de stations\n", getStationCount(bs));
 
         sortStationsById(bs);
 
