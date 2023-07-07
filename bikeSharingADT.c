@@ -52,6 +52,7 @@ typedef struct station {
 typedef struct { // whathe fuck?
     size_t count;
     char* stationName;
+    size_t endId;
 } tEndIdArray;
 
 typedef struct {

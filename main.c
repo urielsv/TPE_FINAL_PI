@@ -76,6 +76,8 @@ int main(int argc, char *argv[]) {
     loadQuery2(bikeSharing, queries[QUERY2]);
 //    loadQuery3(bikeSharing, queries[QUERY3]);
 
+    printEndRentsArray(bikeSharing,0);
+
     //printEndRentsArray(bikeSharing, 0);
 
 
