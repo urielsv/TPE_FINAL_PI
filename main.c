@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
     // Cargo data de .csv's a mi ADT.
     loadDataToADT(bikeSharing, files, argv[FILE_NAME]);
 
+
     loadQuery1(bikeSharing, queries[QUERY1]);
     loadQuery2(bikeSharing, queries[QUERY2]);
 //    loadQuery3(bikeSharing, queries[QUERY3]);
@@ -135,4 +136,9 @@ int loadQuery2(bikeSharingADT bs, FILE *query2) {
     }
 
     return OK;
+}
+
+
+int loadQuery3(bikeSharingADT bs, FILE *query3){
+    
 }
