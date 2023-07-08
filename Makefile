@@ -1,5 +1,6 @@
 COMPILER = gcc
 OUTPUT_FILES = bikeSharingMON bikeSharingNYC
+
 FLAGS = -pedantic -std=c99 -Wall -fsanitize=address
 OBJECT_FILES = main.o bikeSharingADT.o dataProcessing.o dataFront.o htmlTable.o
 DEBUG = -g

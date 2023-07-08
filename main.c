@@ -66,8 +66,8 @@ int loadQuery2(bikeSharingADT bs, FILE *query2, htmlTable table2);
  *            estacion.
  *
  * @param     bs ADT que contiene los datos a consultar.
- * @param     query2 Archivo donde se colocara la informacion de la consulta (.csv)
- * @param     table2 Archivo donde se colocara la informacion de la consulta (.html)
+ * @param     query3 Archivo donde se colocara la informacion de la consulta (.csv)
+ * @param     table3 Archivo donde se colocara la informacion de la consulta (.html)
  *
  * @returns   Estado de la query.
  */
