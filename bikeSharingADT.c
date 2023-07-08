@@ -47,7 +47,7 @@ typedef struct station {
  * @brief   Estructura de estacion para tipo "Array"
  *
  ******************************************************************************/\
-typedef struct { // whathe fuck?
+typedef struct {
     size_t count;
     char* stationName;
 } tEndIdArray;
@@ -151,7 +151,6 @@ static long int findStation(bikeSharingADT bs, size_t id) {
 
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember) {
     size_t indexStation = findStation(bs, startId);
-   // printf(" findstation en index= %zu\n", indexStation);
 
     if (indexStation == UNDEFINED) {
       printf("indexStation error\n");
@@ -263,9 +262,7 @@ void sortStationsById(bikeSharingADT bs) {
     reallocateStationsArray(bs);
     qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStationsById);
     for (int i = 0; i < bs->stationCount; i++) {
-        // buenas vibras y felicidad #positivevibes
         bs->stationArray[i].endIdArray = calloc(bs->stationCount, sizeof(tEndIdArray));
-        // copiar los nombres de
         for(int j = 0; j < bs->stationCount; j++) {
             bs->stationArray[i].endIdArray[j].stationName =
                 stringCopy(bs->stationArray[j].stationInfo.stationName);
@@ -359,7 +356,6 @@ void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray) {
     tRentList *aux = bs->stationArray[stationIndex].rentList;
     while (aux != NULL) {
         monthArray[aux->startMonth]++;
-        //printf("%d\t startmonth: %d",monthArray[aux->startMonth],aux->startMonth );
         aux = aux->next;
     }
 }
