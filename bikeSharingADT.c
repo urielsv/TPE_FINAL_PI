@@ -21,7 +21,7 @@
 typedef struct rentList {
     int startMonth; // date
     size_t endId;
-    char isMember;
+//    char isMember; // undo?
     struct rentList *next;
 } tRentList;
 
@@ -87,7 +87,8 @@ bikeSharingADT newBikeSharingADT(void) {
  *
  ******************************************************************************/
 static void memCheck(void *allocMem) {
-    if (errno == ENOMEM) {
+    if (errno == ENOMEM || allocMem == NULL) {
+        fprintf(stderr, "bikeSharingADT: Eror while allocating memory.");
         exit(1);
     }
 }
@@ -162,7 +163,7 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 
     newRent->startMonth = startMonth;
     newRent->endId = endId;
-    newRent->isMember = isMember;
+//    newRent->isMember = isMember; // undo?
     newRent->next = NULL;
 
     tRentList *aux = bs->stationArray[indexStation].rentList;

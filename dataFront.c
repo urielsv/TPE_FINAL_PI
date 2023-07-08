@@ -41,9 +41,9 @@ void createFiles(FILE *files[FILES_COUNT], char *argv[], int count, char *flag) 
         pError("file(s):", "Permission denied.");
     }
     if (strcmp(flag, "r") == 0)
-        printf("Files have been loaded successfully.\n");
+        puts("Files have been loaded successfully.");
     if (strcmp(flag, "w") == 0)
-        printf("Files have been created successfully.\n");
+        puts("Files have been created successfully.");
 }
 
 void loadDataToADT(bikeSharingADT bs, FILE *files[FILES_COUNT], char *argv) {
@@ -53,7 +53,7 @@ void loadDataToADT(bikeSharingADT bs, FILE *files[FILES_COUNT], char *argv) {
         pError("main", "Failed to load data to ADT.");
     }
 
-    printf("Data has been loaded correctly.\n");
+    puts("Data has been loaded correctly.");
 }
 
 void validateQuery(int status) {

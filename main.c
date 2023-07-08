@@ -2,7 +2,7 @@
  *
  * @file    main.c
  *
- * @brief   Ejecucion del programa.
+ * @brief   Ejecucion del programa y creacion de consultas.
  *
  * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
@@ -21,19 +21,14 @@
 #define BUFF_SIZE       64
 #define FILES_COUNT     2
 #define QUERIES_COUNT   3
+
+#define FILE_NAME       0
+
 #define OK              1
-#define ERROR           -1
+#define ERROR           (-1)
 
 enum {
     QUERY1 = 0, QUERY2, QUERY3
-};
-
-enum {
-    FILE_NAME = 0, FILE1, FILE2
-};
-
-enum {
-    BIKES = 0, STATION
 };
 
 enum months {
@@ -41,18 +36,41 @@ enum months {
 };
 
 /*
- * @brief
+ * @brief     Guarda en un archivo .csv y .html la informacion de la consulta dada
+ *            por la cantidad total de rentas (viajes) por miembros de esa estacion.
  *
- * @param   bs ADT que contiene los datos a consultar.
- * @param   query1 Archivo donde se colocara la informacion de la consulta (.csv)
- * @param   table1 Archivo donde se colocara la informacion de la consulta (.html)
+ * @param     bs ADT que contiene los datos a consultar.
+ * @param     query1 Archivo donde se colocara la informacion de la consulta (.csv)
+ * @param     table1 Archivo donde se colocara la informacion de la consulta (.html)
  *
- * @returns Estado de la query.
+ * @returns   Estado de la query.
  */
 int loadQuery1(bikeSharingADT bs, FILE *query1, htmlTable table1);
 
+/*
+ * @brief     Guarda en un archivo .csv y .html la informacion de la consulta dada
+ *            por la cantidad total de viajes que se realizaron desde EstacionA
+ *            hacia la EstacionB y viseversa (de EstacionB a EstacionA).
+ *
+ * @param     bs ADT que contiene los datos a consultar.
+ * @param     query2 Archivo donde se colocara la informacion de la consulta (.csv)
+ * @param     table2 Archivo donde se colocara la informacion de la consulta (.html)
+ *
+ * @returns   Estado de la query.
+ */
 int loadQuery2(bikeSharingADT bs, FILE *query2, htmlTable table2);
 
+/*
+ * @brief     Guarda en un archivo .csv y .html la informacion de la consulta dada
+ *            la cantidad total de viajes iniciados por cada mes del anio de cada
+ *            estacion.
+ *
+ * @param     bs ADT que contiene los datos a consultar.
+ * @param     query2 Archivo donde se colocara la informacion de la consulta (.csv)
+ * @param     table2 Archivo donde se colocara la informacion de la consulta (.html)
+ *
+ * @returns   Estado de la query.
+ */
 int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3);
 
 
@@ -120,27 +138,30 @@ int main(int argc, char *argv[]) {
 }
 
 static char* integerToString(size_t num, char str[]) {
-    sprintf(str, "%ld", num);
+    snprintf(str, BUFF_SIZE,"%ld", num);
     return str;
 }
 
 int loadQuery1(bikeSharingADT bs, FILE *query1, htmlTable table1) {
     sortStationsByRent(bs); // Sortea por cantidad de viajes
     fprintf(query1, "Station;StartedTrips\n");
-    size_t total = 0;
+
+    size_t total;
     char *stationName;
+
     for (int i = 0; i < getSize(bs); i++) {
         total = getTotalMemberRents(bs, i);
         stationName = getStationName(bs, i);
-        if (total != -1) {
 
-            int res = fprintf(query1, "%s;%ld\n", stationName, total);
-            char aux[BUFF_SIZE];
-            addHTMLRow(table1, stationName, integerToString(total, aux));
-            free(stationName);
-            if (res < 0) {
-                return ERROR;
-            }
+        int res = fprintf(query1, "%s;%ld\n", stationName, total);
+
+        char aux[BUFF_SIZE];
+        addHTMLRow(table1, stationName, integerToString(total, aux));
+
+        free(stationName);
+
+        if (res < 0) {
+            return ERROR;
         }
     }
 
@@ -155,15 +176,19 @@ int loadQuery2(bikeSharingADT bs, FILE *query2, htmlTable table2) {
         char *stationA = getStationName(bs, i);
         for (size_t j = 0; j < getSize(bs); j++) {
             if (i != j) {
+
                 size_t total = getTotalRentsBetweenStations(bs, i, j);
                 size_t totalReverse = getTotalRentsBetweenStations(bs, j, i);
                 char *stationB = getStationName(bs, j);
-                int res = fprintf(query2, "%s;%s;%zu;%zu\n", stationA, stationB, total, totalReverse);
+
+                int res = fprintf(query2, "%s;%s;%ld;%ld\n", stationA, stationB, total, totalReverse);
+
                 char aux[BUFF_SIZE][2];
                 addHTMLRow(table2, stationA, stationB,
                            integerToString(total, aux[0]),
                            integerToString(totalReverse, aux[1])
                            );
+
                 free(stationB);
                 if (res < 0) {
                     return ERROR;
@@ -180,10 +205,10 @@ int loadQuery3(bikeSharingADT bs, FILE *query3, htmlTable table3){
 
     fprintf(query3, "J;F;M;A;M;J;J;A;S;O;N;D;Station\n");
     for(size_t i = 0; i < getSize(bs); i++ ){
-        // No me gusta este calloc. (dinamico?)
         int * months = calloc(13, sizeof(int));
         getRentsByMonth(bs, i, months);
         char monthsAux[BUFF_SIZE][12];
+
         for(int j = 1; j < 13; j++){
             fprintf(query3, "%d;", months[j]);
             integerToString(months[j], monthsAux[j]);
