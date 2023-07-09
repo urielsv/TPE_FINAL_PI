@@ -4,7 +4,7 @@
  *
  * @brief   Manejo de datos y proceso de datos (Back-end).
  *
- * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *
@@ -26,16 +26,14 @@
 #define DATA_ERROR !SUCCESS
 #define DELIM_PREFIX ";"
 #define DATE_DELIM "-"
-
 #define UPDATE()  strtok(NULL, DELIM_PREFIX)
+
 enum {
     RENTS = 0, STATION
 };
 enum {
     MON = 1, NYC
 };
-
-
 enum {
     CASUAL, MEMBER
 };
@@ -73,7 +71,6 @@ int closeFiles(FILE *files[FILES_COUNT]) {
     }
     return SUCCESS;
 }
-
 
 /*
  * @brief     Valida que las listas de entrada esten con el formato correcto.

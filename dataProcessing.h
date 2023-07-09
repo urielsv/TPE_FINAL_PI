@@ -48,8 +48,4 @@ int closeFiles(FILE *files[]);
  */
 int putDataToADT(bikeSharingADT bikeSharing, FILE *file[], char *argv);
 
-void printArray(bikeSharingADT bs);
-
-void printRents(bikeSharingADT bs, size_t id);
-
 #endif

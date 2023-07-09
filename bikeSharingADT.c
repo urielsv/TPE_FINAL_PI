@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #define SUCCESS 1
 #define ERROR !SUCCESS
@@ -35,7 +34,6 @@
 typedef struct rentList {
     int startMonth; // date
     size_t endId;
-//    char isMember; // undo?
     struct rentList *next;
 } tRentList;
 
@@ -60,7 +58,7 @@ typedef struct station {
  *
  * @brief   Estructura de estaciones de fin.
  *
- ******************************************************************************/\
+ ******************************************************************************/
 typedef struct {
     size_t count;
     char* endStationName;
@@ -183,7 +181,6 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
 
     newRent->startMonth = startMonth;
     newRent->endId = endId;
-//    newRent->isMember = isMember; // undo?
     newRent->next = NULL;
 
     tRentList *aux = bs->stationArray[indexStation].rentList;
@@ -204,16 +201,8 @@ int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, cha
  * @category    GETTER FUNCTIONS
  *
  ******************************************************************************/
-size_t getStationCount(bikeSharingADT bs) {
-    return bs->stationCount;
-}
-
 char *getStationName(bikeSharingADT bs, size_t id) {
     return stringCopy(bs->stationArray[id].stationInfo.stationName);
-}
-
-size_t getTotalRents(bikeSharingADT bs, size_t id) {
-    return bs->stationArray[id].stationInfo.totalRents;
 }
 
 size_t getTotalMemberRents(bikeSharingADT bs, size_t id) {
@@ -223,13 +212,6 @@ size_t getTotalMemberRents(bikeSharingADT bs, size_t id) {
 size_t getSize(bikeSharingADT bs) {
     return bs->sizeArray;
 }
-
-/******************************************************************************
- *
- * @category    SETTER FUNCTIONS
- *
- ******************************************************************************/
-
 
 /******************************************************************************
  *
@@ -341,31 +323,6 @@ void sortStationsByAlpha(bikeSharingADT bs) {
  * @category    EXTRA FUNCTIONS
  *
  ******************************************************************************/
-void printArray(bikeSharingADT bs) {
-    for (int i = 0; i < bs->stationCount; i++) {
-        printf("%s\thas %zu rents\n", bs->stationArray[i].stationInfo.stationName,
-               bs->stationArray[i].stationInfo.totalRents);
-    }
-}
-
-void printEndRentsArray(bikeSharingADT bs, size_t index) {
-    for(int i =0; i< bs->sizeArray; i++) {
-        printf("%zu\n", bs->stationArray[index].endIdArray[i].count);
-    }
-}
-
-void printTotalRents(bikeSharingADT bs, size_t i) {
-    printf("%s has %zu rents\n", bs->stationArray[i].stationInfo.stationName, getTotalRents(bs, i));
-}
-
-void printRents(bikeSharingADT bs, size_t i) {
-    tRentList *aux = bs->stationArray[i].rentList;
-    while (aux != NULL) {
-        printf("%zu\n", aux->endId);
-        aux = aux->next;
-    }
-}
-
 size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t endIndex) {
     size_t totalRents = bs->stationArray[startIndex].endIdArray[endIndex].count;
     return totalRents;

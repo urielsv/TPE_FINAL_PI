@@ -4,7 +4,7 @@
  *
  * @brief   Ejecucion del programa y creacion de consultas.
  *
- * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
  * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *

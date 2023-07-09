@@ -4,8 +4,8 @@
  *
  * @brief   ADT para manejo de datos y queries.
  *
- * @author  Lucas Pugliese                           <lpugliese@itba.edu.ar>
- * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipes Venturino                        <fventurino@itba.edu.ar>
  * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
  *
  * @date    5/07/2023
@@ -32,7 +32,6 @@ bikeSharingADT newBikeSharingADT(void);
  ******************************************************************************/
 int addStation(bikeSharingADT bs, char *stationName, size_t id);
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember);
-
 
 /******************************************************************************
  *
@@ -67,8 +66,13 @@ void sortStationsById(bikeSharingADT bs);
 // Sortea por nombre de estacion en forma alfabetica.
 void sortStationsByAlpha(bikeSharingADT bs);
 
-void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray);
 
+/******************************************************************************
+ *
+ * @category    EXTRA FUNCTIONS
+ *
+ ******************************************************************************/
+void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray);
 size_t getTotalRentsBetweenStations(bikeSharingADT bs, size_t startIndex, size_t endIndex);
 
 #endif
