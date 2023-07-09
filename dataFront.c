@@ -32,7 +32,7 @@ void validateArguments(int argc, char *argv[]) {
     }
 }
 
-void createFiles(FILE *files[FILES_COUNT], char *argv[], int count, char *flag) {
+void createFiles(FILE **files, char *argv[], int count, char *flag) {
     if (strcmp(flag, "r") != 0 && strcmp(flag, "w") != 0) {
         pError("file(s):", "Not a valid read/write flag.");
     }
@@ -46,7 +46,7 @@ void createFiles(FILE *files[FILES_COUNT], char *argv[], int count, char *flag) 
         puts("Files have been created successfully.");
 }
 
-void loadDataToADT(bikeSharingADT bs, FILE *files[FILES_COUNT], char *argv) {
+void loadDataToADT(bikeSharingADT bs, FILE **files, char *argv) {
     int valid = putDataToADT(bs, files, argv);
 
     if (!valid) {

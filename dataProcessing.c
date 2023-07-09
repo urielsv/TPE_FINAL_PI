@@ -26,14 +26,16 @@
 #define DATA_ERROR !SUCCESS
 #define DELIM_PREFIX ";"
 #define DATE_DELIM "-"
-#define UPDATE()  strtok(NULL, DELIM_PREFIX)
 
+#define UPDATE()  strtok(NULL, DELIM_PREFIX)
 enum {
     RENTS = 0, STATION
 };
 enum {
     MON = 1, NYC
 };
+
+
 enum {
     CASUAL, MEMBER
 };
@@ -53,7 +55,7 @@ int validArgumentCount(int argc) {
     return SUCCESS;
 }
 
-int newFiles(FILE **files, char *argv[], int count, char *flag) {
+int newFiles(FILE *files[], char *argv[], int count, char *flag) {
     for (int i = 0; i < count; i++) {
         files[i] = fopen(argv[i], flag);
         // Si es NULL no lo pudo leer.
@@ -64,13 +66,14 @@ int newFiles(FILE **files, char *argv[], int count, char *flag) {
     return SUCCESS;
 }
 
-int closeFiles(FILE **files) {
+int closeFiles(FILE *files[FILES_COUNT]) {
     for (int i = 0; i < FILES_COUNT; i++) {
         if (fclose(files[i]) != 0)
             return DATA_ERROR;
     }
     return SUCCESS;
 }
+
 
 /*
  * @brief     Valida que las listas de entrada esten con el formato correcto.
@@ -82,7 +85,7 @@ int closeFiles(FILE **files) {
  * @param     stationFormat Se utiliza para validar el formato de la lista de stations.
  *
  */
-static int validFilesFormat(char buff[], FILE **file, char *fileFormat[FILES_COUNT]) {
+static int validFilesFormat(char buff[], FILE *file[FILES_COUNT], char *fileFormat[FILES_COUNT]) {
     for (int i = 0; i < FILES_COUNT; i++) {
         // Si no tiene header (.csv) retorna error.
         if (fgets(buff, BUFF_SIZE, file[i]) == NULL) {
