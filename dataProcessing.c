@@ -188,9 +188,7 @@ static int loadRentsMON(bikeSharingADT bs, FILE *file) {
         token = UPDATE();
 
         idStart = atol(token);
-        /*
-             * Se saltean campos inecesarios
-         */
+        /* Se saltean campos inecesarios */
         token = UPDATE(); // aca vale end_Date, como no nos sirve, la salteamos
         token = UPDATE();
 

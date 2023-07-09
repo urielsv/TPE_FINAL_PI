@@ -18,41 +18,53 @@
 #include <stdio.h>
 typedef struct bikeSharingCDT *bikeSharingADT;
 
-/*
- * @brief Constructor del ADT.
- */
+/******************************************************************************
+ *
+ * @category    CONSTRUCTOR FUNCTION
+ *
+ ******************************************************************************/
 bikeSharingADT newBikeSharingADT(void);
 
-/*
- * FUNCIONES EXTRAS
- */
+/******************************************************************************
+ *
+ * @category    FUNCTIONS
+ *
+ ******************************************************************************/
 int addStation(bikeSharingADT bs, char *stationName, size_t id);
 int addRent(bikeSharingADT bs, int startMonth, size_t startId, size_t endId, char isMember);
 
 
-
-size_t getId(bikeSharingADT bs, size_t id);
-size_t getStationCount(bikeSharingADT bs);
-int getType(bikeSharingADT bs);
-size_t getTotalRents(bikeSharingADT bs, size_t id);
+/******************************************************************************
+ *
+ * @category    GETTER FUNCTIONS
+ *
+ ******************************************************************************/
 size_t getTotalMemberRents(bikeSharingADT bs, size_t id);
 char * getStationName(bikeSharingADT bs, size_t id);
 size_t getSize(bikeSharingADT bs);
-char isUsed(bikeSharingADT bs, size_t id);
 
-void setType(bikeSharingADT bs, int type);
-
-/*
- * @brief Libera todos los recursos utilizados por el ADT.
- */
+/******************************************************************************
+ *
+ * @category    FREE MEMORY
+ *
+ * @brief       Libera todos los recursos utilizados por el ADT.
+ *
+ ******************************************************************************/
 void freeBikeSharing(bikeSharingADT bs);
 
-void printEndRentsArray(bikeSharingADT bs, size_t index);
-void printName(bikeSharingADT bs, size_t id);
-void printList(bikeSharingADT bs);
-void printTotalRents(bikeSharingADT bs, size_t id);
+/******************************************************************************
+ *
+ * @category    SORTING FUNCTIONS
+ *
+ ******************************************************************************/
+
+//  Sortea por Qty of Rents (miembros) de forma descendente.
 void sortStationsByRent(bikeSharingADT bs);
+
+// Sortea por ID, en forma ascendente.
 void sortStationsById(bikeSharingADT bs);
+
+// Sortea por nombre de estacion en forma alfabetica.
 void sortStationsByAlpha(bikeSharingADT bs);
 
 void getRentsByMonth(bikeSharingADT bs, size_t stationIndex, int* monthArray);

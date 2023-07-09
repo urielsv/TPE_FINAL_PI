@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * @file    bikeSharingADT.c
+ *
+ * @brief   ADT para manejo de datos y queries.
+ *
+ * @author  Luca Pugliese                           <lpugliese@itba.edu.ar>
+ * @author  Felipe Venturino                        <fventurino@itba.edu.ar>
+ * @author  Uriel Sosa Vazquez                      <usosavazquez@itba.edu.ar>
+ *
+ * @date    5/07/2023
+ *
+ ******************************************************************************/
+
 #include "bikeSharingADT.h"
 #include <errno.h>
 #include <stdio.h>
@@ -264,7 +278,7 @@ int compareStationsById(const void *station1, const void *station2) {
     }
 }
 
-// Sortea pr id de forma ascendente
+
 void sortStationsById(bikeSharingADT bs) {
     reallocateStationsArray(bs);
     qsort(bs->stationArray, bs->stationCount, sizeof(tStationArray), compareStationsById);
@@ -295,7 +309,6 @@ int compareStationsByRentDescending(const void *station1, const void *station2) 
     }
 }
 
-// Sortea por cantidad de rents (por miembros) de forma descendente
 void sortStationsByRent(bikeSharingADT bs) {
     qsort(bs->stationArray, bs->sizeArray, sizeof(tStationArray),
           compareStationsByRentDescending);
@@ -314,7 +327,6 @@ static int compareEndIdArray(const void* a, const void* b) {
     return strcmp(arrA->endStationName, arrB->endStationName);
 }
 
-// Sortea por nombre de forma alfabetica
 void sortStationsByAlpha(bikeSharingADT bs) {
     qsort(bs->stationArray, bs->stationCount,
           sizeof(tStationArray), compareStations);
