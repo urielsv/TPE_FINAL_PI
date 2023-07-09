@@ -42,16 +42,23 @@ typedef struct station {
 
 /******************************************************************************
  *
+ * @struct  tEndIdArray
+ *
+ * @brief   Estructura de estaciones de fin.
+ *
+ ******************************************************************************/\
+typedef struct {
+    size_t count;
+    char* endStationName;
+} tEndIdArray;
+
+/******************************************************************************
+ *
  * @struct  tStationArray
  *
  * @brief   Estructura de estacion para tipo "Array"
  *
  ******************************************************************************/\
-typedef struct {
-    size_t count;
-    char* stationName;
-} tEndIdArray;
-
 typedef struct {
     tStation stationInfo;
     tRentList *rentList;
@@ -229,7 +236,7 @@ void freeBikeSharing(bikeSharingADT bs) {
             freeRecRents(bs->stationArray[i].rentList);
         }
         for(int j =0 ; j < bs->stationCount; j++){
-            free(bs->stationArray[i].endIdArray[j].stationName);
+            free(bs->stationArray[i].endIdArray[j].endStationName);
         }
         free(bs->stationArray[i].endIdArray);
         free(bs->stationArray[i].stationInfo.stationName);
@@ -264,7 +271,7 @@ void sortStationsById(bikeSharingADT bs) {
     for (int i = 0; i < bs->stationCount; i++) {
         bs->stationArray[i].endIdArray = calloc(bs->stationCount, sizeof(tEndIdArray));
         for(int j = 0; j < bs->stationCount; j++) {
-            bs->stationArray[i].endIdArray[j].stationName =
+            bs->stationArray[i].endIdArray[j].endStationName =
                 stringCopy(bs->stationArray[j].stationInfo.stationName);
         }
     }
@@ -304,7 +311,7 @@ int compareStations(const void *a, const void *b) {
 static int compareEndIdArray(const void* a, const void* b) {
     const tEndIdArray* arrA = (const tEndIdArray*)a;
     const tEndIdArray* arrB = (const tEndIdArray*)b;
-    return strcmp(arrA->stationName, arrB->stationName);
+    return strcmp(arrA->endStationName, arrB->endStationName);
 }
 
 // Sortea por nombre de forma alfabetica
