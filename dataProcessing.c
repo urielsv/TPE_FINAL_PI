@@ -53,7 +53,7 @@ int validArgumentCount(int argc) {
     return SUCCESS;
 }
 
-int newFiles(FILE *files[], char *argv[], int count, char *flag) {
+int newFiles(FILE **files, char *argv[], int count, char *flag) {
     for (int i = 0; i < count; i++) {
         files[i] = fopen(argv[i], flag);
         // Si es NULL no lo pudo leer.
@@ -64,7 +64,7 @@ int newFiles(FILE *files[], char *argv[], int count, char *flag) {
     return SUCCESS;
 }
 
-int closeFiles(FILE *files[FILES_COUNT]) {
+int closeFiles(FILE **files) {
     for (int i = 0; i < FILES_COUNT; i++) {
         if (fclose(files[i]) != 0)
             return DATA_ERROR;
@@ -82,7 +82,7 @@ int closeFiles(FILE *files[FILES_COUNT]) {
  * @param     stationFormat Se utiliza para validar el formato de la lista de stations.
  *
  */
-static int validFilesFormat(char buff[], FILE *file[FILES_COUNT], char *fileFormat[FILES_COUNT]) {
+static int validFilesFormat(char buff[], FILE **file, char *fileFormat[FILES_COUNT]) {
     for (int i = 0; i < FILES_COUNT; i++) {
         // Si no tiene header (.csv) retorna error.
         if (fgets(buff, BUFF_SIZE, file[i]) == NULL) {
